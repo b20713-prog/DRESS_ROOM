@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>드레스룸 게임 (정식 복구 버전)</title>
+    <title>프리미엄 드레스룸 & 마켓 게임</title>
     <style>
-        /* 기본 스타일 및 폰트 설정 */
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
         
         * {
@@ -26,7 +25,7 @@
             padding: 20px;
         }
 
-        /* 스마트폰 형태의 메인 컨테이너 (제공된 사진의 비율 및 라운딩 참고) */
+        /* 사진의 스마트폰 UI 비율과 라운딩 디테일 반영 */
         .phone-container {
             width: 420px;
             height: 860px;
@@ -40,29 +39,7 @@
             overflow: hidden;
         }
 
-        /* 로그인 / 계정 상태 표시 상단 바 */
-        .login-auth-bar {
-            background: #ffecf2;
-            padding: 8px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #db7093;
-            border-bottom: 1px solid #ffd1dc;
-        }
-
-        .auth-btn {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        /* 메인 헤더 (상단 재화 및 타이틀) */
+        /* 상단 네비게이션 및 재화 정보 바 */
         .top-header {
             background: #ffffff;
             padding: 15px 20px;
@@ -77,11 +54,6 @@
             font-size: 1.3rem;
         }
 
-        .currency-container {
-            display: flex;
-            gap: 10px;
-        }
-
         .currency-badge {
             background: #fff0f5;
             border: 2px solid #ff69b4;
@@ -94,13 +66,13 @@
             gap: 4px;
         }
 
-        /* 콘텐츠 가변 영역 */
+        /* 메인 가변 스크린 */
         .content-body {
             flex: 1;
             overflow-y: auto;
-            position: relative;
             background: linear-gradient(to bottom, #ffffff, #fff0f5);
             padding: 15px;
+            position: relative;
         }
 
         .screen-view {
@@ -114,56 +86,73 @@
             display: flex;
         }
 
-        /* --- [복구] 로그인 화면 뷰 --- */
-        .login-screen-wrapper {
+        /* --- 로그인 및 회원가입 화면 양식 --- */
+        .auth-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
-            text-align: center;
+            padding: 20px;
         }
 
-        .login-logo {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: heartBeat 2s infinite;
+        .auth-logo {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
         }
 
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .login-input-group {
-            width: 80%;
-            margin-bottom: 12px;
-        }
-
-        .login-input-group input {
+        .auth-box {
             width: 100%;
-            padding: 12px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
             border: 2px solid #ffb6c1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .auth-title {
+            color: #ff69b4;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border: 2px solid #ffe4e1;
             border-radius: 12px;
             outline: none;
-            font-size: 1rem;
-            text-align: center;
+            font-size: 0.95rem;
         }
 
-        .btn-login-submit {
-            width: 80%;
+        .input-field:focus {
+            border-color: #ff69b4;
+        }
+
+        .auth-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .btn-auth {
+            flex: 1;
             background: #ff69b4;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 12px;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(255, 105, 180, 0.2);
         }
 
-        /* --- 1. 마이 드레스룸 화면 --- */
+        .btn-auth.secondary {
+            background: #ffb6c1;
+        }
+
+        /* --- 1. 옷장 (드레스룸) 스크린 --- */
         .avatar-canvas-area {
             width: 100%;
             height: 360px;
@@ -177,14 +166,14 @@
             align-items: center;
         }
 
-        /* 목과 얼굴 분리 현상 원천 수정을 위한 부모 컨테이너 고정 구조 */
+        /* 목분리 현상 해결: 절대적 묶음 골격 구조 설계 */
         .avatar-model {
             width: 200px;
             height: 320px;
             position: relative;
         }
 
-        /* 얼굴과 몸을 단단히 연결하는 내부 절대 좌표 뼈대 설계 */
+        /* 몸체 고정 */
         .model-body {
             width: 54px;
             height: 120px;
@@ -197,7 +186,7 @@
             z-index: 2;
         }
 
-        /* 목 레이어 고정: 몸과 얼굴의 중심점에 단단히 중첩되도록 배치 */
+        /* 목 고정: 몸과 얼굴의 유기적 겹침을 고정하여 절대 분리 안됨 */
         .model-neck {
             width: 18px;
             height: 30px;
@@ -210,7 +199,7 @@
             z-index: 3;
         }
 
-        /* 얼굴 레이어 고정: 목 윗면에 완벽하게 겹치도록 z-index 세부 제어 */
+        /* 얼굴 고정 */
         .model-head {
             width: 100px;
             height: 96px;
@@ -233,18 +222,6 @@
         }
         .model-eyes.left { left: 25px; }
         .model-eyes.right { right: 59px; }
-
-        .model-blush {
-            width: 16px;
-            height: 8px;
-            background: rgba(255, 105, 180, 0.4);
-            position: absolute;
-            border-radius: 50%;
-            top: 62px;
-        }
-        .model-blush.left { left: 18px; }
-        .model-blush.right { right: 64px; }
-
         .model-mouth {
             width: 12px;
             height: 8px;
@@ -255,12 +232,12 @@
             border-radius: 0 0 10px 10px;
         }
 
-        /* 장착 의상 아이템 오버레이 레이어 (z-index 순서 정밀 조정) */
+        /* 옷장 파츠 오버레이 레이어 */
         .layer-hair { position: absolute; width: 160px; height: 160px; left: 20px; top: 0px; z-index: 5; pointer-events: none; }
         .layer-dress { position: absolute; width: 140px; height: 160px; left: 30px; top: 115px; z-index: 6; pointer-events: none; }
         .layer-acc { position: absolute; width: 120px; height: 120px; left: 40px; top: 5px; z-index: 7; pointer-events: none; }
 
-        /* 의상 교체 슬롯 파트 */
+        /* 카테고리 탭 (사진의 UI 감성 반영) */
         .category-tabs {
             display: flex;
             gap: 6px;
@@ -275,7 +252,6 @@
             border-radius: 12px;
             color: #db7093;
             cursor: pointer;
-            font-size: 0.95rem;
         }
 
         .tab-btn.active {
@@ -300,7 +276,6 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            position: relative;
         }
 
         .item-card.active {
@@ -308,113 +283,95 @@
             background: #fff0f5;
         }
 
-        .item-card.locked {
-            background: #f5f5f5;
-            border-color: #dcdcdc;
-            cursor: not-allowed;
-        }
-        .item-card.locked::after {
-            content: '🔒';
-            position: absolute;
-            top: 30%;
-            font-size: 1.3rem;
+        .item-thumb { font-size: 2.2rem; height: 48px; display: flex; align-items: center; }
+        .item-name { font-size: 0.8rem; color: #555; margin-top: 4px; text-align: center; }
+
+        /* --- 2. 뽑기 스크린 --- */
+        .gacha-container {
+            text-align: center;
+            padding: 20px 10px;
         }
 
-        .item-thumb {
-            font-size: 2.3rem;
-            height: 50px;
-            display: flex;
-            align-items: center;
+        .gacha-machine {
+            font-size: 6rem;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
         }
 
-        .item-name {
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .btn-gacha-trigger {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        /* --- 3. 중고 마켓 및 실시간 변동 가격 스크린 --- */
+        .market-header-alert {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px;
+            border-radius: 12px;
             font-size: 0.8rem;
-            color: #555;
-            margin-top: 5px;
             text-align: center;
+            margin-bottom: 12px;
         }
 
-        /* --- 2. 알바 화면 (밸런스 하향 조정 파트) --- */
-        .work-showcase {
-            background: white;
-            border: 2px solid #ffb6c1;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .work-list-container {
+        .market-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            overflow-y: auto;
         }
 
-        .work-card {
+        .market-card {
             background: white;
             border: 2px solid #ffe4e1;
             border-radius: 16px;
-            padding: 15px;
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .work-info h3 { font-size: 1.1rem; color: #ff69b4; }
-        .work-info p { font-size: 0.8rem; color: #888; margin-top: 3px; }
-
-        .btn-work-start {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        .btn-work-start:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        /* --- 3. 의상 상점 화면 --- */
-        .shop-banner {
-            background: #ff69b4;
-            color: white;
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .market-item-info {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .shop-card {
-            background: white;
-            border: 2px solid #ffe4e1;
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .price-trend {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: bold;
         }
+        .trend-up { background: #fde8e8; color: #e53e3e; }
+        .trend-down { background: #ebf8ff; color: #3182ce; }
 
-        .btn-buy-item {
-            width: 100%;
+        .btn-market-action {
             background: #ff69b4;
             color: white;
             border: none;
-            padding: 6px;
-            border-radius: 8px;
-            margin-top: 8px;
+            padding: 8px 14px;
+            border-radius: 10px;
             cursor: pointer;
         }
+        .btn-market-action.sell {
+            background: #4caf50;
+        }
 
-        /* --- 4. [복구] 도감(Collection) 화면 --- */
-        .collection-header {
+        /* --- 4. 도감 스크린 --- */
+        .collection-summary {
             background: #e3f2fd;
             border: 2px solid #90caf9;
             padding: 12px;
@@ -422,7 +379,6 @@
             color: #1565c0;
             text-align: center;
             margin-bottom: 15px;
-            font-size: 1rem;
         }
 
         .collection-grid {
@@ -450,7 +406,7 @@
             opacity: 1;
         }
 
-        /* 하단 고정 내비게이션 바 (제공된 사진 형태 레이아웃 참고) */
+        /* 하단 고정 탭바 내비게이션 */
         .bottom-nav-bar {
             height: 70px;
             background: #ffffff;
@@ -484,28 +440,35 @@
 
 <div class="phone-container">
     
-    <div class="login-auth-bar">
-        <span id="auth-status-text">🔒 로그인이 필요합니다</span>
-        <button class="auth-btn" id="auth-action-btn" onclick="handleAuthClick()">로그인</button>
-    </div>
-
     <div class="top-header">
         <div class="game-title">💖 쁘띠 드레스룸</div>
-        <div class="currency-container">
-            <div class="currency-badge">💰 <span id="gold-amount">1,000</span></div>
-        </div>
+        <div class="currency-badge">💰 <span id="global-gold">1,500</span></div>
     </div>
 
-    <div class="content-body" id="main-content-body">
+    <div class="content-body">
         
-        <div id="view-login" class="screen-view active">
-            <div class="login-screen-wrapper">
-                <div class="login-logo">✨👗</div>
-                <h2 style="color:#ff69b4; margin-bottom:20px;">드레스룸 멤버십 로그인</h2>
-                <div class="login-input-group">
-                    <input type="text" id="login-username" placeholder="사용자 닉네임 입력">
+        <div id="view-auth" class="screen-view active">
+            <div class="auth-container">
+                <div class="auth-logo">✨👗✨</div>
+                <div class="auth-box" id="auth-box-login">
+                    <div class="auth-title">로그인</div>
+                    <input type="text" id="login-id" class="input-field" placeholder="아이디 입력">
+                    <input type="password" id="login-pw" class="input-field" placeholder="비밀번호 입력">
+                    <div class="auth-btn-group">
+                        <button class="btn-auth" onclick="tryLogin()">로그인</button>
+                        <button class="btn-auth secondary" onclick="toggleAuthMode('join')">회원가입 이동</button>
+                    </div>
                 </div>
-                <button class="btn-login-submit" onclick="executeLogin()">게임 시작하기</button>
+                
+                <div class="auth-box" id="auth-box-join" style="display: none;">
+                    <div class="auth-title">회원가입</div>
+                    <input type="text" id="join-id" class="input-field" placeholder="새 아이디 입력">
+                    <input type="password" id="join-pw" class="input-field" placeholder="새 비밀번호 입력">
+                    <div class="auth-btn-group">
+                        <button class="btn-auth" onclick="tryRegister()">가입완료</button>
+                        <button class="btn-auth secondary" onclick="toggleAuthMode('login')">로그인 이동</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -517,8 +480,6 @@
                     <div class="model-head">
                         <div class="model-eyes left"></div>
                         <div class="model-eyes right"></div>
-                        <div class="model-blush left"></div>
-                        <div class="model-blush right"></div>
                         <div class="model-mouth"></div>
                     </div>
                     
@@ -529,78 +490,54 @@
             </div>
 
             <div class="category-tabs">
-                <button class="tab-btn active" onclick="setCategory('hair', this)">헤어</button>
-                <button class="tab-btn" onclick="setCategory('dress', this)">의상</button>
-                <button class="tab-btn" onclick="setCategory('acc', this)">소품</button>
+                <button class="tab-btn active" onclick="switchCategory('hair', this)">헤어</button>
+                <button class="tab-btn" onclick="switchCategory('dress', this)">의상</button>
+                <button class="tab-btn" onclick="switchCategory('acc', this)">소품</button>
             </div>
 
-            <div class="item-grid-scroll" id="closet-grid">
+            <div class="item-grid-scroll" id="closet-grid-box">
                 </div>
         </div>
 
-        <div id="view-work" class="screen-view">
-            <div class="work-showcase">
-                <h2 style="color:#ff69b4;">💸 용돈 벌기 아르바이트</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:5px;">
-                    무분별한 재화 획득을 방지하기 위해 보상 밸런스가 하향 조정되었습니다. 전략적으로 골드를 모아보세요!
-                </p>
-            </div>
-            
-            <div class="work-list-container">
-                <div class="work-card">
-                    <div class="work-info">
-                        <h3>방 청소하기 🧹</h3>
-                        <p>소요시간: 3초 • 보상: 💰 150</p>
-                    </div>
-                    <button class="btn-work-start" id="btn-work-1" onclick="startWork(1, 3000, 150)">알바 시작</button>
-                </div>
-                <div class="work-card">
-                    <div class="work-info">
-                        <h3>인형 눈 붙이기 👀</h3>
-                        <p>소요시간: 5초 • 보상: 💰 300</p>
-                    </div>
-                    <button class="btn-work-start" id="btn-work-2" onclick="startWork(2, 5000, 300)">알바 시작</button>
-                </div>
-                <div class="work-card">
-                    <div class="work-info">
-                        <h3>옷가게 스태프 👗</h3>
-                        <p>소요시간: 10초 • 보상: 💰 700</p>
-                    </div>
-                    <button class="btn-work-start" id="btn-work-3" onclick="startWork(3, 10000, 700)">알바 시작</button>
-                </div>
+        <div id="view-gacha" class="screen-view">
+            <div class="gacha-container">
+                <h2 style="color:#ff69b4;">🎁 랜덤 캡슐 의상 뽑기</h2>
+                <p style="font-size:0.85rem; color:#666; margin-top:5px;">1회 뽑기당 💰 600 골드가 소모됩니다.</p>
+                <div class="gacha-machine">🕹️</div>
+                <button class="btn-gacha-trigger" onclick="executeGachaCapsule()">캡슐 뽑기</button>
             </div>
         </div>
 
-        <div id="view-shop" class="screen-view">
-            <div class="shop-banner">
-                <h3>🛍️ 프리미엄 부티크 shop</h3>
-                <p style="font-size:0.8rem; margin-top:3px;">마음에 드는 아이템을 골드로 해금하세요.</p>
+        <div id="view-market" class="screen-view">
+            <div class="market-header-alert">
+                📊 안내: 시장 의상 가격이 3초마다 실시간으로 변동합니다!
             </div>
-            <div class="shop-grid" id="shop-grid-items">
+            <h3 style="color:#ff69b4; margin-bottom:10px;">🛍️ 실시간 중고 마켓 거래소</h3>
+            <div class="market-list" id="market-list-box">
                 </div>
         </div>
 
         <div id="view-collection" class="screen-view">
-            <div class="collection-header">
-                📜 전체 아이템 도감 수집 현황: <b id="collection-count-text">0/12</b>
+            <div class="collection-summary">
+                📜 의상 도감 수집률: <span id="collect-ratio-text">0 / 12</span>
             </div>
-            <div class="collection-grid" id="collection-slots-box">
+            <div class="collection-grid" id="collection-grid-box">
                 </div>
         </div>
 
     </div>
 
-    <div class="bottom-nav-bar" id="game-navigation-bar" style="display: none;">
-        <button class="nav-item-btn active" id="nav-closet" onclick="switchView('closet')">
-            <span class="icon">👗</span><span class="label">드레스룸</span>
+    <div class="bottom-nav-bar" id="game-nav-bar" style="display: none;">
+        <button class="nav-item-btn active" id="nav-closet" onclick="switchScreen('closet')">
+            <span class="icon">👗</span><span class="label">옷장</span>
         </button>
-        <button class="nav-item-btn" id="nav-work" onclick="switchView('work')">
-            <span class="icon">💸</span><span class="label">알바</span>
+        <button class="nav-item-btn" id="nav-gacha" onclick="switchScreen('gacha')">
+            <span class="icon">🎁</span><span class="label">뽑기</span>
         </button>
-        <button class="nav-item-btn" id="nav-shop" onclick="switchView('shop')">
-            <span class="icon">🛍️</span><span class="label">상점</span>
+        <button class="nav-item-btn" id="nav-market" onclick="switchScreen('market')">
+            <span class="icon">🛍️</span><span class="label">중고마켓</span>
         </button>
-        <button class="nav-item-btn" id="nav-collection" onclick="switchView('collection')">
+        <button class="nav-item-btn" id="nav-collection" onclick="switchScreen('collection')">
             <span class="icon">📜</span><span class="label">도감</span>
         </button>
     </div>
@@ -608,296 +545,345 @@
 </div>
 
 <script>
-    // --- 아이템 마스터 데이터 모델 고정 정의 ---
-    const GAME_ITEMS = {
+    // --- 시스템 전체 의상 데이터 명세 베이스 모델 ---
+    const POOL_ITEMS = {
         hair: [
-            { id: 'h1', name: '핑크 트윈테일', thumb: '🎀', price: 0, style: 'font-size:4.2rem; color:#ff69b4;' },
-            { id: 'h2', name: '큐티 노란 단발', thumb: '💇‍♀️', price: 600, style: 'font-size:4.2rem; color:#ffd700;' },
-            { id: 'h3', name: '여신 실버 롱', thumb: '👱‍♀️', price: 1500, style: 'font-size:4.2rem; color:#e0e0e0;' },
-            { id: 'h4', name: '보라 리본 헤어', thumb: '🍇', price: 3000, style: 'font-size:4.2rem; color:#9c27b0;' }
+            { id: 'h1', name: '트윈 리본 헤어', thumb: '🎀', basePrice: 500, style: 'font-size:4.2rem; color:#ff69b4;' },
+            { id: 'h2', name: '금빛 포니테일', thumb: '👱‍♀️', basePrice: 1200, style: 'font-size:4.2rem; color:#ffd700;' },
+            { id: 'h3', name: '단발 웨이브 헤어', thumb: '💇‍♀️', basePrice: 2000, style: 'font-size:4.2rem; color:#8b4513;' },
+            { id: 'h4', name: '사이버 네온 헤어', thumb: '🧬', basePrice: 4500, style: 'font-size:4.2rem; color:#00ffcc;' }
         ],
         dress: [
-            { id: 'd1', name: '기본 데일리 룩', thumb: '👗', price: 0, style: 'font-size:6rem; color:#ffb6c1;' },
-            { id: 'd2', name: '고급 블루 드레스', thumb: '💙', price: 1000, style: 'font-size:6rem; color:#2196f3;' },
-            { id: 'd3', name: '파티 레드 퀸', thumb: '💃', price: 2500, style: 'font-size:6rem; color:#f44336;' },
-            { id: 'd4', name: '우주복 스타일', thumb: '👩‍🚀', price: 5000, style: 'font-size:6rem; color:#4caf50;' }
+            { id: 'd1', name: '데일리 스커트', thumb: '👗', basePrice: 700, style: 'font-size:6rem; color:#ffb6c1;' },
+            { id: 'd2', name: '블루밍 롱 드레스', thumb: '💙', basePrice: 1600, style: 'font-size:6rem; color:#2196f3;' },
+            { id: 'd3', name: '정열의 이브닝 퀸', thumb: '💃', basePrice: 3200, style: 'font-size:6rem; color:#e53e3e;' },
+            { id: 'd4', name: '프레시 멜론 슈트', thumb: '🟢', basePrice: 6000, style: 'font-size:6rem; color:#4caf50;' }
         ],
         acc: [
-            { id: 'a1', name: '체리 귀걸이', thumb: '🍒', price: 0, style: 'font-size:2rem;' },
-            { id: 'a2', name: '엔젤 메인 날개', thumb: '👼', price: 800, style: 'font-size:3.5rem;' },
-            { id: 'a3', name: '반짝 마법 지팡이', thumb: '🪄', price: 2000, style: 'font-size:3.5rem;' },
-            { id: 'a4', name: '스프링 골드 왕관', thumb: '👑', price: 4500, style: 'font-size:3.5rem;' }
+            { id: 'a1', name: '체리 귀걸이 파츠', thumb: '🍒', basePrice: 300, style: 'font-size:2rem;' },
+            { id: 'a2', name: '엔젤 버터 플라이', thumb: '👼', basePrice: 900, style: 'font-size:3.5rem;' },
+            { id: 'a3', name: '루미너스 매직봉', thumb: '🪄', basePrice: 2400, style: 'font-size:3.5rem;' },
+            { id: 'a4', name: '로열 골드 크라운', thumb: '👑', basePrice: 5500, style: 'font-size:3.5rem;' }
         ]
     };
 
-    // --- 유저 상태 관리 전역 모델 ---
-    let playerState = {
-        isLoggedIn: false,
-        username: "",
-        gold: 1000,
-        unlockedItemIds: ['h1', 'd1', 'a1'], // 초기 기본 지급 템
-        equippedIds: {
-            hair: 'h1',
-            dress: 'd1',
-            acc: 'a1'
-        }
+    // --- 가변 시세 시장 가격 저장소 객체 ---
+    let MARKET_PRICES = {};
+    let MARKET_TRENDS = {}; // 'up' or 'down'
+
+    // --- 유저 데이터 인메모리 관리 스토어 ---
+    let appState = {
+        registeredUsers: {}, // 로컬 회원가입용 { id: pw } 계정 스토리지
+        currentUser: null,
+        gold: 1500,
+        ownedItems: ['h1', 'd1', 'a1'], // 가입 시 기본 획득 아이템 목록
+        equipped: { hair: 'h1', dress: 'd1', acc: 'a1' }
     };
 
-    let selectedCategory = 'hair';
+    let activeCategory = 'hair';
 
-    // --- 앱 첫 로드 시 구동 엔진 ---
     window.onload = function() {
-        loadDataFromLocal();
-        syncUIState();
+        initMarketPrices();
+        loadSystemData();
+        updateGoldInterface();
+        
+        // 가격 변동 3초 주기 트리거 구동
+        setInterval(fluctuatePrices, 3000);
     };
 
-    function saveDataToLocal() {
-        localStorage.setItem('PETIT_DRESSROOM_SAVE_2026', JSON.stringify(playerState));
+    function saveSystemData() {
+        localStorage.setItem('DRESSROOM_ACCOUNT_STORAGE_2026', JSON.stringify(appState));
     }
 
-    function loadDataFromLocal() {
-        const saved = localStorage.getItem('PETIT_DRESSROOM_SAVE_2026');
-        if (saved) {
+    function loadSystemData() {
+        const stored = localStorage.getItem('DRESSROOM_ACCOUNT_STORAGE_2026');
+        if(stored) {
             try {
-                playerState = JSON.parse(saved);
-            } catch (e) {
-                console.error("데이터 파싱 오류", e);
+                const parsed = JSON.parse(stored);
+                appState.registeredUsers = parsed.registeredUsers || {};
+                // 로그인 유지 처리는 하지 않고 항상 처음엔 로그인 화면이 뜨도록 명시
+            } catch(e) {
+                console.error(e);
             }
         }
     }
 
-    // --- 로그인 / 인증 제어부 복구 ---
-    function executeLogin() {
-        const nameInput = document.getElementById('login-username').value.trim();
-        if(!nameInput) {
-            alert('닉네임을 입력해주세요!');
+    // --- 회원가입 및 로그인 비즈니스 폼 제어 로직 ---
+    function toggleAuthMode(mode) {
+        if(mode === 'join') {
+            document.getElementById('auth-box-login').style.display = 'none';
+            document.getElementById('auth-box-join').style.display = 'block';
+        } else {
+            document.getElementById('auth-box-login').style.display = 'block';
+            document.getElementById('auth-box-join').style.display = 'none';
+        }
+    }
+
+    function tryRegister() {
+        const id = document.getElementById('join-id').value.trim();
+        const pw = document.getElementById('join-pw').value.trim();
+
+        if(!id || !pw) {
+            alert('가입할 아이디와 비밀번호를 빠짐없이 입력하세요.');
             return;
         }
-        playerState.username = nameInput;
-        playerState.isLoggedIn = true;
+        if(appState.registeredUsers[id]) {
+            alert('이미 존재하는 아이디입니다.');
+            return;
+        }
+
+        appState.registeredUsers[id] = pw;
+        saveSystemData();
+        alert('회원가입이 완료되었습니다! 로그인해 주세요.');
+        toggleAuthMode('login');
         
-        saveDataToLocal();
-        syncUIState();
-        switchView('closet');
+        document.getElementById('join-id').value = '';
+        document.getElementById('join-pw').value = '';
     }
 
-    function handleAuthClick() {
-        if(playerState.isLoggedIn) {
-            if(confirm('로그아웃 하시겠습니까? 데이터는 브라우저에 보존됩니다.')) {
-                playerState.isLoggedIn = false;
-                saveDataToLocal();
-                syncUIState();
-                switchView('login');
-            }
-        } else {
-            switchView('login');
+    function tryLogin() {
+        const id = document.getElementById('login-id').value.trim();
+        const pw = document.getElementById('login-pw').value.trim();
+
+        if(!appState.registeredUsers[id] || appState.registeredUsers[id] !== pw) {
+            alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+            return;
         }
-    }
 
-    // --- 화면 전환 렌더링 동기화 통제 ---
-    function syncUIState() {
-        document.getElementById('gold-amount').innerText = playerState.gold.toLocaleString();
+        // 로그인 인증 인가 승인 성공
+        appState.currentUser = id;
+        document.getElementById('view-auth').classList.remove('active');
+        document.getElementById('game-nav-bar').style.display = 'flex';
         
-        const authStatusText = document.getElementById('auth-status-text');
-        const authActionBtn = document.getElementById('auth-action-btn');
-        const navBar = document.getElementById('game-navigation-bar');
-
-        if(playerState.isLoggedIn) {
-            authStatusText.innerText = `👤 ${playerState.username}님 접속중`;
-            authActionBtn.innerText = '로그아웃';
-            navBar.style.display = 'flex';
-        } else {
-            authStatusText.innerText = '🔒 로그인이 필요합니다';
-            authActionBtn.innerText = '로그인';
-            navBar.style.display = 'none';
-        }
-
-        refreshAvatarLayer();
+        switchScreen('closet');
     }
 
-    function switchView(viewId) {
-        // 비인증 유저 강제 잠금
-        if(!playerState.isLoggedIn && viewId !== 'login') {
-            alert('로그인 후 이용 가능합니다.');
-            viewId = 'login';
-        }
+    function updateGoldInterface() {
+        document.getElementById('global-gold').innerText = appState.gold.toLocaleString();
+    }
+
+    // --- 스크린 라우터 내비게이션 ---
+    function switchScreen(viewId) {
+        if(!appState.currentUser) return;
 
         document.querySelectorAll('.screen-view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
 
         document.getElementById(`view-${viewId}`).classList.add('active');
-        
-        const targetNav = document.getElementById(`nav-${viewId}`);
-        if(targetNav) targetNav.classList.add('active');
+        document.getElementById(`nav-${viewId}`).classList.add('active');
 
-        // 뷰 전환에 대응하는 리드로잉 핸들러 분기
-        if(viewId === 'closet') renderCloset();
-        if(viewId === 'shop') renderShop();
-        if(viewId === 'collection') renderCollection();
+        if(viewId === 'closet') renderClosetGrid();
+        if(viewId === 'market') renderMarketList();
+        if(viewId === 'collection') renderCollectionGrid();
     }
 
-    // --- 카테고리 탭 선택 인터페이스 ---
-    function setCategory(cat, element) {
+    function switchCategory(cat, element) {
         document.querySelectorAll('.category-tabs .tab-btn').forEach(b => b.classList.remove('active'));
         element.classList.add('active');
-        selectedCategory = cat;
-        renderCloset();
+        activeCategory = cat;
+        renderClosetGrid();
     }
 
-    // --- 내 옷장 화면 렌더러 ---
-    function renderCloset() {
-        const grid = document.getElementById('closet-grid');
-        grid.innerHTML = '';
+    // --- 옷장 코디 시스템 그리드 빌더 ---
+    function renderClosetGrid() {
+        const box = document.getElementById('closet-grid-box');
+        box.innerHTML = '';
 
-        const currentItems = GAME_ITEMS[selectedCategory];
+        POOL_ITEMS[activeCategory].forEach(item => {
+            const isOwned = appState.ownedItems.includes(item.id);
+            if(!isOwned) return; // 옷장에는 소유한 아이템만 출력
 
-        currentItems.forEach(item => {
-            const hasItem = playerState.unlockedItemIds.includes(item.id);
-            const isEquipped = playerState.equippedIds[selectedCategory] === item.id;
-
+            const isEquipped = appState.equipped[activeCategory] === item.id;
             const card = document.createElement('div');
-            card.className = `item-card ${!hasItem ? 'locked' : ''} ${isEquipped ? 'active' : ''}`;
+            card.className = `item-card ${isEquipped ? 'active' : ''}`;
             card.innerHTML = `
                 <div class="item-thumb">${item.thumb}</div>
                 <div class="item-name">${item.name}</div>
             `;
+            
+            card.onclick = () => {
+                appState.equipped[activeCategory] = item.id;
+                saveSystemData();
+                renderClosetGrid();
+                applyAvatarVisualLayers();
+            };
 
-            if(hasItem) {
-                card.onclick = () => {
-                    playerState.equippedIds[selectedCategory] = item.id;
-                    saveDataToLocal();
-                    renderCloset();
-                    refreshAvatarLayer();
-                };
-            }
-            grid.appendChild(card);
+            box.appendChild(card);
         });
+        applyAvatarVisualLayers();
     }
 
-    // 목과 얼굴이 절대 떨어지지 않도록 보장하면서 파츠 렌더링
-    function refreshAvatarLayer() {
+    function applyAvatarVisualLayers() {
         ['hair', 'dress', 'acc'].forEach(cat => {
-            const currentEquippedId = playerState.equippedIds[cat];
-            const item = GAME_ITEMS[cat].find(i => i.id === currentEquippedId);
-            const layerDom = document.getElementById(`layer-${cat}`);
-
+            const eqId = appState.equipped[cat];
+            const item = POOL_ITEMS[cat].find(i => i.id === eqId);
+            const layer = document.getElementById(`layer-${cat}`);
+            
             if(item) {
-                layerDom.innerHTML = `<div style="${item.style}; display:flex; justify-content:center; align-items:center; width:100%; height:100%;">${item.thumb}</div>`;
+                layer.innerHTML = `<div style="${item.style}; display:flex; justify-content:center; align-items:center; width:100%; height:100%;">${item.thumb}</div>`;
             } else {
-                layerDom.innerHTML = '';
+                layer.innerHTML = '';
             }
         });
     }
 
-    // --- 밸런스가 하향 조정된 알바 런타임 제어부 ---
-    function startWork(workIndex, duration, reward) {
-        const btn = document.getElementById(`btn-work-${workIndex}`);
-        const allButtons = document.querySelectorAll('.btn-work-start');
+    // --- 가챠 뽑기 시스템 엔진 ---
+    function executeGachaCapsule() {
+        const GACHA_COST = 600;
+        if(appState.gold < GACHA_COST) {
+            alert('골드가 부족합니다! 마켓 거래를 통해 시세 차익으로 돈을 벌어보세요.');
+            return;
+        }
 
-        // 알바 수행 도중 동시 클릭 방지 차단 잠금
-        allButtons.forEach(b => b.disabled = true);
+        appState.gold -= GACHA_COST;
+        updateGoldInterface();
+
+        // 전체 아이템 풀 일원화 병합
+        let allItems = [];
+        ['hair', 'dress', 'acc'].forEach(cat => {
+            POOL_ITEMS[cat].forEach(i => allItems.push(i));
+        });
+
+        // 완전 균등 무작위 추첨 추출
+        const rolledItem = allItems[Math.floor(Math.random() * allItems.length)];
+
+        if(!appState.ownedItems.includes(rolledItem.id)) {
+            appState.ownedItems.push(rolledItem.id);
+        }
         
-        let remainingTime = duration / 1000;
-        btn.innerText = `${remainingTime}초...`;
-
-        const clockInterval = setInterval(() => {
-            remainingTime--;
-            if(remainingTime > 0) {
-                btn.innerText = `${remainingTime}초...`;
-            } else {
-                clearInterval(clockInterval);
-                
-                // 보상 처리
-                playerState.gold += reward;
-                saveDataToLocal();
-                syncUIState();
-
-                alert(`알바가 완료되었습니다! 💰 ${reward} 골드를 획득했습니다.`);
-                
-                btn.innerText = '알바 시작';
-                allButtons.forEach(b => b.disabled = false);
-            }
-        }, 1000);
+        saveSystemData();
+        alert(`🎉 캡슐 오픈 결과!\n[ ${rolledItem.name} ] 의상을 획득했습니다! 도감 및 옷장을 확인하세요.`);
     }
 
-    // --- 의상 상점 해금 인터페이스 ---
-    function renderShop() {
-        const grid = document.getElementById('shop-grid-items');
-        grid.innerHTML = '';
-
-        // 모든 아이템군 순회하며 배치
+    // --- [중요] 실시간 변동 가격 주식형 중고 마켓 엔진 ---
+    function initMarketPrices() {
         ['hair', 'dress', 'acc'].forEach(cat => {
-            GAME_ITEMS[cat].forEach(item => {
-                // 기본 지급 템이 아닌 것만 상점에 배치
-                if(item.price > 0) {
-                    const alreadyBought = playerState.unlockedItemIds.includes(item.id);
-                    const card = document.createElement('div');
-                    card.className = 'shop-card';
-                    
-                    card.innerHTML = `
-                        <div class="item-thumb">${item.thumb}</div>
-                        <div class="item-name" style="font-weight:bold;">${item.name}</div>
-                        <div style="font-size:0.85rem; color:#ff1493; margin-top:3px;">💰 ${item.price.toLocaleString()}</div>
-                        <button class="btn-buy-item" ${alreadyBought ? 'style="background:#ccc;" disabled' : ''}>
-                            ${alreadyBought ? '보유중' : '구매하기'}
-                        </button>
-                    `;
-
-                    if(!alreadyBought) {
-                        card.querySelector('button').onclick = () => purchaseItem(item.id, item.price);
-                    }
-
-                    grid.appendChild(card);
-                }
+            POOL_ITEMS[cat].forEach(item => {
+                MARKET_PRICES[item.id] = item.basePrice;
+                MARKET_TRENDS[item.id] = 'up';
             });
         });
     }
 
-    function purchaseItem(itemId, price) {
-        if(playerState.gold < price) {
-            alert('골드가 부족합니다! 알바를 통해 골드를 모아보세요.');
+    function fluctuatePrices() {
+        ['hair', 'dress', 'acc'].forEach(cat => {
+            POOL_ITEMS[cat].forEach(item => {
+                // 등락폭 결정 알고리즘 (-20% ~ +25% 내외 무작위 가중치 반영)
+                const changePercent = (Math.random() * 45 - 20) / 100;
+                let newPrice = Math.round(MARKET_PRICES[item.id] * (1 + changePercent));
+                
+                // 최저 안전선 방어 및 최고가 제한 방어
+                if(newPrice < 150) newPrice = 150;
+                if(newPrice > 15000) newPrice = 15000;
+
+                MARKET_TRENDS[item.id] = newPrice >= MARKET_PRICES[item.id] ? 'up' : 'down';
+                MARKET_PRICES[item.id] = newPrice;
+            });
+        });
+
+        // 마켓 스크린 활성화 상태일 경우 DOM 리프레시 동기화
+        if(document.getElementById('view-market').classList.contains('active')) {
+            renderMarketList();
+        }
+    }
+
+    function renderMarketList() {
+        const list = document.getElementById('market-list-box');
+        list.innerHTML = '';
+
+        ['hair', 'dress', 'acc'].forEach(cat => {
+            POOL_ITEMS[cat].forEach(item => {
+                const isOwned = appState.ownedItems.includes(item.id);
+                const currentPrice = MARKET_PRICES[item.id];
+                const trend = MARKET_TRENDS[item.id];
+
+                const card = document.createElement('div');
+                card.className = 'market-card';
+
+                card.innerHTML = `
+                    <div class="market-item-info">
+                        <span style="font-size:2rem;">${item.thumb}</span>
+                        <div>
+                            <div style="font-size:0.9rem; font-weight:bold;">${item.name}</div>
+                            <div style="font-size:0.85rem; color:#ff1493; margin-top:2px;">
+                                💰 ${currentPrice.toLocaleString()} 
+                                <span class="price-trend ${trend === 'up' ? 'trend-up' : 'trend-down'}">
+                                    ${trend === 'up' ? '▲ 상승' : '▼ 하락'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        ${isOwned ? 
+                            `<button class="btn-market-action sell" onclick="sellMarketItem('${item.id}', ${currentPrice}, '${cat}')">중고판매</button>` : 
+                            `<button class="btn-market-action" onclick="buyMarketItem('${item.id}', ${currentPrice})">중고구매</button>`
+                        }
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        });
+    }
+
+    function buyMarketItem(itemId, price) {
+        if(appState.gold < price) {
+            alert('보유 골드가 매입하려는 가격보다 부족합니다.');
+            return;
+        }
+        appState.gold -= price;
+        appState.ownedItems.push(itemId);
+        
+        saveSystemData();
+        updateGoldInterface();
+        renderMarketList();
+        alert('중고 거래 구매 성공! 옷장에 입고되었습니다.');
+    }
+
+    function sellMarketItem(itemId, price, cat) {
+        // 기본 시작 템 단 한 개만 갖고 있을 때는 판매 금지 안전장치 예외 조치
+        if(appState.ownedItems.length <= 1) {
+            alert('최소 1개 이상의 의상을 보유해야 판매할 수 있습니다.');
             return;
         }
 
-        playerState.gold -= price;
-        playerState.unlockedItemIds.push(itemId);
-        
-        saveDataToLocal();
-        syncUIState();
-        renderShop();
-        
-        alert('아이템 구매 성공! 드레스룸에서 확인해 보세요.');
+        // 현재 착용 중인 옷이면 탈의 처리 후 판매 진행
+        if(appState.equipped[cat] === itemId) {
+            appState.equipped[cat] = null;
+        }
+
+        appState.gold += price;
+        appState.ownedItems = appState.ownedItems.filter(id => id !== itemId);
+
+        saveSystemData();
+        updateGoldInterface();
+        renderMarketList();
+        alert(`의상을 성공적으로 중고 마켓에 정리하고 💰 ${price.toLocaleString()} 골드를 정산받았습니다.`);
     }
 
-    // --- [복구] 부활한 도감(Collection) 뷰 로직 ---
-    function renderCollection() {
-        const grid = document.getElementById('collection-slots-box');
-        const countText = document.getElementById('collection-count-text');
+    // --- 도감(Collection) 아카이브 그리드 시스템 ---
+    function renderCollectionGrid() {
+        const grid = document.getElementById('collection-grid-box');
+        const ratioText = document.getElementById('collect-ratio-text');
         grid.innerHTML = '';
 
-        let totalCount = 0;
-        let unlockedCount = 0;
+        let total = 0;
+        let owned = 0;
 
         ['hair', 'dress', 'acc'].forEach(cat => {
-            GAME_ITEMS[cat].forEach(item => {
-                totalCount++;
-                const isUnlocked = playerState.unlockedItemIds.includes(item.id);
-                if(isUnlocked) unlockedCount++;
+            POOL_ITEMS[cat].forEach(item => {
+                total++;
+                const hasIt = appState.ownedItems.includes(item.id);
+                if(hasIt) owned++;
 
                 const slot = document.createElement('div');
-                slot.className = `collection-slot ${isUnlocked ? 'unlocked' : ''}`;
+                slot.className = `collection-slot ${hasIt ? 'unlocked' : ''}`;
+                slot.innerHTML = hasIt ? `<div>${item.thumb}</div>` : `<div>❓</div>`;
                 
-                if(isUnlocked) {
-                    slot.innerHTML = `<div>${item.thumb}</div>`;
-                } else {
-                    slot.innerHTML = `<div>❓</div>`;
-                }
-
                 grid.appendChild(slot);
             });
         });
 
-        countText.innerText = `${unlockedCount} / ${totalCount}`;
+        ratioText.innerText = `${owned} / ${total} (${Math.round((owned/total)*100)}%)`;
     }
 </script>
 
