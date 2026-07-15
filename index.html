@@ -58,20 +58,40 @@
   <div class="relative w-full max-w-[420px] h-[92vh] bg-white rounded-[40px] shadow-2xl border-[12px] border-pink-200 overflow-hidden flex flex-col">
     
     <div id="screen-login" class="absolute inset-0 z-50 bg-brandPink-100 flex flex-col items-center justify-center p-6">
-      <div class="text-center mb-8">
+      <div class="text-center mb-6">
         <h1 class="title-font text-5xl text-brandPink-400 font-bold mb-2">🎀 Pastel Closet 🎀</h1>
         <p class="text-gray-500 text-sm">실시간 주식형 중고 옷입히기 게임</p>
       </div>
-      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">아이디</label>
-          <input id="login-id" type="text" value="chibi_love" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+      
+      <div class="flex w-full max-w-xs mb-4 bg-white rounded-t-2xl border-t border-x border-pink-100 overflow-hidden">
+        <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink">로그인</button>
+        <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100">회원가입</button>
+      </div>
+
+      <div class="w-full bg-white rounded-b-3xl rounded-tl-none p-6 shadow-md border-x border-b border-pink-100 space-y-4">
+        <div id="form-login" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">아이디</label>
+            <input id="login-id" type="text" placeholder="아이디를 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">비밀번호</label>
+            <input id="login-pw" type="password" placeholder="비밀번호를 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+          </div>
+          <button onclick="handleLogin()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">시작하기</button>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">비밀번호</label>
-          <input id="login-pw" type="password" value="1234" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+
+        <div id="form-signup" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">신규 아이디</label>
+            <input id="signup-id" type="text" placeholder="사용할 아이디" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">신규 비밀번호</label>
+            <input id="signup-pw" type="password" placeholder="사용할 비밀번호" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+          </div>
+          <button onclick="handleSignup()" class="w-full bg-emerald-300 hover:bg-emerald-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">회원 등록 완료</button>
         </div>
-        <button onclick="handleLogin()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">시작하기</button>
       </div>
     </div>
 
@@ -455,12 +475,119 @@
       }
     }
 
+    // --- [수정] 회원가입 / 로그인 탭 교체 기능 ---
+    function switchAuthTab(mode) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const formLogin = document.getElementById('form-login');
+      const formSignup = document.getElementById('form-signup');
+
+      if (mode === 'login') {
+        tabLogin.className = "flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink";
+        tabSignup.className = "flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100";
+        formLogin.classList.remove('hidden');
+        formSignup.classList.add('hidden');
+      } else {
+        tabSignup.className = "flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink";
+        tabLogin.className = "flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100";
+        formSignup.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+      }
+    }
+
+    // --- [신규 기능] 회원가입 핸들러 ---
+    function handleSignup() {
+      const id = document.getElementById('signup-id').value.trim();
+      const pw = document.getElementById('signup-pw').value.trim();
+
+      if (!id || !pw) return alert("아이디와 비밀번호를 모두 입력해주세요.");
+
+      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
+
+      if (users[id]) {
+        return alert("이미 가입된 아이디입니다.");
+      }
+
+      // 유저 정보 가입 처리
+      users[id] = {
+        password: pw,
+        name: "",
+        gender: "female",
+        balance: 100000,
+        inventory: [],
+        equipped: {
+          hair: null, top: null, bottom: null, dress: null,
+          shoes: null, accessory: null, bag: null
+        }
+      };
+
+      localStorage.setItem('pastel_users_db', JSON.stringify(users));
+      alert("회원가입이 완료되었습니다! 로그인하여 플레이해 보세요.");
+      
+      // 가입 정보 폼 자동 세팅 및 로그인 탭 전환
+      document.getElementById('login-id').value = id;
+      document.getElementById('login-pw').value = pw;
+      document.getElementById('signup-id').value = "";
+      document.getElementById('signup-pw').value = "";
+      switchAuthTab('login');
+    }
+
+    // --- [수정] 로그인 핸들러 (회원가입 로컬 DB 연계) ---
     function handleLogin() {
-      const id = document.getElementById('login-id').value;
-      if (!id) return alert("아이디를 입력해주세요.");
-      AppState.user.id = id;
-      document.getElementById('screen-login').classList.add('hidden');
-      document.getElementById('screen-name').classList.remove('hidden');
+      const id = document.getElementById('login-id').value.trim();
+      const pw = document.getElementById('login-pw').value.trim();
+
+      if (!id || !pw) return alert("아이디와 비밀번호를 입력해주세요.");
+
+      // 기본 디폴트 계정(chibi_love / 1234) 호환 처리
+      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
+      if (!users['chibi_love']) {
+        users['chibi_love'] = {
+          password: '1234',
+          name: '러블리치비',
+          gender: 'female',
+          balance: 100000,
+          inventory: [],
+          equipped: {
+            hair: null, top: null, bottom: null, dress: null,
+            shoes: null, accessory: null, bag: null
+          }
+        };
+        localStorage.setItem('pastel_users_db', JSON.stringify(users));
+      }
+
+      const matchedUser = users[id];
+      if (matchedUser && matchedUser.password === pw) {
+        AppState.user.id = id;
+        
+        // 가입 완료된 계정 정보 로드
+        if (matchedUser.name) {
+          // 기존 유저 정보가 이미 등록된 경우 바로 메인화면으로 이동
+          AppState.user.name = matchedUser.name;
+          AppState.user.gender = matchedUser.gender;
+          AppState.user.balance = matchedUser.balance;
+          AppState.user.inventory = matchedUser.inventory;
+          AppState.user.equipped = matchedUser.equipped;
+
+          document.getElementById('screen-login').classList.add('hidden');
+          document.getElementById('screen-main').classList.remove('hidden');
+          
+          document.getElementById('display-name').innerText = AppState.user.name;
+          document.getElementById('display-gender').innerText = AppState.user.gender === 'female' ? '여' : '남';
+          updateUIBalance();
+          initMarketPrices();
+          renderAvatar();
+          
+          // 주식 및 상점 흐름 시작
+          setInterval(runMarketTicker, 1000);
+        } else {
+          // 닉네임 설정이 없는 신규 회원은 설정 프로세스 적용
+          document.getElementById('screen-login').classList.add('hidden');
+          document.getElementById('screen-name').classList.remove('hidden');
+        }
+      } else {
+        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+      }
     }
 
     function handleSaveName() {
@@ -485,9 +612,31 @@
       equipItem(defaultTop);
       equipItem(defaultBottom);
 
+      // 회원 데이터 저장소 동기화
+      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
+      if (users[AppState.user.id]) {
+        users[AppState.user.id].name = AppState.user.name;
+        users[AppState.user.id].gender = AppState.user.gender;
+        users[AppState.user.id].balance = AppState.user.balance;
+        users[AppState.user.id].inventory = AppState.user.inventory;
+        users[AppState.user.id].equipped = AppState.user.equipped;
+        localStorage.setItem('pastel_users_db', JSON.stringify(users));
+      }
+
       document.getElementById('screen-gender').classList.add('hidden');
       initMarketPrices();
-      setInterval(runMarketTicker, 3000); // 3초마다 시세 변동
+      setInterval(runMarketTicker, 1000);
+    }
+
+    function syncUserDatabase() {
+      if (!AppState.user.id) return;
+      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
+      if (users[AppState.user.id]) {
+        users[AppState.user.id].balance = AppState.user.balance;
+        users[AppState.user.id].inventory = AppState.user.inventory;
+        users[AppState.user.id].equipped = AppState.user.equipped;
+        localStorage.setItem('pastel_users_db', JSON.stringify(users));
+      }
     }
 
     function spawnItem(itemId) {
@@ -496,9 +645,10 @@
       const newInstance = {
         instanceId: instanceId,
         id: itemId,
-        purchasePrice: AppState.marketPrices[itemId] ? AppState.marketPrices[itemId].current : baseItem.basePrice
+        purchasePrice: baseItem.basePrice
       };
       AppState.user.inventory.push(newInstance);
+      syncUserDatabase();
       return newInstance;
     }
 
@@ -521,11 +671,13 @@
       } else {
         AppState.user.equipped[category] = itemInstance;
       }
+      syncUserDatabase();
       renderAvatar();
     }
 
     function unequipItem(category) {
       AppState.user.equipped[category] = null;
+      syncUserDatabase();
       renderAvatar();
     }
 
@@ -586,50 +738,73 @@
       }
     }
 
-    // --- 주식 시세 변동 엔진 (가격 변동 폭 수정 완료) ---
-    function runMarketTicker() {
-      const keys = Object.keys(AppState.marketPrices);
-      if (keys.length === 0) return;
-
-      // 무작위로 하나의 가격 변동 타겟 아이템 선택
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      const currentPrice = AppState.marketPrices[randomKey].current;
-
-      // 변동 폭 설정: 최소 -20%에서 최대 +25%까지 크게 요동치도록 수정
-      const changePercent = (Math.random() * 45 - 20) / 100; 
-      const changeAmount = Math.round(currentPrice * changePercent);
-      let nextPrice = currentPrice + changeAmount;
-
-      // 최소 가격 제한 설정 (최소 500원 이하로 떨어지지 않도록 방어)
-      if (nextPrice < 500) nextPrice = 500;
-
-      AppState.marketPrices[randomKey].current = nextPrice;
-      AppState.marketPrices[randomKey].change = changePercent * 100;
-      AppState.marketPrices[randomKey].trend = changeAmount > 0 ? 'up' : 'down';
-
-      // 상단 티커 알림 애니메이션 표시
-      const banner = document.getElementById('ticker-banner');
-      const itemDb = ITEM_DATABASE[randomKey];
-      
-      document.getElementById('ticker-item-name').innerText = `📢 ${itemDb.name}`;
-      const trendSymbol = changeAmount > 0 ? '🔺' : '🔻';
-      document.getElementById('ticker-item-price').innerText = `${formatMoney(nextPrice)}원 (${trendSymbol} ${Math.abs(changePercent * 100).toFixed(1)}%)`;
-
-      banner.style.opacity = '1';
-      setTimeout(() => {
-        banner.style.opacity = '0';
-      }, 2500);
-
-      // 스마트폰이 켜져있고 중고나라 앱이 실행 중이면 화면 실시간 갱신
-      if (!document.getElementById('modal-phone').classList.contains('translate-y-full')) {
-        const appTitle = document.getElementById('app-title').innerText;
-        if (appTitle === '중고나라(주식)') {
-          renderJoonggoApp();
-        }
-      }
+    // --- 옷장 오픈 / 해제 및 UI 구현 ---
+    function openWardrobe() {
+      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
+      filterWardrobe(AppState.currentWardrobeTab);
     }
 
-    // --- 스마트폰 앱 렌더링 & 모달 제어 ---
+    function closeWardrobe() {
+      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
+    }
+
+    function filterWardrobe(tab) {
+      AppState.currentWardrobeTab = tab;
+      const tabs = document.getElementById('wardrobe-tabs').children;
+      const categories = ['all', 'hair', 'top', 'bottom', 'dress', 'shoes', 'accessory'];
+      
+      for (let i = 0; i < tabs.length; i++) {
+        if (categories[i] === tab) {
+          tabs[i].className = "px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap";
+        } else {
+          tabs[i].className = "px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap";
+        }
+      }
+
+      renderWardrobeList();
+    }
+
+    function renderWardrobeList() {
+      const listContainer = document.getElementById('wardrobe-list');
+      listContainer.innerHTML = '';
+
+      let items = AppState.user.inventory;
+      if (AppState.currentWardrobeTab !== 'all') {
+        items = items.filter(inst => ITEM_DATABASE[inst.id].category === AppState.currentWardrobeTab);
+      }
+
+      if (items.length === 0) {
+        listContainer.innerHTML = `<div class="col-span-3 text-center text-gray-400 py-12 text-xs">아이템이 없습니다.</div>`;
+        return;
+      }
+
+      items.forEach(inst => {
+        const itemData = ITEM_DATABASE[inst.id];
+        const isEquipped = Object.values(AppState.user.equipped).some(eq => eq && eq.instanceId === inst.instanceId);
+        const card = document.createElement('div');
+        card.className = `p-2 bg-pink-50/50 rounded-2xl border-2 ${isEquipped ? 'border-brandPink bg-pink-50' : 'border-transparent'} flex flex-col items-center justify-between cursor-pointer active:scale-95 transition-all`;
+        card.onclick = () => {
+          if (isEquipped) {
+            unequipItem(itemData.category);
+          } else {
+            equipItem(inst);
+          }
+          renderWardrobeList();
+        };
+
+        const gradeStyle = GRADE_COLORS[itemData.grade];
+        card.innerHTML = `
+          <span class="text-[10px] font-bold ${gradeStyle.text}">${itemData.grade}</span>
+          <span class="text-xs font-bold text-gray-700 text-center truncate w-full">${itemData.name}</span>
+          <span class="text-[9px] text-gray-400 mt-1">${isEquipped ? '장착 중' : '대기'}</span>
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    // --- 📱 스마트폰 및 앱 거래 시스템 ---
+    let activePhoneApp = null;
+
     function openSmartPhone() {
       document.getElementById('modal-phone').classList.remove('translate-y-full');
     }
@@ -640,83 +815,88 @@
     }
 
     function openApp(appName) {
+      activePhoneApp = appName;
+      document.getElementById('phone-homescreen').classList.add('hidden');
       const appContainer = document.getElementById('phone-app-container');
+      appContainer.classList.remove('hidden');
+
       const appTitle = document.getElementById('app-title');
       const appBody = document.getElementById('app-body');
 
-      appContainer.classList.remove('hidden');
-
       if (appName === 'ably') {
-        appTitle.innerText = '에이블리';
-        renderAblyApp();
+        appTitle.innerText = "🛍️ 에이블리 뽑기";
+        renderAblyApp(appBody);
       } else if (appName === 'musinsa') {
-        appTitle.innerText = '무신사';
-        renderMusinsaApp();
+        appTitle.innerText = "🎩 무신사 신상 쇼핑";
+        renderMusinsaApp(appBody);
       } else if (appName === 'kream') {
-        appTitle.innerText = '크림 KREAM';
-        renderKreamApp();
+        appTitle.innerText = "⚡ KREAM 리셀샵";
+        renderKreamApp(appBody);
       } else if (appName === 'joonggo') {
-        appTitle.innerText = '중고나라(주식)';
-        renderJoonggoApp();
+        appTitle.innerText = "🤝 중고나라 실시간 트레이딩";
+        renderJoonggoApp(appBody);
       }
     }
 
     function backToHome() {
+      activePhoneApp = null;
       document.getElementById('phone-app-container').classList.add('hidden');
+      document.getElementById('phone-homescreen').classList.remove('hidden');
     }
 
-    // --- 가챠(뽑기) 오류 수정 완료 ---
-    function renderAblyApp() {
-      const appBody = document.getElementById('app-body');
-      appBody.innerHTML = `
-        <div class="text-center py-8 text-white">
-          <div class="text-5xl mb-4">🎁</div>
-          <h4 class="font-bold text-lg mb-2 text-pink-300">에이블리 랜덤 박스</h4>
-          <p class="text-xs text-neutral-400 mb-6">랜덤하게 이쁜 의상을 1개 획득합니다!</p>
-          <div class="bg-neutral-800 p-4 rounded-2xl mb-6">
-            <div class="text-xs text-neutral-400">1회 가격</div>
-            <div class="text-xl font-bold text-white">₩ 15,000</div>
-          </div>
-          <button onclick="playGacha()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">뽑기 시작하기</button>
+    // --- 🛍️ 에이블리 전용 가챠 뽑기 ---
+    function renderAblyApp(container) {
+      container.innerHTML = `
+        <div class="text-center text-white py-4">
+          <span class="text-xs bg-pink-600/30 text-pink-400 border border-pink-500/40 px-3 py-1 rounded-full font-bold">1회 랜덤 박스 GACHA</span>
+          <h4 class="title-font text-3xl font-black text-pink-400 mt-3">👗 트렌디 박스 👗</h4>
+          <p class="text-neutral-400 text-[10px] mt-1">최고 SSS급 희귀 아바타 의상을 저렴하게 저격!</p>
+          <div class="my-6 text-2xl font-black">💸 1회 : <span class="text-pink-400">15,000</span> G</div>
+          <button onclick="triggerGachaDraw()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg active:scale-95 transition-all text-sm">랜덤 상자 뽑기</button>
         </div>
       `;
     }
 
-    // 뽑기 시 한 가지 아이템만 나오던 오류 해결: ITEM_DATABASE에서 완전 무작위 추출 처리
-    function playGacha() {
+    // --- [오류 수정] 완전 분산형 아이템 뽑기 로직 ---
+    function triggerGachaDraw() {
       const gachaCost = 15000;
       if (AppState.user.balance < gachaCost) {
-        alert("잔액이 부족합니다.");
-        return;
+        return alert("골드가 부족합니다! 더 열심히 주식을 굴려보세요.");
       }
 
       AppState.user.balance -= gachaCost;
       updateUIBalance();
+      syncUserDatabase();
 
-      // 전체 아이템 목록 추출
-      const allItemKeys = Object.keys(ITEM_DATABASE);
-      
-      // 균등하고 확실하게 무작위의 아이템 키를 선택
-      const randomKey = allItemKeys[Math.floor(Math.random() * allItemKeys.length)];
-      const newItemInstance = spawnItem(randomKey);
+      // [오류 개선] Math.random() 기반의 무편향 균등 확률 인덱스 분산화
+      const itemKeys = Object.keys(ITEM_DATABASE);
+      const randomPointer = Math.floor(Math.random() * itemKeys.length);
+      const drawnKey = itemKeys[randomPointer];
 
-      // 모달 애니메이션 및 결과 정보 세팅
-      const itemData = ITEM_DATABASE[randomKey];
-      const gradeColor = GRADE_COLORS[itemData.grade] || { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' };
+      const instance = spawnItem(drawnKey);
+      showGachaResult(instance);
+    }
 
-      document.getElementById('gacha-item-grade').className = `px-3 py-1 rounded-full text-xs font-black text-white mr-1 ${gradeColor.bg}`;
-      document.getElementById('gacha-item-grade').innerText = itemData.grade;
-      document.getElementById('gacha-item-name').innerText = itemData.name;
-      document.getElementById('gacha-item-price').innerText = formatMoney(itemData.basePrice);
-
-      const preview = document.getElementById('gacha-item-preview');
-      preview.innerHTML = `<div class="scale-125 relative w-[180px] h-[280px] origin-center -translate-y-24">
-        ${itemData.renderBack ? itemData.renderBack() : ''}
-        ${itemData.render ? itemData.render() : ''}
-        ${itemData.renderFront ? itemData.renderFront() : ''}
-      </div>`;
-
+    function showGachaResult(itemInstance) {
+      const data = ITEM_DATABASE[itemInstance.id];
       const modal = document.getElementById('gacha-result-modal');
+      const preview = document.getElementById('gacha-item-preview');
+      const grade = document.getElementById('gacha-item-grade');
+      const name = document.getElementById('gacha-item-name');
+      const price = document.getElementById('gacha-item-price');
+
+      preview.innerHTML = `
+        <div class="relative w-[180px] h-[280px] scale-[0.6] origin-center -translate-y-4">
+          ${data.category === 'hair' ? data.renderBack() + data.renderFront() : (data.render ? data.render() : '')}
+        </div>
+      `;
+
+      const colorData = GRADE_COLORS[data.grade];
+      grade.className = `px-3 py-1 rounded-full text-xs font-black text-white ${colorData.bg}`;
+      grade.innerText = data.grade;
+      name.innerText = data.name;
+      price.innerText = formatMoney(data.basePrice);
+
       modal.classList.remove('hidden');
     }
 
@@ -724,190 +904,166 @@
       document.getElementById('gacha-result-modal').classList.add('hidden');
     }
 
-    // --- 무신사 상점 (기본 상점 구매) ---
-    function renderMusinsaApp() {
-      const appBody = document.getElementById('app-body');
-      let html = `<div class="grid grid-cols-2 gap-3 pb-8">`;
-      
+    // --- 🎩 무신사 일반 상점 ---
+    function renderMusinsaApp(container) {
+      container.innerHTML = `
+        <div class="space-y-3">
+          <p class="text-[10px] text-neutral-400">무신사 공식 정가 스토어 (무작위 중복 불가능, 100% 확정 소장)</p>
+          <div class="grid grid-cols-2 gap-2" id="musinsa-items-list"></div>
+        </div>
+      `;
+
+      const list = document.getElementById('musinsa-items-list');
       for (let key in ITEM_DATABASE) {
         const item = ITEM_DATABASE[key];
-        const gradeColor = GRADE_COLORS[item.grade];
-        html += `
-          <div class="bg-neutral-800 rounded-2xl p-3 border border-neutral-700 flex flex-col justify-between">
-            <div>
-              <span class="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white ${gradeColor.bg}">${item.grade}</span>
-              <div class="text-white text-xs font-bold mt-1.5 truncate h-8">${item.name}</div>
-            </div>
-            <div class="mt-2">
-              <div class="text-[10px] text-neutral-400">정가</div>
-              <div class="text-xs font-black text-white mb-2">₩ ${formatMoney(item.basePrice)}</div>
-              <button onclick="buyItemDirect('${key}')" class="w-full bg-neutral-700 hover:bg-neutral-600 text-white text-[11px] py-1.5 rounded-lg font-bold">즉시 구매</button>
-            </div>
-          </div>
+        const hasOwned = AppState.user.inventory.some(inst => inst.id === key);
+        const card = document.createElement('div');
+        card.className = "bg-neutral-800 p-3 rounded-2xl border border-neutral-700 flex flex-col justify-between";
+        card.innerHTML = `
+          <span class="text-[9px] font-bold ${GRADE_COLORS[item.grade].text}">${item.grade} | ${item.category}</span>
+          <h5 class="text-white text-xs font-bold mt-1 mb-2 truncate">${item.name}</h5>
+          <button onclick="buyFromMusinsa('${key}')" ${hasOwned ? 'disabled' : ''} class="w-full py-1.5 ${hasOwned ? 'bg-neutral-600 text-neutral-400' : 'bg-white hover:bg-neutral-200 text-black'} text-[10px] rounded-lg font-bold">
+            ${hasOwned ? '소장 중' : formatMoney(item.basePrice) + ' G'}
+          </button>
         `;
+        list.appendChild(card);
       }
-      html += `</div>`;
-      appBody.innerHTML = html;
     }
 
-    function buyItemDirect(itemId) {
-      const price = ITEM_DATABASE[itemId].basePrice;
-      if (AppState.user.balance < price) {
-        alert("잔액이 부족합니다.");
+    function buyFromMusinsa(itemId) {
+      const item = ITEM_DATABASE[itemId];
+      if (AppState.user.balance < item.basePrice) {
+        return alert("골드가 부족합니다.");
+      }
+      AppState.user.balance -= item.basePrice;
+      spawnItem(itemId);
+      updateUIBalance();
+      syncUserDatabase();
+      alert(`[${item.name}]이(가) 내 옷장에 배송되었습니다.`);
+      if (activePhoneApp === 'musinsa') openApp('musinsa');
+    }
+
+    // --- ⚡ KREAM 리셀 거래소 ---
+    function renderKreamApp(container) {
+      container.innerHTML = `
+        <div class="space-y-3">
+          <p class="text-[10px] text-neutral-400">현재 보관 중인 내 전리품들을 시세 변동가에 즉시 리셀!</p>
+          <div class="space-y-2" id="kream-inventory-list"></div>
+        </div>
+      `;
+
+      const list = document.getElementById('kream-inventory-list');
+      if (AppState.user.inventory.length === 0) {
+        list.innerHTML = `<div class="text-center py-12 text-xs text-neutral-500">리셀할 보유 패션 상품이 없습니다.</div>`;
         return;
       }
-      AppState.user.balance -= price;
-      updateUIBalance();
-      spawnItem(itemId);
-      alert(`${ITEM_DATABASE[itemId].name}을(를) 정가 구매했습니다!`);
+
+      AppState.user.inventory.forEach(inst => {
+        const data = ITEM_DATABASE[inst.id];
+        const livePrice = AppState.marketPrices[inst.id].current;
+        const profit = livePrice - inst.purchasePrice;
+        const row = document.createElement('div');
+        row.className = "bg-neutral-800 p-3 rounded-xl flex justify-between items-center";
+        row.innerHTML = `
+          <div>
+            <h5 class="text-white text-xs font-bold">${data.name}</h5>
+            <span class="text-[9px] text-neutral-400">취득가: ${formatMoney(inst.purchasePrice)} G</span>
+          </div>
+          <div class="text-right">
+            <div class="text-emerald-400 font-bold text-xs">시세 ${formatMoney(livePrice)} G</div>
+            <button onclick="sellToKream('${inst.instanceId}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] px-3 py-1 rounded-md mt-1.5">리셀 거래체결</button>
+          </div>
+        `;
+        list.appendChild(row);
+      });
     }
 
-    // --- 크림 KREAM (개인 인벤토리 판매) ---
-    function renderKreamApp() {
-      const appBody = document.getElementById('app-body');
-      let html = `<h4 class="text-white font-bold text-sm mb-4">내 아이템 즉시 판매</h4>`;
-      if (AppState.user.inventory.length === 0) {
-        html += `<p class="text-neutral-500 text-xs text-center py-8">소유 중인 아이템이 없습니다.</p>`;
-      } else {
-        html += `<div class="space-y-2">`;
-        AppState.user.inventory.forEach((inst, index) => {
-          const item = ITEM_DATABASE[inst.id];
-          const curPrice = AppState.marketPrices[inst.id] ? AppState.marketPrices[inst.id].current : item.basePrice;
-          html += `
-            <div class="bg-neutral-800 rounded-xl p-3 flex justify-between items-center border border-neutral-700">
-              <div>
-                <span class="text-[9px] text-neutral-400">${item.category.toUpperCase()}</span>
-                <div class="text-white text-xs font-bold">${item.name}</div>
-              </div>
-              <div class="text-right">
-                <div class="text-xs font-bold text-emerald-400">₩ ${formatMoney(curPrice)}</div>
-                <button onclick="sellItemKream(${index})" class="text-[10px] bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-300 font-black px-3 py-1 rounded-full mt-1 border border-emerald-700">판매</button>
-              </div>
-            </div>
-          `;
-        });
-        html += `</div>`;
-      }
-      appBody.innerHTML = html;
-    }
+    function sellToKream(instanceId) {
+      const idx = AppState.user.inventory.findIndex(inst => inst.instanceId === instanceId);
+      if (idx === -1) return;
 
-    function sellItemKream(index) {
-      const inst = AppState.user.inventory[index];
-      const item = ITEM_DATABASE[inst.id];
-      const salePrice = AppState.marketPrices[inst.id] ? AppState.marketPrices[inst.id].current : item.basePrice;
+      const inst = AppState.user.inventory[idx];
+      const livePrice = AppState.marketPrices[inst.id].current;
 
-      // 착용 해제 선행
-      for (let cat in AppState.user.equipped) {
-        if (AppState.user.equipped[cat] && AppState.user.equipped[cat].instanceId === inst.instanceId) {
-          AppState.user.equipped[cat] = null;
+      AppState.user.balance += livePrice;
+      
+      // 장착 해제 대응
+      for (let slot in AppState.user.equipped) {
+        if (AppState.user.equipped[slot] && AppState.user.equipped[slot].instanceId === instanceId) {
+          AppState.user.equipped[slot] = null;
         }
       }
 
-      AppState.user.balance += salePrice;
-      AppState.user.inventory.splice(index, 1);
+      AppState.user.inventory.splice(idx, 1);
       updateUIBalance();
+      syncUserDatabase();
       renderAvatar();
-      renderKreamApp();
-      alert(`${item.name}을(를) ₩ ${formatMoney(salePrice)}에 판매 완료했습니다.`);
+
+      alert("리셀 체결 완료! 수익금이 정산되었습니다.");
+      if (activePhoneApp === 'kream') openApp('kream');
     }
 
-    // --- 중고나라 앱 (시세 현황 관람) ---
-    function renderJoonggoApp() {
-      const appBody = document.getElementById('app-body');
-      let html = `
-        <div class="mb-4 text-xs text-neutral-400 flex justify-between items-center">
-          <span>실시간 암시장 시세판</span>
-          <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold animate-pulse">● LIVE</span>
+    // --- 🤝 중고나라 (실시간 중개 장표) ---
+    function renderJoonggoApp(container) {
+      container.innerHTML = `
+        <div class="space-y-2">
+          <p class="text-[10px] text-neutral-400">실시간 패션 아이템 상위 거래 시장 가격 동향</p>
+          <div class="space-y-1.5" id="joonggo-market-list"></div>
         </div>
-        <div class="space-y-2 pb-6">
       `;
-      for (let key in AppState.marketPrices) {
+
+      const list = document.getElementById('joonggo-market-list');
+      for (let key in ITEM_DATABASE) {
         const item = ITEM_DATABASE[key];
-        const market = AppState.marketPrices[key];
-        const trendSymbol = market.trend === 'up' ? '▲' : market.trend === 'down' ? '▼' : '─';
-        const trendColor = market.trend === 'up' ? 'text-red-400' : market.trend === 'down' ? 'text-blue-400' : 'text-neutral-400';
-        
-        html += `
-          <div class="bg-neutral-800/80 rounded-xl p-3 flex justify-between items-center border border-neutral-800">
-            <div>
-              <div class="text-white text-xs font-bold">${item.name}</div>
-              <span class="text-[9px] text-neutral-500">기본가: ₩${formatMoney(item.basePrice)}</span>
-            </div>
-            <div class="text-right">
-              <div class="text-xs font-bold text-white">₩ ${formatMoney(market.current)}</div>
-              <span class="text-[10px] font-mono ${trendColor}">${trendSymbol} ${market.change.toFixed(1)}%</span>
-            </div>
+        const priceObj = AppState.marketPrices[key];
+        const changeRate = (priceObj.change * 100).toFixed(1);
+        const color = priceObj.trend === 'up' ? 'text-red-500' : (priceObj.trend === 'down' ? 'text-blue-500' : 'text-neutral-400');
+        const sign = priceObj.trend === 'up' ? '▲' : (priceObj.trend === 'down' ? '▼' : '–');
+
+        const row = document.createElement('div');
+        row.className = "bg-neutral-800 p-2.5 rounded-xl flex justify-between items-center border-b border-neutral-700/50";
+        row.innerHTML = `
+          <div>
+            <span class="text-[9px] ${GRADE_COLORS[item.grade].text} font-black">${item.grade}</span>
+            <h5 class="text-white text-xs font-bold leading-tight">${item.name}</h5>
+          </div>
+          <div class="text-right">
+            <span class="text-white font-mono font-bold text-xs">${formatMoney(priceObj.current)} G</span>
+            <span class="text-[10px] font-bold ${color} block">${sign} ${changeRate}%</span>
           </div>
         `;
+        list.appendChild(row);
       }
-      html += `</div>`;
-      appBody.innerHTML = html;
     }
 
-    // --- 9. 옷장 모달 & 장착 필터링 제어 ---
-    function openWardrobe() {
-      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
-      filterWardrobe('all');
-    }
+    // --- [수정] 주식 가격 변동 엔진 (기존 대비 대폭 향상된 시세 등락 적용) ---
+    function runMarketTicker() {
+      const keys = Object.keys(ITEM_DATABASE);
+      const chosenKey = keys[Math.floor(Math.random() * keys.length)];
+      const item = ITEM_DATABASE[chosenKey];
+      const priceObj = AppState.marketPrices[chosenKey];
 
-    function closeWardrobe() {
-      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
-    }
+      // [변동 폭 대폭 확장 및 다이내믹 이벤트 적용]
+      // 기존의 좁은 바운더리 대신 최소 -15% ~ 최대 +18% 범위에서 역동적으로 변동하도록 처리합니다.
+      let changePercent = (Math.random() * 33 - 15) / 100;
 
-    function filterWardrobe(category) {
-      AppState.currentWardrobeTab = category;
-      
-      const tabButtons = document.querySelectorAll('#wardrobe-tabs button');
-      tabButtons.forEach(btn => {
-        btn.className = "px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap";
-      });
-
-      event.currentTarget.className = "px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap";
-
-      const listContainer = document.getElementById('wardrobe-list');
-      listContainer.innerHTML = '';
-
-      let items = AppState.user.inventory;
-      if (category !== 'all') {
-        items = items.filter(inst => ITEM_DATABASE[inst.id].category === category);
+      // 5%의 초급락/초급등 대박 특이 케이스 이벤트 설정
+      if (Math.random() < 0.05) {
+        changePercent = Math.random() > 0.4 ? 0.50 : -0.40; // +50% 폭등 또는 -40% 폭락
       }
 
-      if (items.length === 0) {
-        listContainer.innerHTML = `<p class="col-span-3 text-center py-12 text-xs text-gray-400">옷장이 텅 비어 있습니다.</p>`;
-        return;
+      const delta = Math.round(priceObj.current * changePercent);
+      priceObj.current = Math.max(1000, priceObj.current + delta); // 최소 1,000G 방어막
+      priceObj.change = changePercent;
+      priceObj.trend = changePercent > 0 ? 'up' : (changePercent < 0 ? 'down' : 'flat');
+
+      // 중고나라 앱 실시간 드로잉 갱신
+      if (activePhoneApp === 'joonggo') {
+        openApp('joonggo');
       }
 
-      items.forEach(inst => {
-        const item = ITEM_DATABASE[inst.id];
-        const gradeColor = GRADE_COLORS[item.grade] || { bg: 'bg-zinc-400' };
-        const isEquipped = Object.values(AppState.user.equipped).some(eq => eq && eq.instanceId === inst.instanceId);
-
-        const card = document.createElement('div');
-        card.className = `relative bg-pink-50/50 rounded-2xl p-2 border-2 ${isEquipped ? 'border-pink-500 bg-pink-50' : 'border-transparent'} flex flex-col justify-between items-center text-center group cursor-pointer`;
-        card.onclick = () => {
-          if (isEquipped) {
-            unequipItem(item.category);
-          } else {
-            equipItem(inst);
-          }
-          filterWardrobe(AppState.currentWardrobeTab);
-        };
-
-        card.innerHTML = `
-          <span class="absolute top-1 left-1 text-[8px] text-white px-1 py-0.2 rounded-full font-bold ${gradeColor.bg}">${item.grade}</span>
-          <div class="w-16 h-16 relative overflow-hidden my-2 scale-75">
-            <div class="scale-125 relative w-[180px] h-[280px] origin-center -translate-x-[55px] -translate-y-24">
-              ${item.renderBack ? item.renderBack() : ''}
-              ${item.render ? item.render() : ''}
-              ${item.renderFront ? item.renderFront() : ''}
-            </div>
-          </div>
-          <div class="text-[10px] font-bold text-gray-700 truncate w-full px-1">${item.name}</div>
-          ${isEquipped ? `<span class="text-[9px] text-pink-500 font-extrabold mt-1">E</span>` : ''}
-        `;
-        listContainer.appendChild(card);
-      });
+      // 상단 배너 전광판 표시
+      showTickerBanner(item, priceObj);
     }
-  </script>
-</body>
-</html>
+
+    function showTickerBanner(
