@@ -1,1613 +1,839 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쁘띠 드레스룸 & 패션 재테크</title>
-    <style>
-        /* 기본 스타일 및 테마 정의 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Malgun Gothic', sans-serif;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        body {
-            background-color: #ffeef2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            width: 1024px;
-            height: 720px;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(255, 182, 193, 0.4);
-            border: 4px solid #ffccd5;
-            display: flex;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* 1. 로그인 / 회원가입 화면 */
-        #authScreen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, #fff5f7 0%, #ffe4e9 100%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .auth-card {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 20px;
-            border: 3px solid #ffb6c1;
-            box-shadow: 0 8px 24px rgba(255, 182, 193, 0.3);
-            width: 380px;
-            text-align: center;
-        }
-        .auth-card h1 {
-            color: #ff6b8b;
-            margin-bottom: 25px;
-            font-size: 2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .auth-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 2px solid #ffd1d8;
-            border-radius: 10px;
-            outline: none;
-            transition: 0.2s;
-        }
-        .auth-input:focus {
-            border-color: #ff6b8b;
-        }
-        .auth-btn-group {
-            display: flex;
-            gap: 10px;
-        }
-        .auth-btn {
-            flex: 1;
-            padding: 12px;
-            background: #ff6b8b;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .auth-btn.secondary {
-            background: #ffccd5;
-            color: #ff5276;
-        }
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
-        }
-
-        /* 2. 이름 및 성별 설정 모달 */
-        #profileSetupModal {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 99;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            padding: 35px;
-            border-radius: 20px;
-            border: 3px solid #ffb6c1;
-            width: 400px;
-            text-align: center;
-        }
-        .modal-content h2 {
-            color: #ff6b8b;
-            margin-bottom: 20px;
-        }
-        .gender-selector {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .gender-btn {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid #ffd1d8;
-            border-radius: 12px;
-            background: #fafafa;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .gender-btn.active {
-            border-color: #ff6b8b;
-            background: #ffeef2;
-            color: #ff6b8b;
-            transform: scale(1.03);
-        }
-
-        /* 3. 메인 게임 화면 레이아웃 */
-        .preview-pane {
-            flex: 1.2;
-            background: #fffcfd;
-            border-right: 3px solid #ffe4e9;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .control-pane {
-            flex: 1;
-            background: #fafafa;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        /* 상단 타이틀 바 및 헤더 */
-        .header-bar {
-            width: 100%;
-            padding: 15px 20px;
-            background: #ffeef2;
-            border-bottom: 3px solid #ffe4e9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .room-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #ff5276;
-        }
-        .wallet-display {
-            background: #ffffff;
-            padding: 8px 15px;
-            border-radius: 15px;
-            border: 2px solid #ffd1d8;
-            font-weight: bold;
-            color: #ff6b8b;
-            box-shadow: 0 3px 6px rgba(255,182,193,0.2);
-        }
-
-        /* 캐릭터 정밀 좌표계 렌더러 */
-        .char-canvas {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .avatar-container {
-            width: 280px;
-            height: 480px;
-            position: relative;
-        }
-
-        /* 목-얼굴 일체형 정밀 뼈대 */
-        .char-body-base {
-            width: 80px;
-            height: 130px;
-            background: #ffebd6;
-            position: absolute;
-            top: 150px;
-            left: 100px;
-            border-radius: 20px;
-            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.05);
-        }
-        .char-neck-base {
-            width: 24px;
-            height: 35px;
-            background: #ffebd6;
-            position: absolute;
-            top: 125px;
-            left: 128px;
-            z-index: 2;
-        }
-        .char-head-base {
-            width: 130px;
-            height: 130px;
-            background: #ffebd6;
-            position: absolute;
-            top: 10px;
-            left: 75px;
-            border-radius: 50%;
-            z-index: 3;
-            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.05);
-        }
-        
-        /* 눈, 코, 입 이목구비 정밀 황금비 배치 */
-        .face-eyes {
-            width: 14px;
-            height: 14px;
-            background: #2a2a2a;
-            border-radius: 50%;
-            position: absolute;
-            top: 50px;
-        }
-        .face-eyes.left { left: 32px; }
-        .face-eyes.right { right: 32px; }
-        .face-nose {
-            width: 8px;
-            height: 12px;
-            background: #f3cfbc;
-            border-radius: 4px;
-            position: absolute;
-            top: 66px;
-            left: 61px;
-        }
-        .face-mouth {
-            width: 24px;
-            height: 10px;
-            border-bottom: 4px solid #e74c3c;
-            border-radius: 0 0 12px 12px;
-            position: absolute;
-            top: 84px;
-            left: 53px;
-        }
-
-        /* 팔/다리 골격 */
-        .char-legs {
-            position: absolute;
-            top: 275px;
-            left: 105px;
-            width: 70px;
-            height: 140px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .char-leg {
-            width: 26px;
-            height: 100%;
-            background: #ffebd6;
-            border-radius: 0 0 10px 10px;
-        }
-
-        /* 겹쳐 장착되는 의상 레이어 시스템 */
-        .layer-hair { position: absolute; width: 150px; height: 160px; top: 0px; left: 65px; z-index: 10; background-size: contain; background-repeat: no-repeat; text-align: center; }
-        .layer-top { position: absolute; width: 100px; height: 110px; top: 145px; left: 90px; z-index: 8; background-size: contain; background-repeat: no-repeat; }
-        /* 바지 앵커 포인트 교정 */
-        .layer-bottom { position: absolute; width: 88px; height: 145px; top: 250px; left: 96px; z-index: 7; background-size: contain; background-repeat: no-repeat; }
-        .layer-dress { position: absolute; width: 102px; height: 230px; top: 145px; left: 89px; z-index: 9; background-size: contain; background-repeat: no-repeat; }
-        .layer-shoes { position: absolute; width: 80px; height: 35px; top: 395px; left: 100px; z-index: 6; display: flex; justify-content: space-between; }
-        .layer-shoes div { width: 28px; height: 100%; border-radius: 6px; }
-        .layer-bag { position: absolute; width: 60px; height: 60px; top: 210px; left: 180px; z-index: 11; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; }
-        .layer-socks { position: absolute; width: 72px; height: 60px; top: 345px; left: 104px; z-index: 5; display: flex; justify-content: space-between; }
-        .layer-socks div { width: 26px; height: 100%; border-radius: 3px 3px 0 0; }
-        .layer-necklace { position: absolute; width: 40px; height: 40px; top: 128px; left: 120px; z-index: 4; font-size: 1.2rem; text-align: center; }
-        .layer-earrings { position: absolute; width: 114px; height: 30px; top: 60px; left: 83px; z-index: 4; display: flex; justify-content: space-between; font-size: 1.1rem; }
-
-        /* 하단 주요 동작 버튼 */
-        .main-btn-area {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 0 20px;
-        }
-        .lobby-btn {
-            flex: 1;
-            padding: 15px;
-            border-radius: 16px;
-            border: 3px solid #ffccd5;
-            background: #ffffff;
-            color: #ff5276;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255,182,193,0.3);
-            transition: all 0.2s ease;
-        }
-        .lobby-btn:hover {
-            transform: translateY(-3px);
-            background: #ffeef2;
-        }
-
-        /* 4. 옷장 열기 서랍 UI */
-        .closet-drawer {
-            position: absolute;
-            bottom: -450px;
-            left: 0;
-            width: 100%;
-            height: 420px;
-            background: #ffffff;
-            border-top: 4px solid #ffccd5;
-            z-index: 50;
-            transition: bottom 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            display: flex;
-            flex-direction: column;
-        }
-        .closet-drawer.open {
-            bottom: 0;
-        }
-        .closet-header {
-            padding: 10px 15px;
-            background: #ffeef2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ffccd5;
-        }
-        .closet-header h3 { color: #ff5276; }
-        .close-drawer-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #ff5276;
-            cursor: pointer;
-        }
-        .closet-tabs {
-            display: flex;
-            overflow-x: auto;
-            background: #fff0f3;
-            border-bottom: 1px solid #ffd1d8;
-        }
-        .closet-tab {
-            padding: 10px 16px;
-            border: none;
-            background: none;
-            font-weight: bold;
-            color: #888;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        .closet-tab.active {
-            color: #ff5276;
-            background: #ffffff;
-            border-bottom: 3px solid #ff5276;
-        }
-        .closet-items {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        /* 5. 가상 핸드폰 시스템 */
-        .phone-modal {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 80;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .phone-shell {
-            width: 360px;
-            height: 640px;
-            background: #111;
-            border-radius: 40px;
-            padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 4px solid #444;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .phone-screen {
-            flex: 1;
-            background: #ffffff;
-            border-radius: 30px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .phone-header {
-            height: 40px;
-            background: #f7f7f7;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            font-size: 0.8rem;
-            color: #555;
-            font-weight: bold;
-        }
-        .phone-home {
-            flex: 1;
-            background: radial-gradient(circle, #ffeef2 0%, #ffffff 100%);
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
-            padding: 30px 20px;
-        }
-        .app-icon {
-            background: #ffffff;
-            border-radius: 20px;
-            border: 2px solid #ffe4e9;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .app-icon:hover {
-            transform: scale(1.05);
-        }
-        .app-icon span {
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-        }
-        .app-icon label {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #444;
-            cursor: pointer;
-        }
-
-        /* 각 전용 어플리케이션 화면 */
-        .app-page {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 40px);
-            background: #ffffff;
-            z-index: 10;
-            display: none;
-            flex-direction: column;
-        }
-        .app-nav {
-            height: 45px;
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-        }
-        .app-back-btn {
-            background: none;
-            border: none;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #ff5276;
-            cursor: pointer;
-            margin-right: 15px;
-        }
-        .app-title { font-weight: bold; color: #333; font-size: 1rem; }
-        .app-content {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 등급별 뱃지 컬러 스타일 */
-        .tier-SSS { background: linear-gradient(135deg, #ffe066, #f53b57); color: #fff; }
-        .tier-SS { background: linear-gradient(135deg, #a55eea, #4b7bec); color: #fff; }
-        .tier-S { background: #ff5e57; color: #fff; }
-        .tier-A { background: #ffd32a; color: #222; }
-        .tier-B { background: #0be881; color: #fff; }
-        .tier-C { background: #d2dae2; color: #222; }
-
-        /* 쇼핑몰 뽑기 레이아웃 */
-        .shop-banner {
-            width: 100%;
-            height: 120px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.25rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .shop-info {
-            background: #fcfcfc;
-            border: 1px solid #eee;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            color: #666;
-        }
-        .pull-btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        .pull-btn:hover { transform: translateY(-2px); }
-
-        /* 뽑기 당첨 결과 모달 */
-        .gacha-result-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 90;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        .gacha-card {
-            background: #fff;
-            color: #333;
-            border-radius: 20px;
-            padding: 30px;
-            width: 250px;
-            box-shadow: 0 10px 25px rgba(255,255,255,0.2);
-            margin-bottom: 20px;
-        }
-        .gacha-tier-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }
-        .gacha-emoji {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-        }
-        .gacha-name { font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; }
-
-        /* 중고나라 앱 */
-        .joonggo-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .joonggo-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .joonggo-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .joonggo-name { font-size: 0.85rem; font-weight: bold; color: #333; }
-        .joonggo-price-section {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-        }
-        .joonggo-price { font-size: 0.9rem; font-weight: bold; color: #ff5276; }
-        .price-trend { font-size: 0.75rem; font-weight: bold; }
-        .trend-up { color: #e74c3c; }
-        .trend-down { color: #3498db; }
-        .sell-btn {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .sell-btn:hover { background: #27ae60; }
-
-        /* 공용 카드 스타일 */
-        .item-card {
-            background: #ffffff;
-            border: 2px solid #ffe4e9;
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
-        }
-        .item-card:hover { transform: translateY(-2px); border-color: #ff5276; }
-        .item-card.equipped { border-color: #2ecc71; background: #f1fbf6; }
-        .card-tier {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .card-emoji { font-size: 2rem; margin: 10px 0 5px; }
-        .card-name { font-size: 0.75rem; font-weight: bold; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>확률형 시세 변동 드레스룸 웹앱</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandPink: {
+              100: '#FFF0F5',
+              200: '#FFD1DC',
+              300: '#FFB7C5',
+              400: '#FFA0B4',
+              DEFAULT: '#FF69B4',
+            },
+            brandSky: '#E0F6FF',
+            brandPurple: '#F3E8FF'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 귀여운 폰트 및 파스텔 배경 감성 */
+    @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Gowun+Dodum&display=swap');
+    body {
+      font-family: 'Gowun Dodum', sans-serif;
+      background: radial-gradient(circle, #FFF0F5 0%, #E0F6FF 100%);
+      user-select: none;
+    }
+    .title-font {
+      font-family: 'Gamja Flower', cursive;
+    }
+    /* 스크롤바 숨기기 및 슬림화 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFF0F5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FFB7C5;
+      border-radius: 3px;
+    }
+    /* 치비 아바타 바운스 애니메이션 */
+    @keyframes chibi-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .chibi-character {
+      animation: chibi-bounce 3s ease-in-out infinite;
+    }
+  </style>
 </head>
-<body>
+<body class="h-screen w-screen flex items-center justify-center overflow-hidden">
 
-<div class="container">
-    <!-- 1. 로그인 / 회원가입 화면 -->
-    <div id="authScreen">
-        <div class="auth-card">
-            <h1>🌸 쁘띠 드레스룸</h1>
-            <input type="text" id="authId" class="auth-input" placeholder="아이디 입력" required>
-            <input type="password" id="authPw" class="auth-input" placeholder="비밀번호 입력" required>
-            <div class="auth-btn-group">
-                <button type="button" class="auth-btn" onclick="handleLogin()">로그인</button>
-                <button type="button" class="auth-btn secondary" onclick="handleSignup()">회원가입</button>
+  <div class="relative w-full max-w-[420px] h-[92vh] bg-white rounded-[40px] shadow-2xl border-[12px] border-pink-200 overflow-hidden flex flex-col">
+    
+    <div id="screen-login" class="absolute inset-0 z-50 bg-brandPink-100 flex flex-col items-center justify-center p-6">
+      <div class="text-center mb-8">
+        <h1 class="title-font text-5xl text-brandPink-400 font-bold mb-2">🎀 Pastel Closet 🎀</h1>
+        <p class="text-gray-500 text-sm">실시간 주식형 중고 옷입히기 게임</p>
+      </div>
+      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">아이디</label>
+          <input id="login-id" type="text" value="chibi_love" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">비밀번호</label>
+          <input id="login-pw" type="password" value="1234" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+        </div>
+        <button onclick="handleLogin()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">시작하기</button>
+      </div>
+    </div>
+
+    <div id="screen-name" class="absolute inset-0 z-40 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
+      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-6">당신의 이름은?</h2>
+      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 text-center">
+        <input id="user-nickname" type="text" placeholder="닉네임을 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-brandPink mb-4" />
+        <button onclick="handleSaveName()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-transform active:scale-95">다음 단계</button>
+      </div>
+    </div>
+
+    <div id="screen-gender" class="absolute inset-0 z-30 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
+      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-8">성별을 선택해주세요</h2>
+      <div class="grid grid-cols-2 gap-4 w-full">
+        <button onclick="handleSelectGender('female')" class="bg-white hover:bg-pink-50 border-4 border-pink-200 hover:border-brandPink rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
+          <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👩🏻‍🦰</div>
+          <span class="font-bold text-gray-700">여성 캐릭터</span>
+        </button>
+        <button onclick="handleSelectGender('male')" class="bg-white hover:bg-blue-50 border-4 border-blue-200 hover:border-blue-400 rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
+          <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👦🏻</div>
+          <span class="font-bold text-gray-700">남성 캐릭터</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="screen-main" class="flex-1 flex flex-col h-full bg-brandSky relative">
+      
+      <div class="bg-white/80 backdrop-blur-md px-4 py-3 border-b border-pink-100 flex justify-between items-center z-20">
+        <div>
+          <span id="display-name" class="text-sm font-bold text-gray-700">러블리치비</span>
+          <span class="text-xs text-brandPink px-2 py-0.5 bg-pink-100 rounded-full ml-1" id="display-gender">여</span>
+        </div>
+        <div class="bg-pink-50 border border-pink-200 rounded-full px-3 py-1 flex items-center shadow-inner">
+          <span class="text-xs text-pink-500 font-extrabold mr-1">₩</span>
+          <span id="display-balance" class="text-sm font-black text-gray-800">100,000</span>
+        </div>
+      </div>
+
+      <div class="flex-1 relative flex items-center justify-center p-4">
+        
+        <div class="absolute inset-x-0 bottom-12 h-24 bg-pink-200/40 rounded-t-[50%] blur-sm pointer-events-none"></div>
+        <div class="absolute top-8 left-8 text-white/50 text-3xl select-none">☁️</div>
+        <div class="absolute top-12 right-12 text-white/50 text-4xl select-none">☁️</div>
+        <div class="absolute top-20 left-16 text-yellow-200/80 text-xl select-none">⭐</div>
+
+        <div id="ticker-banner" class="absolute top-4 inset-x-4 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex justify-between items-center z-10 transition-all opacity-0 pointer-events-none">
+          <span id="ticker-item-name" class="font-bold"></span>
+          <span id="ticker-item-price" class="font-mono"></span>
+        </div>
+
+        <div class="chibi-character relative w-[180px] h-[280px] flex items-center justify-center">
+          
+          <div id="layer-hair-back" class="absolute inset-0 z-[5]"></div>
+
+          <div id="layer-body-base" class="absolute inset-0 z-[10] flex flex-col items-center justify-center">
+            <div class="relative w-28 h-28 bg-[#FFE5D9] rounded-full shadow-inner border border-[#FAD2C0] flex items-center justify-center -mt-16">
+              <div class="absolute bottom-6 left-3 w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-6 right-3 w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-8 left-6 w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
+                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+              </div>
+              <div class="absolute bottom-8 right-6 w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
+                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+              </div>
+              <div class="absolute bottom-5 w-3 h-2 bg-rose-400 rounded-b-full"></div>
             </div>
-        </div>
-    </div>
-
-    <!-- 2. 이름 및 성별 선택 모달 -->
-    <div id="profileSetupModal">
-        <div class="modal-content">
-            <h2>👗 드레스룸 캐릭터 생성</h2>
-            <input type="text" id="userNameInput" class="auth-input" placeholder="사용자 이름을 입력하세요." style="text-align: center; font-size: 1.1rem;">
-            <div class="gender-selector">
-                <button type="button" class="gender-btn" id="genderMale" onclick="selectGender('Male')">🙋‍♂️ 남성</button>
-                <button type="button" class="gender-btn" id="genderFemale" onclick="selectGender('Female')">🙋‍♀️ 여성</button>
+            <div class="w-4 h-6 bg-[#FFE5D9] -mt-1 border-x border-[#FAD2C0]"></div>
+            <div class="relative w-12 h-16 bg-[#FFE5D9] rounded-b-2xl border-x border-[#FAD2C0] flex justify-between">
+              <div class="absolute -left-4 top-0 w-4 h-12 bg-[#FFE5D9] rounded-full border-l border-[#FAD2C0] origin-top rotate-[25deg]"></div>
+              <div class="absolute -right-4 top-0 w-4 h-12 bg-[#FFE5D9] rounded-full border-r border-[#FAD2C0] origin-top -rotate-[25deg]"></div>
             </div>
-            <button type="button" class="auth-btn" style="width: 100%;" onclick="completeProfileSetup()">드레스룸 입장</button>
-        </div>
-    </div>
-
-    <!-- 3. 메인 프리뷰 패널 (좌측) -->
-    <div class="preview-pane">
-        <div class="header-bar">
-            <div class="room-title" id="roomTitle">사용자의 드레스룸</div>
-            <div class="wallet-display" id="lobbyWallet">잔고: 100,000원</div>
-        </div>
-
-        <div class="char-canvas">
-            <!-- 치비 스타일 아바타 캔버스 -->
-            <div class="avatar-container" id="avatarContainer">
-                <!-- 목-얼굴 일체화 구조 -->
-                <div class="char-body-base"></div>
-                <div class="char-neck-base"></div>
-                <div class="char-head-base">
-                    <!-- 눈/코/입 이목구비 정밀 비율 배치 -->
-                    <div class="face-eyes left"></div>
-                    <div class="face-eyes right"></div>
-                    <div class="face-nose"></div>
-                    <div class="face-mouth"></div>
-                </div>
-                <!-- 팔 및 다리 -->
-                <div class="char-legs">
-                    <div class="char-leg"></div>
-                    <div class="char-leg"></div>
-                </div>
-
-                <!-- 의상 실시간 오버레이 레이어들 -->
-                <div id="layerHair" class="layer-hair"></div>
-                <div id="layerTop" class="layer-top"></div>
-                <div id="layerBottom" class="layer-bottom"></div>
-                <div id="layerDress" class="layer-dress"></div>
-                <div id="layerShoes" class="layer-shoes"></div>
-                <div id="layerBag" class="layer-bag"></div>
-                <div id="layerSocks" class="layer-socks"></div>
-                <div id="layerNecklace" class="layer-necklace"></div>
-                <div id="layerEarrings" class="layer-earrings"></div>
+            <div class="w-10 h-16 flex justify-between px-1 -mt-1">
+              <div class="w-3.5 h-full bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
+              <div class="w-3.5 h-full bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
             </div>
+          </div>
+
+          <div id="layer-socks" class="absolute inset-0 z-[20] pointer-events-none"></div>
+
+          <div id="layer-shoes" class="absolute inset-0 z-[25] pointer-events-none"></div>
+
+          <div id="layer-bottom" class="absolute inset-0 z-[30] pointer-events-none"></div>
+
+          <div id="layer-top" class="absolute inset-0 z-[35] pointer-events-none"></div>
+
+          <div id="layer-dress" class="absolute inset-0 z-[40] pointer-events-none"></div>
+
+          <div id="layer-necklace" class="absolute inset-0 z-[45] pointer-events-none"></div>
+
+          <div id="layer-hair-front" class="absolute inset-0 z-[50] pointer-events-none"></div>
+
+          <div id="layer-earring" class="absolute inset-0 z-[55] pointer-events-none"></div>
+
+          <div id="layer-accessory" class="absolute inset-0 z-[60] pointer-events-none"></div>
+          <div id="layer-bag" class="absolute inset-0 z-[61] pointer-events-none"></div>
+
         </div>
 
-        <!-- 하단 메인 내비게이션 버튼 -->
-        <div class="main-btn-area">
-            <button type="button" class="lobby-btn" onclick="openCloset()">🗄️ 옷장 열기</button>
-            <button type="button" class="lobby-btn" onclick="openPhone()">📱 핸드폰</button>
+      </div>
+
+      <div class="bg-white px-6 py-4 border-t border-pink-100 flex justify-around items-center z-10 shadow-2xl">
+        <button onclick="openWardrobe()" class="flex flex-col items-center space-y-1 group">
+          <div class="w-12 h-12 bg-pink-50 group-hover:bg-brandPink-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">👗</div>
+          <span class="text-xs font-bold text-gray-600">옷장 열기</span>
+        </button>
+        <button onclick="openSmartPhone()" class="flex flex-col items-center space-y-1 group">
+          <div class="w-12 h-12 bg-sky-50 group-hover:bg-sky-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">📱</div>
+          <span class="text-xs font-bold text-gray-600">스마트폰</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div id="modal-wardrobe" class="absolute inset-x-0 bottom-0 h-[75%] bg-white rounded-t-[32px] border-t-4 border-pink-200 z-50 transform translate-y-full transition-transform duration-300 ease-out flex flex-col p-4 shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="title-font text-2xl text-brandPink font-bold">내 옷장</h3>
+        <button onclick="closeWardrobe()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">✕</button>
+      </div>
+      <div class="flex space-x-1 overflow-x-auto pb-2 mb-2 border-b border-gray-100" id="wardrobe-tabs">
+        <button onclick="filterWardrobe('all')" class="px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap">전체</button>
+        <button onclick="filterWardrobe('hair')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">헤어</button>
+        <button onclick="filterWardrobe('top')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">상의</button>
+        <button onclick="filterWardrobe('bottom')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">하의</button>
+        <button onclick="filterWardrobe('dress')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">원피스</button>
+        <button onclick="filterWardrobe('shoes')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">신발</button>
+        <button onclick="filterWardrobe('accessory')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">액세서리</button>
+      </div>
+      <div class="flex-1 overflow-y-auto grid grid-cols-3 gap-2 p-1" id="wardrobe-list">
         </div>
     </div>
 
-    <!-- 4. 옷장 열기 드로어 UI (실시간 장착 가능) -->
-    <div id="closetDrawer" class="closet-drawer">
-        <div class="closet-header">
-            <h3>🗄️ 내 인벤토리</h3>
-            <button type="button" class="close-drawer-btn" onclick="closeCloset()">×</button>
+    <div id="modal-phone" class="absolute inset-0 bg-neutral-900/90 z-50 transform translate-y-full transition-transform duration-300 ease-out flex items-center justify-center p-4">
+      <div class="w-full h-full bg-gradient-to-b from-[#121212] to-[#242424] rounded-[36px] border-4 border-neutral-700 overflow-hidden flex flex-col relative shadow-2xl">
+        <div class="px-6 py-4 flex justify-between items-center border-b border-neutral-800">
+          <span class="text-white font-black text-xs font-mono">10:01 PM</span>
+          <div class="w-20 h-4 bg-black rounded-full absolute left-1/2 -translate-x-1/2 top-2"></div>
+          <button onclick="closeSmartPhone()" class="text-red-400 font-bold text-sm bg-red-900/30 px-3 py-1 rounded-full">닫기</button>
         </div>
-        <div class="closet-tabs" id="closetTabs">
-            <!-- 동적으로 생성 -->
+        
+        <div id="phone-homescreen" class="flex-1 p-6 grid grid-cols-3 gap-y-6 gap-x-4 content-start">
+          <button onclick="openApp('ably')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-pink-400">🛍️</div>
+            <span class="text-[11px] font-bold text-gray-300">에이블리</span>
+          </button>
+          <button onclick="openApp('musinsa')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-neutral-800">🎩</div>
+            <span class="text-[11px] font-bold text-gray-300">무신사</span>
+          </button>
+          <button onclick="openApp('kream')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-emerald-700 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-emerald-600">⚡</div>
+            <span class="text-[11px] font-bold text-gray-300">크림 KREAM</span>
+          </button>
+          <button onclick="openApp('joonggo')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-orange-400">🤝</div>
+            <span class="text-[11px] font-bold text-orange-200 font-bold">중고나라(주식)</span>
+          </button>
         </div>
-        <div class="closet-items" id="closetItemGrid">
-            <!-- 소유한 의상 로드 -->
+
+        <div id="phone-app-container" class="absolute inset-0 bg-neutral-900 z-10 hidden flex flex-col pt-12">
+          <div class="px-4 py-3 bg-neutral-800 text-white flex justify-between items-center border-b border-neutral-700">
+            <span id="app-title" class="font-bold text-sm">앱 이름</span>
+            <button onclick="backToHome()" class="text-xs text-neutral-400 bg-neutral-700 px-3 py-1 rounded-full font-bold">Home</button>
+          </div>
+          <div id="app-body" class="flex-1 overflow-y-auto p-4 bg-neutral-900"></div>
         </div>
+
+      </div>
     </div>
 
-    <!-- 5. 가상 핸드폰 모달 시스템 (4대 앱 수록) -->
-    <div id="phoneModal" class="phone-modal">
-        <div class="phone-shell">
-            <div class="phone-screen">
-                <!-- 핸드폰 상태바 -->
-                <div class="phone-header">
-                    <span id="phoneTime">21:30</span>
-                    <span id="phoneWallet" style="color: #ff5276;">100,000원</span>
-                </div>
-
-                <!-- 핸드폰 홈 화면 -->
-                <div class="phone-home" id="phoneHome">
-                    <div class="app-icon" onclick="openApp('abley')">
-                        <span>🛍️</span>
-                        <label>에이블리</label>
-                    </div>
-                    <div class="app-icon" onclick="openApp('musinsa')">
-                        <span>👟</span>
-                        <label>무신사</label>
-                    </div>
-                    <div class="app-icon" onclick="openApp('kream')">
-                        <span>📉</span>
-                        <label>크림</label>
-                    </div>
-                    <div class="app-icon" onclick="openApp('joonggo')">
-                        <span>🤝</span>
-                        <label>중고나라</label>
-                    </div>
-                    <!-- 폰 닫기 버튼 대신 외부 탭으로 닫기 -->
-                    <button type="button" class="auth-btn" style="grid-column: span 2; margin-top: 15px; background: #444;" onclick="closePhone()">홈 버튼</button>
-                </div>
-
-                <!-- 에이블리 앱 화면 -->
-                <div class="app-page" id="appAbley">
-                    <div class="app-nav">
-                        <button type="button" class="app-back-btn" onclick="goPhoneHome()">◀</button>
-                        <div class="app-title">에이블리 (ABLEY)</div>
-                    </div>
-                    <div class="app-content">
-                        <div class="shop-banner" style="background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);">귀엽고 화려한 컬렉션 ✨</div>
-                        <div class="shop-info">
-                            🎀 <strong>리본 장식, 화려한 헤어, 장신구 뽑기!</strong><br>
-                            - 1회 뽑기 금액: <strong>30,000원</strong><br>
-                            - SSS등급(0.5%) / SS(2.5%) / S(7.0%) / A(15.0%) / B(30.0%) / C(45.0%)
-                        </div>
-                        <button type="button" class="pull-btn" style="background: #ff5276;" onclick="executeGacha('abley')">30,000원 뽑기</button>
-                    </div>
-                </div>
-
-                <!-- 무신사 앱 화면 -->
-                <div class="app-page" id="appMusinsa">
-                    <div class="app-nav">
-                        <button type="button" class="app-back-btn" onclick="goPhoneHome()">◀</button>
-                        <div class="app-title">무신사 (MUSINSA)</div>
-                    </div>
-                    <div class="app-content">
-                        <div class="shop-banner" style="background: #111;">캐주얼 스트릿 웨어 👟</div>
-                        <div class="shop-info">
-                            🛹 <strong>베이직 상의, 힙한 조거 바지, 깔끔한 스니커즈!</strong><br>
-                            - 1회 뽑기 금액: <strong>50,000원</strong><br>
-                            - SSS등급(1.5%) / SS(4.5%) / S(12.0%) / A(22.0%) / B(35.0%) / C(25.0%)
-                        </div>
-                        <button type="button" class="pull-btn" style="background: #111;" onclick="executeGacha('musinsa')">50,000원 뽑기</button>
-                    </div>
-                </div>
-
-                <!-- 크림 앱 화면 -->
-                <div class="app-page" id="appKream">
-                    <div class="app-nav">
-                        <button type="button" class="app-back-btn" onclick="goPhoneHome()">◀</button>
-                        <div class="app-title">크림 (KREAM)</div>
-                    </div>
-                    <div class="app-content">
-                        <div class="shop-banner" style="background: linear-gradient(135deg, #2f3640 0%, #1e272e 100%);">명품 한정판 드레이핑 📉</div>
-                        <div class="shop-info">
-                            💎 <strong>한정판 명품 원피스, 백팩, 유리 구두!</strong><br>
-                            - 1회 뽑기 금액: <strong style="color:#e74c3c;">80,000원</strong><br>
-                            - SSS등급(4.0%) / SS(10.0%) / S(21.0%) / A(30.0%) / B(25.0%) / C(10.0%)
-                        </div>
-                        <button type="button" class="pull-btn" style="background: #2f3542;" onclick="executeGacha('kream')">80,000원 뽑기</button>
-                    </div>
-                </div>
-
-                <!-- 중고나라 앱 화면 -->
-                <div class="app-page" id="appJoonggo">
-                    <div class="app-nav">
-                        <button type="button" class="app-back-btn" onclick="goPhoneHome()">◀</button>
-                        <div class="app-title">중고나라 (의상 판매)</div>
-                    </div>
-                    <div class="app-content" style="padding: 10px;">
-                        <div style="font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 10px; background: #fbfbfb; padding: 5px; border-radius: 6px;">
-                            💡 <strong>실시간 시세 변동 알고리즘 작동 중 (1초 주기)</strong><br>
-                            (초기 지급 의상 3종은 판매가 불가능합니다.)
-                        </div>
-                        <div id="joonggoList" style="flex: 1; overflow-y: auto;">
-                            <!-- 판매 가능한 보유 목록 실시간 렌더링 -->
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+    <div id="gacha-result-modal" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 hidden">
+      <div class="bg-white rounded-[32px] p-6 text-center w-full max-w-[320px] shadow-2xl border-4 border-pink-200 scale-90 transition-transform duration-300" id="gacha-card">
+        <h4 class="title-font text-2xl font-black text-pink-500 mb-2">🎉 아이템 획득! 🎉</h4>
+        <div class="w-32 h-32 mx-auto bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center my-4 overflow-hidden relative" id="gacha-item-preview">
+          </div>
+        <div class="mb-4">
+          <span id="gacha-item-grade" class="px-3 py-1 rounded-full text-xs font-black text-white mr-1">SSS</span>
+          <span id="gacha-item-name" class="font-bold text-lg text-gray-800">골든 리본 헤어밴드</span>
         </div>
+        <div class="text-xs text-gray-500 mb-6">기본가: <span id="gacha-item-price" class="font-bold"></span>원</div>
+        <button onclick="closeGachaResult()" class="w-full bg-brandPink hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-all shadow-md">확인</button>
+      </div>
     </div>
 
-    <!-- 가차(뽑기) 성공 연출 오버레이 -->
-    <div id="gachaResultOverlay" class="gacha-result-overlay">
-        <h2>🎉 뽑기 획득 성공!</h2>
-        <div style="font-size: 0.85rem; color: #ffccd5; margin-bottom: 20px;">인벤토리의 해당 카테고리에 자동 보관되었습니다.</div>
-        <div class="gacha-card">
-            <span id="resTier" class="gacha-tier-badge tier-A">A등급</span>
-            <div id="resEmoji" class="gacha-emoji">👕</div>
-            <div id="resName" class="gacha-name">화이트 오버핏 후드</div>
-        </div>
-        <button type="button" class="auth-btn" style="width: 250px; background: #2ecc71;" onclick="closeGachaResult()">확인</button>
-    </div>
+  </div>
 
-</div>
-
-<script>
-    /* ==========================================
-       1. 마스터 의상 데이터베이스 정의 (총 96종)
-       ========================================== */
-    const itemDatabase = [
-        // ■ 헤어 (Hair) - 16종
-        { id: "HAIR_001", name: "검정색 긴 생머리", category: "Hair", tier: "C", basePrice: 5000, emoji: "💇‍♀️", style: { color: "#222", border: "none" } },
-        { id: "HAIR_002", name: "핑크 트윈테일", category: "Hair", tier: "B", basePrice: 15000, emoji: "👱‍♀️", style: { color: "#ff7eb3", border: "none" } },
-        { id: "HAIR_003", name: "브라운 포니테일", category: "Hair", tier: "B", basePrice: 16000, emoji: "🐴", style: { color: "#a55eea", border: "none" } },
-        { id: "HAIR_004", name: "로맨틱 웨이브 롱", category: "Hair", tier: "B", basePrice: 18000, emoji: "👩‍🦱", style: { color: "#d2dae2", border: "none" } },
-        { id: "HAIR_005", name: "내추럴 숏단발 컷", category: "Hair", tier: "C", basePrice: 7000, emoji: "💇", style: { color: "#e58e26", border: "none" } },
-        { id: "HAIR_006", name: "애쉬그레이 헤어", category: "Hair", tier: "A", basePrice: 38000, emoji: "👵", style: { color: "#b2bec3", border: "none" } },
-        { id: "HAIR_007", name: "러블리 피치 펌", category: "Hair", tier: "A", basePrice: 40000, emoji: "👩", style: { color: "#ff9f43", border: "none" } },
-        { id: "HAIR_008", name: "실버 크리스탈 번", category: "Hair", tier: "S", basePrice: 65000, emoji: "👱", style: { color: "#dfe6e9", border: "none" } },
-        { id: "HAIR_009", name: "미드나잇 블루 컷", category: "Hair", tier: "S", basePrice: 72000, emoji: "🙍", style: { color: "#0984e3", border: "none" } },
-        { id: "HAIR_010", name: "선셋 오렌지 하프업", category: "Hair", tier: "A", basePrice: 35000, emoji: "👩", style: { color: "#e67e22", border: "none" } },
-        { id: "HAIR_011", name: "플래티넘 블론드", category: "Hair", tier: "SS", basePrice: 110000, emoji: "💇‍♀️", style: { color: "#f1c40f", border: "none" } },
-        { id: "HAIR_012", name: "오로라 그라데이션", category: "Hair", tier: "SS", basePrice: 130000, emoji: "🦄", style: { color: "#fd79a8", border: "none" } },
-        { id: "HAIR_013", name: "앤티크 로즈 브레이드", category: "Hair", tier: "S", basePrice: 75000, emoji: "🌹", style: { color: "#ff7675", border: "none" } },
-        { id: "HAIR_014", name: "스타라이트 갤럭시", category: "Hair", tier: "SSS", basePrice: 220000, emoji: "🌌", style: { color: "#6c5ce7", border: "none" } },
-        { id: "HAIR_015", name: "클래식 보브 단발", category: "Hair", tier: "C", basePrice: 8000, emoji: "💇‍♀️", style: { color: "#2d3436", border: "none" } },
-        { id: "HAIR_016", name: "마린 크루 숏헤어", category: "Hair", tier: "B", basePrice: 20000, emoji: "👦", style: { color: "#00cec9", border: "none" } },
-
-        // ■ 상의 (Top) - 16종
-        { id: "TOP_001", name: "흰색 반팔 티셔츠", category: "Top", tier: "C", basePrice: 5000, emoji: "👕", style: { color: "#ffffff", border: "2px solid #ddd" } },
-        { id: "TOP_002", name: "스트라이프 니트", category: "Top", tier: "B", basePrice: 14000, emoji: "👚", style: { color: "#b2bec3", border: "none" } },
-        { id: "TOP_003", name: "파스텔 오버핏 후드", category: "Top", tier: "B", basePrice: 17000, emoji: "🧥", style: { color: "#ffeaa7", border: "none" } },
-        { id: "TOP_004", name: "오프숄더 블라우스", category: "Top", tier: "B", basePrice: 19000, emoji: "👚", style: { color: "#ffb6c1", border: "none" } },
-        { id: "TOP_005", name: "브이넥 골지 가디건", category: "Top", tier: "C", basePrice: 8500, emoji: "🧶", style: { color: "#fab1a0", border: "none" } },
-        { id: "TOP_006", name: "린넨 테일러드 재킷", category: "Top", tier: "A", basePrice: 38000, emoji: "🧥", style: { color: "#ffe4cc", border: "none" } },
-        { id: "TOP_007", name: "빈티지 데님 셔츠", category: "Top", tier: "A", basePrice: 42000, emoji: "👕", style: { color: "#74b9ff", border: "none" } },
-        { id: "TOP_008", name: "크로셰 레트로 탑", category: "Top", tier: "S", basePrice: 68000, emoji: "👚", style: { color: "#fdcb6e", border: "none" } },
-        { id: "TOP_009", name: "글램 오버 레더 자켓", category: "Top", tier: "S", basePrice: 75000, emoji: "🧥", style: { color: "#2d3436", border: "none" } },
-        { id: "TOP_010", name: "레이스 블라우스", category: "Top", tier: "A", basePrice: 39000, emoji: "👚", style: { color: "#ffffff", border: "2px solid #ffccd5" } },
-        { id: "TOP_011", name: "네온 시스루 테크웨어", category: "Top", tier: "SS", basePrice: 115000, emoji: "⚡", style: { color: "#55efc4", border: "none" } },
-        { id: "TOP_012", name: "실크 모던 벨벳 셔츠", category: "Top", tier: "SS", basePrice: 125000, emoji: "👔", style: { color: "#6c5ce7", border: "none" } },
-        { id: "TOP_013", name: "아가일 아우터 풀오버", category: "Top", tier: "S", basePrice: 71000, emoji: "🧶", style: { color: "#81ecec", border: "none" } },
-        { id: "TOP_014", name: "다이아몬드 로열 케이프", category: "Top", tier: "SSS", basePrice: 240000, emoji: "👑", style: { color: "#ffe066", border: "3px solid #f53b57" } },
-        { id: "TOP_015", name: "베이직 맨투맨", category: "Top", tier: "C", basePrice: 9000, emoji: "👕", style: { color: "#a4b0be", border: "none" } },
-        { id: "TOP_016", name: "스포티 나시 탑", category: "Top", tier: "B", basePrice: 15000, emoji: "🎽", style: { color: "#ff6b81", border: "none" } },
-
-        // ■ 하의 (Bottom) - 16종
-        { id: "BTM_001", name: "회색 츄리닝 바지", category: "Bottom", tier: "C", basePrice: 5000, emoji: "👖", style: { color: "#cccccc", border: "none" } },
-        { id: "BTM_002", name: "테니스 스커트", category: "Bottom", tier: "B", basePrice: 13000, emoji: "👗", style: { color: "#ffffff", border: "1px solid #ddd" } },
-        { id: "BTM_003", name: "라이트 워싱 컷팅 진", category: "Bottom", tier: "B", basePrice: 16000, emoji: "👖", style: { color: "#74b9ff", border: "none" } },
-        { id: "BTM_004", name: "와이드 핀턱 슬랙스", category: "Bottom", tier: "B", basePrice: 18000, emoji: "👖", style: { color: "#2d3436", border: "none" } },
-        { id: "BTM_005", name: "코튼 베이지 숏팬츠", category: "Bottom", tier: "C", basePrice: 7500, emoji: "👖", style: { color: "#f5cd79", border: "none" } },
-        { id: "BTM_006", name: "언밸 플리츠 스커트", category: "Bottom", tier: "A", basePrice: 34000, emoji: "👗", style: { color: "#ff7675", border: "none" } },
-        { id: "BTM_007", name: "카고 포켓 조거", category: "Bottom", tier: "A", basePrice: 41000, emoji: "👖", style: { color: "#2bcbba", border: "none" } },
-        { id: "BTM_008", name: "고딕 레더 미니 스커트", category: "Bottom", tier: "S", basePrice: 66000, emoji: "👗", style: { color: "#1e272e", border: "none" } },
-        { id: "BTM_009", name: "스트릿 워크웨어 버클", category: "Bottom", tier: "S", basePrice: 70000, emoji: "👖", style: { color: "#485460", border: "none" } },
-        { id: "BTM_010", name: "코듀로이 롱스커트", category: "Bottom", tier: "A", basePrice: 38000, emoji: "👗", style: { color: "#d2dae2", border: "none" } },
-        { id: "BTM_011", name: "크리스탈 메쉬 타이즈", category: "Bottom", tier: "SS", basePrice: 110000, emoji: "💎", style: { color: "#00d2d3", border: "none" } },
-        { id: "BTM_012", name: "홀로그램 조거 팬츠", category: "Bottom", tier: "SS", basePrice: 120000, emoji: "🛸", style: { color: "#a55eea", border: "none" } },
-        { id: "BTM_013", name: "에스닉 오리엔탈 랩", category: "Bottom", tier: "S", basePrice: 72000, emoji: "👗", style: { color: "#ff9f43", border: "none" } },
-        { id: "BTM_014", name: "로열 골드 자수 플레어", category: "Bottom", tier: "SSS", basePrice: 210000, emoji: "⚜️", style: { color: "#ffdd59", border: "3px solid #ff5e57" } },
-        { id: "BTM_015", name: "루즈핏 트레이닝 바지", category: "Bottom", tier: "C", basePrice: 9500, emoji: "👖", style: { color: "#747d8c", border: "none" } },
-        { id: "BTM_016", name: "하이웨스트 린넨 팬츠", category: "Bottom", tier: "B", basePrice: 15500, emoji: "👖", style: { color: "#f1f2f6", border: "1px solid #ddd" } },
-
-        // ■ 원피스 (Dress) - 16종 (상의/하의와 교차 검사)
-        { id: "DRS_001", name: "에이프런 홈드레스", category: "Dress", tier: "C", basePrice: 9000, emoji: "👗", style: { color: "#ffeaa7", border: "2px solid #ddd" } },
-        { id: "DRS_002", name: "깅엄 체크 멜빵원피스", category: "Dress", tier: "B", basePrice: 17000, emoji: "👗", style: { color: "#ff7675", border: "none" } },
-        { id: "DRS_003", name: "플로럴 쉬폰 롱드레스", category: "Dress", tier: "B", basePrice: 19000, emoji: "👗", style: { color: "#fd79a8", border: "none" } },
-        { id: "DRS_004", name: "세일러 마린 원피스", category: "Dress", tier: "B", basePrice: 22000, emoji: "👗", style: { color: "#0984e3", border: "none" } },
-        { id: "DRS_005", name: "모던 셔츠 원피스", category: "Dress", tier: "C", basePrice: 9800, emoji: "👗", style: { color: "#dfe6e9", border: "1px solid #ddd" } },
-        { id: "DRS_006", name: "트위드 골드버튼 룩", category: "Dress", tier: "A", basePrice: 42000, emoji: "👗", style: { color: "#2d3436", border: "2px solid #f1c40f" } },
-        { id: "DRS_007", name: "데님 코듀로이 멜빵", category: "Dress", tier: "A", basePrice: 45000, emoji: "👗", style: { color: "#74b9ff", border: "none" } },
-        { id: "DRS_008", name: "고딕 로리타 드레스", category: "Dress", tier: "S", basePrice: 85000, emoji: "🧛‍♀️", style: { color: "#1e272e", border: "2px solid #ff7675" } },
-        { id: "DRS_009", name: "머메이드 실크 드레스", category: "Dress", tier: "S", basePrice: 92000, emoji: "🧜‍♀️", style: { color: "#00dec9", border: "none" } },
-        { id: "DRS_010", name: "보헤미안 로브 원피스", category: "Dress", tier: "A", basePrice: 38000, emoji: "👗", style: { color: "#e67e22", border: "none" } },
-        { id: "DRS_011", name: "테크웨어 하네스 드레스", category: "Dress", tier: "SS", basePrice: 140000, emoji: "⛓️", style: { color: "#2d3436", border: "2px solid #55efc4" } },
-        { id: "DRS_012", name: "미드나잇 파티 드레스", category: "Dress", tier: "SS", basePrice: 160000, emoji: "🍷", style: { color: "#6c5ce7", border: "none" } },
-        { id: "DRS_013", name: "전통 리치 치파오", category: "Dress", tier: "S", basePrice: 88000, emoji: "🧧", style: { color: "#d63031", border: "none" } },
-        { id: "DRS_014", name: "순백의 실크 드레스", category: "Dress", tier: "SSS", basePrice: 280000, emoji: "👰", style: { color: "#ffffff", border: "3px solid #ffdd59" } },
-        { id: "DRS_015", name: "니트 레이어드 원피스", category: "Dress", tier: "C", basePrice: 12000, emoji: "👗", style: { color: "#b2bec3", border: "none" } },
-        { id: "DRS_016", name: "스포티 스트라이프 드레스", category: "Dress", tier: "B", basePrice: 18000, emoji: "👗", style: { color: "#2bcbba", border: "none" } },
-
-        // ■ 가방 (Bag) - 10종
-        { id: "BAG_001", name: "에코 캔버스 백", category: "Bag", tier: "C", basePrice: 6000, emoji: "👜" },
-        { id: "BAG_002", name: "파스텔 미니 크로스백", category: "Bag", tier: "B", basePrice: 14500, emoji: "👛" },
-        { id: "BAG_003", name: "캐주얼 나일론 백팩", category: "Bag", tier: "B", basePrice: 17000, emoji: "🎒" },
-        { id: "BAG_004", name: "퀼팅 하트 체인백", category: "Bag", tier: "B", basePrice: 19500, emoji: "👜" },
-        { id: "BAG_005", name: "베이직 메신저 백", category: "Bag", tier: "C", basePrice: 8000, emoji: "💼" },
-        { id: "BAG_006", name: "스터드 락 힙색", category: "Bag", tier: "A", basePrice: 33000, emoji: "🎒" },
-        { id: "BAG_007", name: "라탄 웨이브 버킷백", category: "Bag", tier: "A", basePrice: 36000, emoji: "👜" },
-        { id: "BAG_008", name: "모노그램 미디움 토트", category: "Bag", tier: "S", basePrice: 70000, emoji: "👜" },
-        { id: "BAG_009", name: "은하수 하이 클러치", category: "Bag", tier: "SSS", basePrice: 230000, emoji: "👛" },
-        { id: "BAG_010", name: "매트블랙 가죽 벨트백", category: "Bag", tier: "SS", basePrice: 135000, emoji: "🎒" },
-
-        // ■ 신발 (Shoes) - 10종
-        { id: "SHS_001", name: "화이트 베이직 단화", category: "Shoes", tier: "C", basePrice: 5000, emoji: "👟", style: { color: "#ffffff" } },
-        { id: "SHS_002", name: "캔버스 로우탑", category: "Shoes", tier: "B", basePrice: 13500, emoji: "👟", style: { color: "#ff7675" } },
-        { id: "SHS_003", name: "러블리 메리제인 구두", category: "Shoes", tier: "B", basePrice: 16000, emoji: "👠", style: { color: "#e74c3c" } },
-        { id: "SHS_004", name: "클래식 가죽 로퍼", category: "Shoes", tier: "B", basePrice: 18500, emoji: "👞", style: { color: "#8e573a" } },
-        { id: "SHS_005", name: "편안한 홈 슬리퍼", category: "Shoes", tier: "C", basePrice: 4000, emoji: "👡", style: { color: "#ffeaa7" } },
-        { id: "SHS_006", name: "청키 플랫폼 워커", category: "Shoes", tier: "A", basePrice: 36000, emoji: "🥾", style: { color: "#2d3436" } },
-        { id: "SHS_007", name: "벨크로 하이탑", category: "Shoes", tier: "A", basePrice: 39000, emoji: "👟", style: { color: "#74b9ff" } },
-        { id: "SHS_008", name: "스웨이드 첼시 부츠", category: "Shoes", tier: "S", basePrice: 72000, emoji: "👢", style: { color: "#d2dae2" } },
-        { id: "SHS_009", name: "리플렉티브 러너", category: "Shoes", tier: "SS", basePrice: 125000, emoji: "👟", style: { color: "#00cec9" } },
-        { id: "SHS_010", name: "유리구두 크리스탈", category: "Shoes", tier: "SSS", basePrice: 250000, emoji: "👠", style: { color: "#74b9ff" } },
-
-        // ■ 양말 (Socks) - 6종
-        { id: "SOX_001", name: "베이직 발목양말", category: "Socks", tier: "C", basePrice: 2000, emoji: "🧦", style: { color: "#ffffff" } },
-        { id: "SOX_002", name: "스포티 라인 미들 삭스", category: "Socks", tier: "B", basePrice: 4500, emoji: "🧦", style: { color: "#00cec9" } },
-        { id: "SOX_003", name: "레이스 프릴 공주 양말", category: "Socks", tier: "B", basePrice: 5500, emoji: "🧦", style: { color: "#ffb6c1" } },
-        { id: "SOX_004", name: "트렌디 스트릿 니삭스", category: "Socks", tier: "A", basePrice: 9000, emoji: "🧦", style: { color: "#2d3436" } },
-        { id: "SOX_005", name: "컬러풀 타이다이 크루", category: "Socks", tier: "A", basePrice: 12000, emoji: "🧦", style: { color: "#fd79a8" } },
-        { id: "SOX_006", name: "네온 홀로그램 삭스", category: "Socks", tier: "SS", basePrice: 30000, emoji: "🧦", style: { color: "#55efc4" } },
-
-        // ■ 목걸이 (Necklace) - 6종
-        { id: "NEC_001", name: "은빛 가죽 초커", category: "Necklace", tier: "C", basePrice: 3000, emoji: "📿" },
-        { id: "NEC_002", name: "실버 레이어 체인", category: "Necklace", tier: "B", basePrice: 6500, emoji: "📿" },
-        { id: "NEC_003", name: "하트 락 미니 펜던트", category: "Necklace", tier: "B", basePrice: 8000, emoji: "📿" },
-        { id: "NEC_004", name: "에메랄드 앤티크 초커", category: "Necklace", tier: "A", basePrice: 18000, emoji: "📿" },
-        { id: "NEC_005", name: "오팔 글래스 스타라이트", category: "Necklace", tier: "S", basePrice: 32000, emoji: "📿" },
-        { id: "NEC_006", name: "로열 다이아몬드 네클리스", category: "Necklace", tier: "SSS", basePrice: 140000, emoji: "💎" },
-
-        // ■ 귀걸이 (Earrings) - 6종
-        { id: "EAR_001", name: "스틸 미니 볼 이어링", category: "Earrings", tier: "C", basePrice: 2000, emoji: "👂" },
-        { id: "EAR_002", name: "은빛 링 귀걸이", category: "Earrings", tier: "B", basePrice: 5000, emoji: "👂" },
-        { id: "EAR_003", name: "키치 베어 드롭 이어링", category: "Earrings", tier: "B", basePrice: 7000, emoji: "👂" },
-        { id: "EAR_004", name: "크리스탈 샹들리에 귀걸이", category: "Earrings", tier: "A", basePrice: 16000, emoji: "👂" },
-        { id: "EAR_005", name: "로즈골드 리프 드롭", category: "Earrings", tier: "S", basePrice: 28000, emoji: "👂" },
-        { id: "EAR_006", name: "성좌 아쿠아마린 크리스탈", category: "Earrings", tier: "SS", basePrice: 65000, emoji: "💎" }
-    ];
-
-    /* ==========================================
-       2. 상태값(State) 및 초기화 구조
-       ========================================== */
-    let users = JSON.parse(localStorage.getItem('petit_users')) || {};
-    let currentUser = null;
-    let gameState = {
-        name: "",
-        gender: "",
-        wallet: 100000,
-        inventory: [], // 보유 중인 의상 아이템 인스턴스 { instanceId, dbId, buyPrice, currentPrice, trend: "" }
+  <script>
+    // --- 1. 전역 상태 관리 객체 (State) ---
+    const AppState = {
+      user: {
+        id: "",
+        name: "러블리치비",
+        gender: "female",
+        balance: 100000,
+        inventory: [], // 소유 중인 아이템 인스턴스 { instanceId, id, currentPrice, purchasePrice }
         equipped: {
-            Hair: "HAIR_001",
-            Top: "TOP_001",
-            Bottom: "BTM_001",
-            Dress: null,
-            Shoes: null,
-            Bag: null,
-            Socks: null,
-            Necklace: null,
-            Earrings: null
+          hair: null, top: null, bottom: null, dress: null,
+          shoes: null, socks: null, accessory: null, bag: null
         }
+      },
+      currentWardrobeTab: 'all',
+      marketPrices: {} // 실시간 시세 기록 { itemId: { current, change, trend } }
     };
 
-    // 카테고리 정보 정리
-    const categories = [
-        { key: "Hair", name: "헤어" },
-        { key: "Top", name: "상의" },
-        { key: "Bottom", name: "하의" },
-        { key: "Dress", name: "원피스" },
-        { key: "Bag", name: "가방" },
-        { key: "Shoes", name: "신발" },
-        { key: "Socks", name: "양말" },
-        { key: "Necklace", name: "목걸이" },
-        { key: "Earrings", name: "귀걸이" }
-    ];
-    let activeTab = "Hair";
+    // --- 2. 아이템 기본 데이터베이스 (Item DB) ---
+    // CSS 드로잉 정보(cssRender)가 포함되어 무점검 즉시 렌더링을 보장합니다.
+    const ITEM_DATABASE = {
+      // 💇 헤어 카테고리
+      'hair_c_black': { id: 'hair_c_black', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 8000, cssBack: 'bg-neutral-800 w-[120px] h-[130px] rounded-b-3xl absolute top-[20px] left-[30px]', cssFront: 'bg-neutral-800 w-[114px] h-[36px] rounded-b-xl absolute top-[20px] left-[33px]' },
+      'hair_b_brown': { id: 'hair_b_brown', name: '밀크브라운 번 헤어', category: 'hair', grade: 'B', basePrice: 15000, cssBack: 'bg-amber-800 w-[70px] h-[70px] rounded-full absolute top-1.5 left-[55px]', cssFront: 'bg-amber-800 w-[112px] h-[40px] rounded-b-2xl absolute top-5 left-[34px]' },
+      'hair_a_twintail': { id: 'hair_a_twintail', name: '라벤더 양갈래 헤어', category: 'hair', grade: 'A', basePrice: 28000, cssBack: 'bg-indigo-300 w-[120px] h-[140px] rounded-b-[40px] absolute top-[20px] left-[30px] shadow-sm', cssFront: 'bg-indigo-300 w-[112px] h-[35px] rounded-b-3xl absolute top-[20px] left-[34px] border-b-2 border-indigo-400' },
+      'hair_ss_pink': { id: 'hair_ss_pink', name: '딸기우유 더블번', category: 'hair', grade: 'SS', basePrice: 55000, cssBack: 'bg-rose-300 w-[125px] h-[145px] rounded-b-[45px] absolute top-[20px] left-[27px]', cssFront: 'bg-rose-300 w-[114px] h-[42px] rounded-b-[24px] absolute top-[20px] left-[33px] border-b border-rose-400' },
+      'hair_sss_cyber': { id: 'hair_sss_cyber', name: '네온 홀로그램 트윈', category: 'hair', grade: 'SSS', basePrice: 120000, cssBack: 'bg-sky-300 w-[120px] h-[160px] rounded-b-[50px] absolute top-[18px] left-[30px] shadow-cyan-300 shadow-md', cssFront: 'bg-sky-300 w-[114px] h-[40px] rounded-b-3xl absolute top-[20px] left-[33px] border-b-2 border-cyan-400' },
 
-    /* ==========================================
-       3. 로그인 및 회원가입 관련 함수
-       ========================================== */
-    function handleSignup() {
-        const id = document.getElementById('authId').value.trim();
-        const pw = document.getElementById('authPw').value.trim();
-        if(!id || !pw) {
-            alert("아이디와 비밀번호를 빠짐없이 입력해 주세요.");
-            return;
-        }
-        if(users[id]) {
-            alert("이미 가입된 아이디입니다.");
-            return;
-        }
-        users[id] = { pw: pw, profileSaved: false, data: null };
-        localStorage.setItem('petit_users', JSON.stringify(users));
-        alert("회원가입이 완료되었습니다! 로그인을 진행해 주세요.");
+      // 👕 상의 카테고리
+      'top_c_white': { id: 'top_c_white', name: '흰색 데일리 반팔', category: 'top', grade: 'C', basePrice: 5000, css: 'bg-white w-[52px] h-[26px] absolute top-[154px] left-[64px] rounded-b-md border border-neutral-300' },
+      'top_b_sailor': { id: 'top_b_sailor', name: '스쿨 세일러 카라', category: 'top', grade: 'B', basePrice: 18000, css: 'bg-blue-100 w-[54px] h-[28px] absolute top-[153px] left-[63px] rounded-b-lg border-2 border-blue-400' },
+      'top_a_hood': { id: 'top_a_hood', name: '라임 스트릿 후드', category: 'top', grade: 'A', basePrice: 32000, css: 'bg-lime-400 w-[58px] h-[32px] absolute top-[151px] left-[61px] rounded-b-xl border border-lime-500' },
+      'top_ss_blouse': { id: 'top_ss_blouse', name: '러플 실크 블라우스', category: 'top', grade: 'SS', basePrice: 65000, css: 'bg-pink-100 w-[54px] h-[30px] absolute top-[152px] left-[63px] rounded-b-xl border-t-4 border-pink-300 border-x border-b border-pink-200' },
+
+      // 👖 하의 카테고리
+      'bottom_c_pants': { id: 'bottom_c_pants', name: '트레이닝 트랙바지', category: 'bottom', grade: 'C', basePrice: 5000, css: 'bg-zinc-500 w-[42px] h-[36px] absolute top-[180px] left-[69px] rounded-b-sm border border-neutral-600' },
+      'bottom_b_skirt': { id: 'bottom_b_skirt', name: '파스텔 테니스 스커트', category: 'bottom', grade: 'B', basePrice: 12000, css: 'bg-sky-200 w-[50px] h-[30px] absolute top-[180px] left-[65px] rounded-b-xl border-b-4 border-sky-400' },
+      'bottom_a_jeans': { id: 'bottom_a_jeans', name: '크롭 데님 진', category: 'bottom', grade: 'A', basePrice: 26000, css: 'bg-indigo-400 w-[44px] h-[40px] absolute top-[180px] left-[68px] rounded-b-md border border-indigo-600' },
+      'bottom_ss_frill': { id: 'bottom_ss_frill', name: '앤틱 하트 프릴스커트', category: 'bottom', grade: 'SS', basePrice: 58000, css: 'bg-pink-400 w-[54px] h-[34px] absolute top-[180px] left-[63px] rounded-b-[18px] border-b-4 border-white' },
+
+      // 👗 원피스 카테고리 (장착 시 기존 상/하의 해제)
+      'dress_a_gothic': { id: 'dress_a_gothic', name: '고딕 메이드 로리타', category: 'dress', grade: 'A', basePrice: 42000, css: 'bg-neutral-800 w-[60px] h-[66px] absolute top-[152px] left-[60px] rounded-b-[24px] border-b-8 border-white border-x-2 border-t border-neutral-900 shadow-lg' },
+      'dress_ss_princess': { id: 'dress_ss_princess', name: '로즈가든 쉬폰 드레스', category: 'dress', grade: 'SS', basePrice: 85000, css: 'bg-pink-200 w-[64px] h-[70px] absolute top-[151px] left-[58px] rounded-b-[30px] border-b-8 border-pink-400 border-x border-pink-300' },
+      'dress_sss_galaxy': { id: 'dress_sss_galaxy', name: '밀키웨이 밤하늘 가운', category: 'dress', grade: 'SSS', basePrice: 195000, css: 'bg-indigo-950 w-[66px] h-[74px] absolute top-[150px] left-[57px] rounded-b-[32px] border-b-[10px] border-amber-300 shadow-indigo-500 shadow-lg' },
+
+      // 👟 신발 카테고리
+      'shoes_c_sneakers': { id: 'shoes_c_sneakers', name: '클래식 스니커즈', category: 'shoes', grade: 'C', basePrice: 4000, css: 'bg-white w-12 h-6 absolute top-[230px] left-[66px] rounded-b-full border border-neutral-300' },
+      'shoes_a_boots': { id: 'shoes_a_boots', name: '블랙 가죽 레이스업', category: 'shoes', grade: 'A', basePrice: 22000, css: 'bg-neutral-900 w-12 h-8 absolute top-[228px] left-[66px] rounded-b-md border-b-4 border-red-500' },
+      'shoes_ss_bunny': { id: 'shoes_ss_bunny', name: '폭신폭신 토끼 슬리퍼', category: 'shoes', grade: 'SS', basePrice: 48000, css: 'bg-pink-100 w-[50px] h-7 absolute top-[229px] left-[65px] rounded-b-xl border-t-2 border-pink-300 shadow-sm' },
+
+      // 🎀 액세서리 및 잡화 카테고리
+      'accessory_b_ribbon': { id: 'accessory_b_ribbon', name: '레드 벨벳 헤어리본', category: 'accessory', grade: 'B', basePrice: 9000, css: 'bg-red-500 w-20 h-4 absolute top-[18px] left-[50px] rounded-full shadow-md' },
+      'accessory_a_catears': { id: 'accessory_a_catears', name: '네코 네온 귓속말 귀', category: 'accessory', grade: 'A', basePrice: 25000, css: 'bg-zinc-800 w-24 h-6 absolute top-[15px] left-[48px] rounded-full border-t-4 border-cyan-300' },
+      'accessory_sss_angel': { id: 'accessory_sss_angel', name: '수호천사 홀리 윙', category: 'accessory', grade: 'SSS', basePrice: 150000, css: 'bg-gradient-to-r from-amber-100 to-white w-[184px] h-10 absolute top-[120px] left-[-2px] rounded-full shadow-yellow-200 shadow-md opacity-90' },
+      
+      'bag_ss_heart': { id: 'bag_ss_heart', name: '하트 글리터 크로스백', category: 'bag', grade: 'SS', basePrice: 52000, css: 'bg-rose-400 w-8 h-8 absolute top-[176px] left-[44px] rounded-full border border-pink-300' }
+    };
+
+    // 등급별 컬러링 스타일 맵
+    const GRADE_COLORS = {
+      'C': { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' },
+      'B': { bg: 'bg-teal-400', border: 'border-teal-400', text: 'text-teal-600' },
+      'A': { bg: 'bg-blue-400', border: 'border-blue-400', text: 'text-blue-600' },
+      'S': { bg: 'bg-purple-400', border: 'border-purple-400', text: 'text-purple-600' },
+      'SS': { bg: 'bg-pink-400', border: 'border-pink-400', text: 'text-pink-600' },
+      'SSS': { bg: 'bg-gradient-to-r from-amber-400 to-yellow-500', border: 'border-yellow-500', text: 'text-yellow-600' }
+    };
+
+    // --- 3. 유틸리티 함수 및 초기화 ---
+    function formatMoney(num) {
+      return Number(num).toLocaleString('ko-KR');
     }
 
+    function initMarketPrices() {
+      for (let key in ITEM_DATABASE) {
+        AppState.marketPrices[key] = {
+          current: ITEM_DATABASE[key].basePrice,
+          change: 0,
+          trend: 'flat'
+        };
+      }
+    }
+
+    // --- 4. 로그인 및 캐릭터 세팅 흐름 ---
     function handleLogin() {
-        const id = document.getElementById('authId').value.trim();
-        const pw = document.getElementById('authPw').value.trim();
-        if(!id || !pw) {
-            alert("아이디와 비밀번호를 입력해 주세요.");
-            return;
-        }
-        if(!users[id] || users[id].pw !== pw) {
-            alert("아이디 또는 비밀번호가 틀렸습니다.");
-            return;
-        }
-        currentUser = id;
-        document.getElementById('authScreen').style.display = 'none';
-
-        // 이미 기존에 생성된 캐릭터 데이터가 있는 경우
-        if(users[currentUser].profileSaved) {
-            gameState = users[currentUser].data;
-            startGame();
-        } else {
-            // 신규 유저는 프로필 생성 단계로 진입
-            document.getElementById('profileSetupModal').style.display = 'flex';
-        }
+      const id = document.getElementById('login-id').value;
+      if (!id) return alert("아이디를 입력해주세요.");
+      AppState.user.id = id;
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('screen-name').classList.remove('hidden');
     }
 
-    function selectGender(gender) {
-        document.getElementById('genderMale').classList.remove('active');
-        document.getElementById('genderFemale').classList.remove('active');
-        if(gender === 'Male') document.getElementById('genderMale').classList.add('active');
-        else document.getElementById('genderFemale').classList.add('active');
-        gameState.gender = gender;
+    function handleSaveName() {
+      const name = document.getElementById('user-nickname').value.trim();
+      if (!name) return alert("닉네임을 지정해주세요.");
+      AppState.user.name = name;
+      document.getElementById('screen-name').classList.add('hidden');
+      document.getElementById('screen-gender').classList.remove('hidden');
     }
 
-    function completeProfileSetup() {
-        const name = document.getElementById('userNameInput').value.trim();
-        if(!name) {
-            alert("이름을 입력하세요.");
-            return;
-        }
-        if(!gameState.gender) {
-            alert("성별을 선택하세요.");
-            return;
-        }
-        gameState.name = name;
-        gameState.wallet = 100000;
-        
-        // 초기 3개 지급 아이템 인벤토리에 강제 주입
-        gameState.inventory = [
-            { instanceId: generateId(), dbId: "HAIR_001", currentPrice: 5000, trend: "" },
-            { instanceId: generateId(), dbId: "TOP_001", currentPrice: 5000, trend: "" },
-            { instanceId: generateId(), dbId: "BTM_001", currentPrice: 5000, trend: "" }
-        ];
-        
-        // 착용 상태 기본 매핑
-        gameState.equipped = {
-            Hair: "HAIR_001",
-            Top: "TOP_001",
-            Bottom: "BTM_001",
-            Dress: null,
-            Shoes: null,
-            Bag: null,
-            Socks: null,
-            Necklace: null,
-            Earrings: null
+    function handleSelectGender(gender) {
+      AppState.user.gender = gender;
+      
+      // UI 상 텍스트 갱신
+      document.getElementById('display-name').innerText = AppState.user.name;
+      document.getElementById('display-gender').innerText = gender === 'female' ? '여' : '남';
+      updateUIBalance();
+
+      // 성별에 맞는 초기 기본 아이템 인벤토리에 강제 주입 & 자동 착용
+      const defaultHair = spawnItem('hair_c_black');
+      const defaultTop = spawnItem('top_c_white');
+      const defaultBottom = spawnItem('bottom_c_pants');
+      
+      equipItem(defaultHair);
+      equipItem(defaultTop);
+      equipItem(defaultBottom);
+
+      document.getElementById('screen-gender').classList.add('hidden');
+      initMarketPrices();
+      
+      // 시세 변동 1초 루프 활성화
+      setInterval(runMarketTicker, 1000);
+    }
+
+    // 아이템 인스턴스 생성 헬퍼
+    function spawnItem(itemId) {
+      const baseItem = ITEM_DATABASE[itemId];
+      const instanceId = 'inst_' + Math.random().toString(36).substr(2, 9);
+      const newInstance = {
+        instanceId: instanceId,
+        id: itemId,
+        purchasePrice: baseItem.basePrice
+      };
+      AppState.user.inventory.push(newInstance);
+      return newInstance;
+    }
+
+    function updateUIBalance() {
+      document.getElementById('display-balance').innerText = formatMoney(AppState.user.balance);
+    }
+
+    // --- 5. Pure CSS 캐릭터 옷장 장착 엔진 ---
+    function equipItem(itemInstance) {
+      const itemData = ITEM_DATABASE[itemInstance.id];
+      const category = itemData.category;
+
+      // 규칙: 원피스(dress) 착용 시 상/하의 해제
+      if (category === 'dress') {
+        AppState.user.equipped.top = null;
+        AppState.user.equipped.bottom = null;
+        AppState.user.equipped.dress = itemInstance;
+      } else if (category === 'top' || category === 'bottom') {
+        AppState.user.equipped.dress = null;
+        AppState.user.equipped[category] = itemInstance;
+      } else {
+        AppState.user.equipped[category] = itemInstance;
+      }
+
+      renderAvatar();
+    }
+
+    function unequipItem(category) {
+      AppState.user.equipped[category] = null;
+      renderAvatar();
+    }
+
+    function renderAvatar() {
+      const eq = AppState.user.equipped;
+
+      // 1. 헤어 파트
+      const layerHairBack = document.getElementById('layer-hair-back');
+      const layerHairFront = document.getElementById('layer-hair-front');
+      if (eq.hair) {
+        const hData = ITEM_DATABASE[eq.hair.id];
+        layerHairBack.innerHTML = `<div class="${hData.cssBack}"></div>`;
+        layerHairFront.innerHTML = `<div class="${hData.cssFront}"></div>`;
+      } else {
+        layerHairBack.innerHTML = '';
+        layerHairFront.innerHTML = '';
+      }
+
+      // 2. 상의 파트
+      const layerTop = document.getElementById('layer-top');
+      if (eq.top) {
+        const tData = ITEM_DATABASE[eq.top.id];
+        layerTop.innerHTML = `<div class="${tData.css}"></div>`;
+      } else {
+        layerTop.innerHTML = '';
+      }
+
+      // 3. 하의 파트
+      const layerBottom = document.getElementById('layer-bottom');
+      if (eq.bottom) {
+        const bData = ITEM_DATABASE[eq.bottom.id];
+        layerBottom.innerHTML = `<div class="${bData.css}"></div>`;
+      } else {
+        layerBottom.innerHTML = '';
+      }
+
+      // 4. 원피스 파트
+      const layerDress = document.getElementById('layer-dress');
+      if (eq.dress) {
+        const dData = ITEM_DATABASE[eq.dress.id];
+        layerDress.innerHTML = `<div class="${dData.css}"></div>`;
+      } else {
+        layerDress.innerHTML = '';
+      }
+
+      // 5. 신발 파트
+      const layerShoes = document.getElementById('layer-shoes');
+      if (eq.shoes) {
+        const sData = ITEM_DATABASE[eq.shoes.id];
+        layerShoes.innerHTML = `<div class="${sData.css}"></div>`;
+      } else {
+        layerShoes.innerHTML = '';
+      }
+
+      // 6. 액세서리 파트
+      const layerAccessory = document.getElementById('layer-accessory');
+      if (eq.accessory) {
+        const aData = ITEM_DATABASE[eq.accessory.id];
+        layerAccessory.innerHTML = `<div class="${aData.css}"></div>`;
+      } else {
+        layerAccessory.innerHTML = '';
+      }
+
+      // 7. 가방 파트
+      const layerBag = document.getElementById('layer-bag');
+      if (eq.bag) {
+        const bgData = ITEM_DATABASE[eq.bag.id];
+        layerBag.innerHTML = `<div class="${bgData.css}"></div>`;
+      } else {
+        layerBag.innerHTML = '';
+      }
+    }
+
+    // --- 6. 옷장 모달 렌더링 시스템 ---
+    function openWardrobe() {
+      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
+      filterWardrobe(AppState.currentWardrobeTab);
+    }
+
+    function closeWardrobe() {
+      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
+    }
+
+    function filterWardrobe(category) {
+      AppState.currentWardrobeTab = category;
+      // 탭 액티브 표시 교체
+      const tabs = document.querySelectorAll('#wardrobe-tabs button');
+      tabs.forEach(btn => {
+        btn.classList.replace('bg-brandPink', 'bg-pink-50');
+        btn.classList.replace('text-white', 'text-gray-500');
+      });
+      event.target.classList.replace('bg-pink-50', 'bg-brandPink');
+      event.target.classList.replace('text-gray-500', 'text-white');
+
+      renderWardrobeList();
+    }
+
+    function renderWardrobeList() {
+      const listContainer = document.getElementById('wardrobe-list');
+      listContainer.innerHTML = '';
+
+      const filtered = AppState.user.inventory.filter(inst => {
+        const item = ITEM_DATABASE[inst.id];
+        return AppState.currentWardrobeTab === 'all' || item.category === AppState.currentWardrobeTab;
+      });
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `<div class="col-span-3 text-center py-12 text-xs text-gray-400">아이템이 없어요. 쇼핑몰에서 구매해보세요!</div>`;
+        return;
+      }
+
+      filtered.forEach(inst => {
+        const item = ITEM_DATABASE[inst.id];
+        const isEquipped = checkEquipped(inst.instanceId);
+        const gradeStyle = GRADE_COLORS[item.grade];
+
+        const card = document.createElement('div');
+        card.className = `p-2 bg-pink-50 rounded-2xl flex flex-col items-center border ${isEquipped ? 'border-brandPink bg-pink-100/50' : 'border-pink-200'} relative cursor-pointer hover:scale-[1.03] transition-transform`;
+        card.onclick = () => {
+          if (isEquipped) {
+            unequipItem(item.category);
+          } else {
+            equipItem(inst);
+          }
+          renderWardrobeList();
         };
 
-        // 데이터베이스에 상태 기록
-        users[currentUser].profileSaved = true;
-        users[currentUser].data = gameState;
-        localStorage.setItem('petit_users', JSON.stringify(users));
-
-        document.getElementById('profileSetupModal').style.display = 'none';
-        startGame();
+        // 미니 아이콘 형태의 드로잉 대리체
+        card.innerHTML = `
+          <div class="w-14 h-14 bg-white rounded-xl border border-pink-100 flex items-center justify-center relative overflow-hidden mb-1">
+            <span class="absolute top-1 right-1 text-[8px] font-black ${gradeStyle.text}">${item.grade}</span>
+            <span class="text-2xl">${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : '🎁'}</span>
+          </div>
+          <span class="text-[9px] font-bold text-gray-700 truncate w-full text-center">${item.name}</span>
+          ${isEquipped ? '<span class="absolute top-1 left-1 bg-brandPink text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">착용중</span>' : ''}
+        `;
+        listContainer.appendChild(card);
+      });
     }
 
-    function generateId() {
-        return 'inst_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    /* ==========================================
-       4. 게임 시스템 구동 및 GUI 매핑
-       ========================================== */
-    function startGame() {
-        document.getElementById('roomTitle').textContent = `${gameState.name}의 드레스룸`;
-        updateWalletDisplay();
-        renderAvatar();
-        renderTabMenu();
-        
-        // 1초 주기의 금융 시세 변동 알고리즘 가동
-        setInterval(updateMarketPrices, 1000);
-        
-        // 휴대폰 상단 시간 업데이트
-        setInterval(() => {
-            const now = new Date();
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('phoneTime').textContent = `${now.getHours()}:${minutes}`;
-        }, 10000);
-    }
-
-    function updateWalletDisplay() {
-        const amountStr = gameState.wallet.toLocaleString() + "원";
-        document.getElementById('lobbyWallet').textContent = `잔고: ${amountStr}`;
-        document.getElementById('phoneWallet').textContent = amountStr;
-    }
-
-    // 데이터 저장 유틸리티
-    function saveUserData() {
-        if(currentUser) {
-            users[currentUser].data = gameState;
-            localStorage.setItem('petit_users', JSON.stringify(users));
+    function checkEquipped(instanceId) {
+      for (let cat in AppState.user.equipped) {
+        if (AppState.user.equipped[cat] && AppState.user.equipped[cat].instanceId === instanceId) {
+          return true;
         }
+      }
+      return false;
     }
 
-    /* ==========================================
-       5. 아바타 실시간 그래픽 렌더링 시스템
-       ========================================== */
-    function renderAvatar() {
-        const hair = itemDatabase.find(i => i.id === gameState.equipped.Hair);
-        const top = itemDatabase.find(i => i.id === gameState.equipped.Top);
-        const btm = itemDatabase.find(i => i.id === gameState.equipped.Bottom);
-        const drs = itemDatabase.find(i => i.id === gameState.equipped.Dress);
-        const shs = itemDatabase.find(i => i.id === gameState.equipped.Shoes);
-        const bag = itemDatabase.find(i => i.id === gameState.equipped.Bag);
-        const sox = itemDatabase.find(i => i.id === gameState.equipped.Socks);
-        const nec = itemDatabase.find(i => i.id === gameState.equipped.Necklace);
-        const ear = itemDatabase.find(i => i.id === gameState.equipped.Earrings);
-
-        // A. 머리카락 렌더
-        const elHair = document.getElementById('layerHair');
-        if(hair) {
-            elHair.style.backgroundColor = hair.style.color;
-            elHair.style.borderRadius = "30px 30px 10px 10px";
-            elHair.style.border = "none";
-            elHair.innerHTML = `<span style='font-size:1.4rem; position:relative; top:12px;'>${hair.emoji}</span>`;
-        } else {
-            elHair.style.backgroundColor = "transparent";
-            elHair.innerHTML = "";
-        }
-
-        // B. 상의 렌더
-        const elTop = document.getElementById('layerTop');
-        if(top) {
-            elTop.style.backgroundColor = top.style.color;
-            elTop.style.border = top.style.border || "none";
-            elTop.style.borderRadius = "15px 15px 5px 5px";
-            elTop.innerHTML = `<div style="text-align:center; padding-top:40px; font-weight:bold; font-size:1.1rem; color:rgba(0,0,0,0.3);">${top.emoji}</div>`;
-        } else {
-            elTop.style.backgroundColor = "transparent";
-            elTop.style.border = "none";
-            elTop.innerHTML = "";
-        }
-
-        // C. 하의(바지) 렌더 - 오프셋 보정 적용
-        const elBottom = document.getElementById('layerBottom');
-        if(btm) {
-            elBottom.style.backgroundColor = btm.style.color;
-            elBottom.style.border = btm.style.border || "none";
-            elBottom.style.borderRadius = "5px 5px 15px 15px";
-            elBottom.innerHTML = `<div style="text-align:center; padding-top:40px; font-weight:bold; font-size:1.1rem; color:rgba(0,0,0,0.3);">${btm.emoji}</div>`;
-        } else {
-            elBottom.style.backgroundColor = "transparent";
-            elBottom.style.border = "none";
-            elBottom.innerHTML = "";
-        }
-
-        // D. 원피스 렌더
-        const elDress = document.getElementById('layerDress');
-        if(drs) {
-            elDress.style.backgroundColor = drs.style.color;
-            elDress.style.border = drs.style.border || "none";
-            elDress.style.borderRadius = "15px 15px 30px 30px";
-            elDress.innerHTML = `<div style="text-align:center; padding-top:80px; font-weight:bold; font-size:1.5rem; color:rgba(0,0,0,0.25);">${drs.emoji}</div>`;
-        } else {
-            elDress.style.backgroundColor = "transparent";
-            elDress.style.border = "none";
-            elDress.innerHTML = "";
-        }
-
-        // E. 신발 렌더
-        const elShoes = document.getElementById('layerShoes');
-        if(shs) {
-            elShoes.innerHTML = `
-                <div style="background-color: ${shs.style.color}; border:1px solid rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center;">${shs.emoji}</div>
-                <div style="background-color: ${shs.style.color}; border:1px solid rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center;">${shs.emoji}</div>
-            `;
-        } else {
-            elShoes.innerHTML = "";
-        }
-
-        // F. 가방 렌더
-        const elBag = document.getElementById('layerBag');
-        if(bag) {
-            elBag.textContent = bag.emoji;
-        } else {
-            elBag.textContent = "";
-        }
-
-        // G. 양말 렌더
-        const elSocks = document.getElementById('layerSocks');
-        if(sox) {
-            elSocks.innerHTML = `
-                <div style="background-color: ${sox.style.color}; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; font-size:0.6rem;">${sox.emoji}</div>
-                <div style="background-color: ${sox.style.color}; border:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; justify-content:center; font-size:0.6rem;">${sox.emoji}</div>
-            `;
-        } else {
-            elSocks.innerHTML = "";
-        }
-
-        // H. 목걸이 렌더
-        const elNeck = document.getElementById('layerNecklace');
-        if(nec) {
-            elNeck.textContent = nec.emoji;
-        } else {
-            elNeck.textContent = "";
-        }
-
-        // I. 귀걸이 렌더
-        const elEar = document.getElementById('layerEarrings');
-        if(ear) {
-            elEar.innerHTML = `<div>${ear.emoji}</div><div>${ear.emoji}</div>`;
-        } else {
-            elEar.innerHTML = "";
-        }
+    // --- 7. 스마트폰 핸들러 및 3대 뽑기 쇼핑몰 엔진 ---
+    function openSmartPhone() {
+      document.getElementById('modal-phone').classList.remove('translate-y-full');
     }
 
-    /* ==========================================
-       6. 옷장 인벤토리 렌더링 및 교환 장착 시스템
-       ========================================== */
-    function openCloset() {
-        document.getElementById('closetDrawer').classList.add('open');
-        renderClosetItems();
-    }
-
-    function closeCloset() {
-        document.getElementById('closetDrawer').classList.remove('open');
-    }
-
-    function renderTabMenu() {
-        const menu = document.getElementById('closetTabs');
-        menu.innerHTML = "";
-        categories.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.type = "button";
-            btn.className = `closet-tab ${activeTab === cat.key ? 'active' : ''}`;
-            btn.textContent = cat.name;
-            btn.onclick = () => {
-                activeTab = cat.key;
-                renderTabMenu();
-                renderClosetItems();
-            };
-            menu.appendChild(btn);
-        });
-    }
-
-    function renderClosetItems() {
-        const grid = document.getElementById('closetItemGrid');
-        grid.innerHTML = "";
-
-        // 해당 카테고리에 속하는 소유 중인 고유 인스턴스들 필터링
-        const filteredInstances = gameState.inventory.filter(inst => {
-            const dbItem = itemDatabase.find(db => db.id === inst.dbId);
-            return dbItem && dbItem.category === activeTab;
-        });
-
-        if(filteredInstances.length === 0) {
-            grid.innerHTML = `<div style="grid-column: span 4; text-align:center; color:#999; padding: 40px 0;">보유 중인 아이템이 없습니다.</div>`;
-            return;
-        }
-
-        filteredInstances.forEach(inst => {
-            const dbItem = itemDatabase.find(db => db.id === inst.dbId);
-            if(!dbItem) return;
-
-            const card = document.createElement('div');
-            const isEquipped = gameState.equipped[activeTab] === dbItem.id;
-            card.className = `item-card ${isEquipped ? 'equipped' : ''}`;
-            card.onclick = () => toggleEquip(dbItem);
-
-            card.innerHTML = `
-                <span class="card-tier tier-${dbItem.tier}">${dbItem.tier}</span>
-                <div class="card-emoji">${dbItem.emoji}</div>
-                <div class="card-name">${dbItem.name}</div>
-            `;
-            grid.appendChild(card);
-        });
-    }
-
-    // 아이템 착용/해제 (★원피스 vs 상·하의 인터락 로직 내장)
-    function toggleEquip(dbItem) {
-        const cat = dbItem.category;
-        const currentEquipId = gameState.equipped[cat];
-
-        if(currentEquipId === dbItem.id) {
-            // 이미 착용 중이면 해제 (헤어, 상의, 하의는 알몸 방지를 위해 해제 불가능)
-            if(cat === "Hair" || cat === "Top" || cat === "Bottom") {
-                alert("기본 의상 요소는 빈 상태로 둘 수 없습니다.");
-                return;
-            }
-            gameState.equipped[cat] = null;
-        } else {
-            // 새로 장착하는 경우
-            if(cat === "Dress") {
-                // 원피스를 입는 경우 상의와 하의 자동 전면 해제
-                gameState.equipped.Top = null;
-                gameState.equipped.Bottom = null;
-                gameState.equipped.Dress = dbItem.id;
-            } else if(cat === "Top" || cat === "Bottom") {
-                // 상의 또는 하의를 입는 경우 원피스 자동 해제
-                gameState.equipped.Dress = null;
-                gameState.equipped[cat] = dbItem.id;
-            } else {
-                // 다른 일반 카테고리는 단순 교체
-                gameState.equipped[cat] = dbItem.id;
-            }
-        }
-
-        saveUserData();
-        renderAvatar();
-        renderClosetItems();
-    }
-
-    /* ==========================================
-       7. 📱 가상 핸드폰 시스템 및 각 전용 앱 로직
-       ========================================== */
-    function openPhone() {
-        document.getElementById('phoneModal').style.display = 'flex';
-        goPhoneHome();
-    }
-
-    function closePhone() {
-        document.getElementById('phoneModal').style.display = 'none';
-    }
-
-    function goPhoneHome() {
-        // 홈 화면 표시 및 모든 개별 어플 뷰 숨김
-        document.getElementById('phoneHome').style.display = 'grid';
-        document.querySelectorAll('.app-page').forEach(page => page.style.display = 'none');
+    function closeSmartPhone() {
+      document.getElementById('modal-phone').classList.add('translate-y-full');
+      backToHome();
     }
 
     function openApp(appName) {
-        document.getElementById('phoneHome').style.display = 'none';
-        if(appName === 'abley') document.getElementById('appAbley').style.display = 'flex';
-        else if(appName === 'musinsa') document.getElementById('appMusinsa').style.display = 'flex';
-        else if(appName === 'kream') document.getElementById('appKream').style.display = 'flex';
-        else if(appName === 'joonggo') {
-            document.getElementById('appJoonggo').style.display = 'flex';
-            renderJoonggoMarket();
-        }
+      const container = document.getElementById('phone-app-container');
+      const title = document.getElementById('app-title');
+      const body = document.getElementById('app-body');
+      
+      container.classList.remove('hidden');
+
+      if (appName === 'ably') {
+        title.innerText = '🛍️ 에이블리 뽑기';
+        body.innerHTML = renderShoppingAppHtml('에이블리', 30000, { 'SSS': 0.5, 'SS': 2.5, 'S': 7.0, 'A': 15.0, 'B': 35.0, 'C': 40.0 }, 'bg-pink-600');
+      } else if (appName === 'musinsa') {
+        title.innerText = '🎩 무신사 셀렉트';
+        body.innerHTML = renderShoppingAppHtml('무신사', 50000, { 'SSS': 1.5, 'SS': 4.5, 'S': 10.0, 'A': 24.0, 'B': 40.0, 'C': 20.0 }, 'bg-black');
+      } else if (appName === 'kream') {
+        title.innerText = '⚡ 크림 KREAM 한정판';
+        body.innerHTML = renderShoppingAppHtml('크림(KREAM)', 80000, { 'SSS': 5.0, 'SS': 15.0, 'S': 30.0, 'A': 30.0, 'B': 15.0, 'C': 5.0 }, 'bg-emerald-800');
+      } else if (appName === 'joonggo') {
+        title.innerText = '🤝 중고나라 실시간 매각';
+        renderJoonggoApp();
+      }
     }
 
-    /* ==========================================
-       8. 📊 통계학적 가중치 확률 기반 뽑기(Gacha) 시스템
-       ========================================== */
-    function executeGacha(platform) {
-        let cost = 0;
-        let rates = {};
-
-        if (platform === 'abley') {
-            cost = 30000;
-            rates = { SSS: 0.005, SS: 0.025, S: 0.07, A: 0.15, B: 0.30, C: 0.45 };
-        } else if (platform === 'musinsa') {
-            cost = 50000;
-            rates = { SSS: 0.015, SS: 0.045, S: 0.12, A: 0.22, B: 0.35, C: 0.25 };
-        } else if (platform === 'kream') {
-            cost = 80000;
-            rates = { SSS: 0.04, SS: 0.10, S: 0.21, A: 0.30, B: 0.25, C: 0.10 };
-        }
-
-        if (gameState.wallet < cost) {
-            alert("보유 잔고가 부족하여 뽑기를 구매할 수 없습니다.");
-            return;
-        }
-
-        // 잔고 차감
-        gameState.wallet -= cost;
-        updateWalletDisplay();
-
-        // 1단계: 통계 확률에 따른 등급(Tier) 무작위 추출
-        const tier = selectTierWeighted(rates);
-        
-        // 2단계: 플랫폼의 정체성에 최적화된 카테고리 풀 필터링
-        let pool = [];
-        if (platform === 'abley') {
-            // 귀여운 장식, 화려한 헤어, 장신구 카테고리 집중
-            pool = itemDatabase.filter(i => i.tier === tier && ["Hair", "Necklace", "Earrings", "Socks"].includes(i.category));
-        } else if (platform === 'musinsa') {
-            // 데일리 캐주얼 의류, 스니커즈 집중
-            pool = itemDatabase.filter(i => i.tier === tier && ["Top", "Bottom", "Shoes"].includes(i.category));
-        } else if (platform === 'kream') {
-            // 하이엔드 원피스, 럭셔리 레더 가방 위주 집중
-            pool = itemDatabase.filter(i => i.tier === tier && ["Dress", "Bag"].includes(i.category));
-        }
-
-        // 예외 대응: 해당하는 조건 풀이 부재 시 전체 디비에서 등급 기반 강제 폴백
-        if (pool.length === 0) {
-            pool = itemDatabase.filter(i => i.tier === tier);
-        }
-
-        // 3단계: 최종 당첨 아이템 선정 및 소유 인스턴스 생성
-        const luckyItem = pool[Math.floor(Math.random() * pool.length)];
-        const newInstance = {
-            instanceId: generateId(),
-            dbId: luckyItem.id,
-            currentPrice: luckyItem.basePrice,
-            trend: ""
-        };
-
-        gameState.inventory.push(newInstance);
-        saveUserData();
-
-        // 4단계: 당첨 모달 활성화 및 UI 갱신
-        showGachaResult(luckyItem);
+    function backToHome() {
+      document.getElementById('phone-app-container').classList.add('hidden');
     }
 
-    // 누적 가중 분포 룰렛 알고리즘
-    function selectTierWeighted(rates) {
-        const rand = Math.random();
-        let cumulative = 0;
-        
-        // 정렬 순서대로 가중합 누적 탐색
-        const order = ["SSS", "SS", "S", "A", "B", "C"];
-        for (let tier of order) {
-            cumulative += rates[tier];
-            if (rand <= cumulative) {
-                return tier;
-            }
-        }
-        return "C";
+    function renderShoppingAppHtml(name, price, odds, themeClass) {
+      return `
+        <div class="text-white text-center flex flex-col items-center py-6 h-full justify-between">
+          <div>
+            <h4 class="text-xl font-extrabold text-pink-200 mb-1">${name}</h4>
+            <p class="text-xs text-neutral-400">매우 희귀한 템들을 획득해보세요!</p>
+          </div>
+          
+          <div class="my-6 bg-neutral-800/80 p-4 rounded-2xl w-full border border-neutral-700 max-w-[280px]">
+            <span class="text-xs font-bold block text-neutral-400 mb-2">획득 등급 확률 정보</span>
+            <div class="grid grid-cols-3 gap-2 text-[10px]">
+              ${Object.entries(odds).map(([g, o]) => `
+                <div class="bg-neutral-900 rounded-lg p-1.5 border border-neutral-700">
+                  <span class="font-bold">${g}등급</span> : <span class="text-pink-400 font-mono">${o}%</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="w-full max-w-[280px]">
+            <div class="text-xs text-yellow-300 mb-2">내 계좌 잔고: ${formatMoney(AppState.user.balance)}원</div>
+            <button onclick="handleGacha('${name}', ${price}, ${JSON.stringify(odds).replace(/"/g, '&quot;')})" class="w-full ${themeClass} hover:brightness-110 active:scale-95 transition-all text-white font-black py-4 rounded-2xl shadow-lg text-sm">
+              ${formatMoney(price)}원 결제하고 뽑기
+            </button>
+          </div>
+        </div>
+      `;
     }
 
-    function showGachaResult(item) {
-        document.getElementById('resTier').className = `gacha-tier-badge tier-${item.tier}`;
-        document.getElementById('resTier').textContent = `${item.tier}등급`;
-        document.getElementById('resEmoji').textContent = item.emoji;
-        document.getElementById('resName').textContent = item.name;
-        document.getElementById('gachaResultOverlay').style.display = 'flex';
+    // 가중치 가챠 확률 추출 로직
+    function handleGacha(appName, cost, odds) {
+      if (AppState.user.balance < cost) {
+        return alert("돈이 부족합니다! 중고나라에 소지품을 판매해보세요.");
+      }
+      
+      AppState.user.balance -= cost;
+      updateUIBalance();
+
+      // 확률 판정
+      const rand = Math.random() * 100;
+      let sum = 0;
+      let selectedGrade = 'C';
+
+      for (let [g, rate] of Object.entries(odds)) {
+        sum += rate;
+        if (rand <= sum) {
+          selectedGrade = g;
+          break;
+        }
+      }
+
+      // 해당 등급 아이템 중 필터링
+      const candidateItems = Object.values(ITEM_DATABASE).filter(i => i.grade === selectedGrade);
+      // 만약 S 등급 등 예외 매칭이 없으면 차상위로 롤백 방지용 전체 매치
+      const randomItem = candidateItems.length > 0 
+        ? candidateItems[Math.floor(Math.random() * candidateItems.length)]
+        : ITEM_DATABASE['hair_c_black'];
+
+      // 인벤토리 생성
+      const newInst = spawnItem(randomItem.id);
+
+      // 가챠 연출 모달 팝업
+      triggerGachaResultModal(randomItem, newInst);
+      
+      // 앱 내의 잔액 텍스트 실시간 동기화
+      openApp(appName === '에이블리' ? 'ably' : appName === '무신사' ? 'musinsa' : 'kream');
+    }
+
+    function triggerGachaResultModal(itemData, inst) {
+      const modal = document.getElementById('gacha-result-modal');
+      const card = document.getElementById('gacha-card');
+      const preview = document.getElementById('gacha-item-preview');
+      const nameTxt = document.getElementById('gacha-item-name');
+      const gradeTxt = document.getElementById('gacha-item-grade');
+      const priceTxt = document.getElementById('gacha-item-price');
+
+      // 이펙트 클래스 세팅
+      const gradeColor = GRADE_COLORS[itemData.grade];
+      gradeTxt.className = `px-3 py-1 rounded-full text-xs font-black text-white mr-1 ${gradeColor.bg}`;
+      gradeTxt.innerText = itemData.grade + " GRADE";
+
+      nameTxt.innerText = itemData.name;
+      priceTxt.innerText = formatMoney(itemData.basePrice);
+
+      // 프리뷰에 아이콘 대입
+      preview.innerHTML = `<span class="text-6xl">${itemData.category === 'hair' ? '💇' : itemData.category === 'top' ? '👕' : itemData.category === 'bottom' ? '👖' : itemData.category === 'dress' ? '👗' : '🎁'}</span>`;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        card.classList.replace('scale-90', 'scale-100');
+      }, 50);
     }
 
     function closeGachaResult() {
-        document.getElementById('gachaResultOverlay').style.display = 'none';
-        renderClosetItems();
+      const modal = document.getElementById('gacha-result-modal');
+      const card = document.getElementById('gacha-card');
+      card.classList.replace('scale-100', 'scale-90');
+      modal.classList.add('hidden');
     }
 
-    /* ==========================================
-       9. 📈 1초 주기 실시간 금융 시세 변동 알고리즘
-       ========================================== */
-    function updateMarketPrices() {
-        if (!currentUser) return;
+    // --- 8. 중고나라 경제 시스템 및 1초 변동 알고리즘 (Random Walk) ---
+    function runMarketTicker() {
+      const banner = document.getElementById('ticker-banner');
+      const itemKeys = Object.keys(ITEM_DATABASE);
+      // 무작위로 한 아이템 선정해서 배너 상단에 1초 단위 시세 실시간 알림 송출
+      const pickedKey = itemKeys[Math.floor(Math.random() * itemKeys.length)];
+      
+      for (let key in AppState.marketPrices) {
+        const itemData = ITEM_DATABASE[key];
+        const oldPrice = AppState.marketPrices[key].current;
+        
+        // [-0.15, 0.15] 범위 무작위 변동률 r
+        const r = (Math.random() * 0.3) - 0.15;
+        let newPrice = oldPrice * (1 + r);
 
-        let changed = false;
+        // 하한가 상한가 경계선 작동
+        const minPrice = itemData.basePrice * 0.4;
+        const maxPrice = itemData.basePrice * 2.5;
 
-        gameState.inventory.forEach(inst => {
-            // 초기 지급 아이템 3종은 실시간 시세 변동 대상에서 예외 처리하여 가치 보존
-            if(["HAIR_001", "TOP_001", "BTM_001"].includes(inst.dbId)) return;
+        if (newPrice < minPrice) newPrice = minPrice;
+        if (newPrice > maxPrice) newPrice = maxPrice;
 
-            const dbItem = itemDatabase.find(db => db.id === inst.dbId);
-            if (!dbItem) return;
+        AppState.marketPrices[key].current = Math.round(newPrice);
+        AppState.marketPrices[key].change = Math.round(newPrice - oldPrice);
+        AppState.marketPrices[key].trend = newPrice >= oldPrice ? 'up' : 'down';
+      }
 
-            // 기하 브라운 운동 기반 변동성 정의
-            let volatility = 0.03; // C, B등급 디폴트 (±3%)
-            if (dbItem.tier === "A" || dbItem.tier === "S") {
-                volatility = 0.10; // A, S등급 (±10%)
-            } else if (dbItem.tier === "SS" || dbItem.tier === "SSS") {
-                volatility = 0.25; // SS, SSS등급 (±25%)
-            }
-
-            // 무작위 걸음 비율 r 계산 (-volatility <= r <= volatility)
-            const r = (Math.random() * (volatility * 2)) - volatility;
-            
-            const oldPrice = inst.currentPrice;
-            const nextPrice = Math.round(oldPrice * (1 + r));
-
-            // 가치 하락 마지노선 최소 500원 보장
-            inst.currentPrice = Math.max(500, nextPrice);
-
-            // 상승/하락 트렌드 추세선 마크
-            if (inst.currentPrice > oldPrice) {
-                inst.trend = "▲";
-            } else if (inst.currentPrice < oldPrice) {
-                inst.trend = "▼";
-            }
-            changed = true;
-        });
-
-        if (changed) {
-            saveUserData();
-            // 중고나라 어플이 현재 열려 있으면 실시간 리렌더링
-            if (document.getElementById('appJoonggo').style.display === 'flex') {
-                renderJoonggoMarket();
-            }
-        }
+      // 변동 전광판 갱신
+      const tickerData = AppState.marketPrices[pickedKey];
+      const tickerItem = ITEM_DATABASE[pickedKey];
+      document.getElementById('ticker-item-name').innerText = `📈 [시세변동] ${tickerItem.name}`;
+      document.getElementById('ticker-item-price').innerHTML = `
+        ${formatMoney(tickerData.current)}원 
+        <span class="${tickerData.trend === 'up' ? 'text-red-400' : 'text-blue-400'}">
+          ${tickerData.trend === 'up' ? '▲' : '▼'}${formatMoney(Math.abs(tickerData.change))}
+        </span>
+      `;
+      banner.classList.replace('opacity-0', 'opacity-100');
+      
+      // 만약 중고나라 앱이 켜져있다면 중고나라 앱 리렌더링
+      const appContainer = document.getElementById('phone-app-container');
+      const appTitle = document.getElementById('app-title');
+      if (!appContainer.classList.contains('hidden') && appTitle.innerText.includes('중고나라')) {
+        renderJoonggoApp();
+      }
     }
 
-    /* ==========================================
-       10. 🤝 중고나라 판매 처리 프로세스
-       ========================================== */
-    function renderJoonggoMarket() {
-        const listContainer = document.getElementById('joonggoList');
-        listContainer.innerHTML = "";
+    function renderJoonggoApp() {
+      const body = document.getElementById('app-body');
+      body.innerHTML = '';
 
-        // 초기 지급품을 제외한 인벤토리 판매 가능 상품 목록 추출
-        const sellableInstances = gameState.inventory.filter(inst => {
-            return !["HAIR_001", "TOP_001", "BTM_001"].includes(inst.dbId);
-        });
+      const items = AppState.user.inventory;
+      if (items.length === 0) {
+        body.innerHTML = `<div class="text-center py-20 text-xs text-neutral-500">인벤토리에 옷이 없네요...</div>`;
+        return;
+      }
 
-        if (sellableInstances.length === 0) {
-            listContainer.innerHTML = `<div style="text-align:center; color:#999; padding:60px 0; font-size:0.9rem;">판매 가능한 커스텀 획득 의상이 없습니다.</div>`;
-            return;
-        }
+      const wrapper = document.createElement('div');
+      wrapper.className = "space-y-3";
 
-        sellableInstances.forEach(inst => {
-            const dbItem = itemDatabase.find(db => db.id === inst.dbId);
-            if(!dbItem) return;
+      items.forEach(inst => {
+        const item = ITEM_DATABASE[inst.id];
+        const mData = AppState.marketPrices[inst.id];
+        const isEquipped = checkEquipped(inst.instanceId);
+        const gradeStyle = GRADE_COLORS[item.grade];
 
-            const row = document.createElement('div');
-            row.className = 'joonggo-item';
+        const row = document.createElement('div');
+        row.className = "bg-neutral-800 p-3 rounded-xl border border-neutral-700 flex justify-between items-center";
+        
+        row.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center text-xl relative">
+              <span class="absolute top-0.5 right-0.5 text-[6px] ${gradeStyle.text}">${item.grade}</span>
+              ${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : '🎁'}
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center">
+                ${item.name}
+                ${isEquipped ? '<span class="ml-1 bg-pink-600 text-[8px] px-1 rounded">착용중</span>' : ''}
+              </div>
+              <div class="text-[10px] text-neutral-400 font-mono">구매가: ${formatMoney(inst.purchasePrice)}원</div>
+            </div>
+          </div>
+          <div class="text-right flex items-center space-x-3">
+            <div>
+              <div class="text-xs font-black text-amber-300 font-mono">${formatMoney(mData.current)}원</div>
+              <div class="text-[9px] font-bold ${mData.trend === 'up' ? 'text-red-400' : 'text-blue-400'} font-mono">
+                ${mData.trend === 'up' ? '▲' : '▼'} ${formatMoney(Math.abs(mData.change))}
+              </div>
+            </div>
+            <button onclick="handleSellItem('${inst.instanceId}')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-3 py-2 rounded-lg transition-transform active:scale-95">
+              판매
+            </button>
+          </div>
+        `;
+        wrapper.appendChild(row);
+      });
 
-            // 트렌드 색상 스타일링
-            let trendClass = "";
-            if (inst.trend === "▲") trendClass = "trend-up";
-            else if (inst.trend === "▼") trendClass = "trend-down";
-
-            row.innerHTML = `
-                <div class="joonggo-meta">
-                    <span class="card-tier tier-${dbItem.tier}" style="position:static; font-size:0.7rem; padding: 2px 6px;">${dbItem.tier}</span>
-                    <div style="font-size:1.6rem;">${dbItem.emoji}</div>
-                    <div class="joonggo-info">
-                        <span class="joonggo-name">${dbItem.name}</span>
-                        <span style="font-size:0.7rem; color:#aaa;">${dbItem.category}</span>
-                    </div>
-                </div>
-                <div class="joonggo-price-section">
-                    <span class="joonggo-price">${inst.currentPrice.toLocaleString()}원</span>
-                    <span class="price-trend ${trendClass}">${inst.trend} ${(inst.trend ? '변동중' : '대기')}</span>
-                    <button type="button" class="sell-btn" onclick="sellItemToJoonggo('${inst.instanceId}', ${inst.currentPrice})">즉시 판매</button>
-                </div>
-            `;
-            listContainer.appendChild(row);
-        });
+      body.appendChild(wrapper);
     }
 
-    function sellItemToJoonggo(instanceId, salePrice) {
-        const targetIndex = gameState.inventory.findIndex(inst => inst.instanceId === instanceId);
-        if (targetIndex === -1) return;
+    function handleSellItem(instanceId) {
+      const idx = AppState.user.inventory.findIndex(i => i.instanceId === instanceId);
+      if (idx === -1) return;
 
-        const targetItem = gameState.inventory[targetIndex];
-        const dbItem = itemDatabase.find(db => db.id === targetItem.dbId);
+      const inst = AppState.user.inventory[idx];
+      const mData = AppState.marketPrices[inst.id];
+      const itemData = ITEM_DATABASE[inst.id];
 
-        // 안전 장치: 만약 착용 중인 옷을 그대로 판매할 경우 캐릭터 장착 레이어를 자동 해제합니다.
-        if (dbItem && gameState.equipped[dbItem.category] === dbItem.id) {
-            gameState.equipped[dbItem.category] = null;
-        }
+      // 판매 금액 지급
+      AppState.user.balance += mData.current;
+      
+      // 만약 착용중인 옷이면 자동 탈의 처리
+      if (checkEquipped(instanceId)) {
+        unequipItem(itemData.category);
+      }
 
-        // 인벤토리에서 실시간 제외 및 정산 금액 이전
-        gameState.inventory.splice(targetIndex, 1);
-        gameState.wallet += salePrice;
+      // 인벤토리에서 제거
+      AppState.user.inventory.splice(idx, 1);
 
-        saveUserData();
-        updateWalletDisplay();
-        renderAvatar();
-        renderJoonggoMarket();
-        renderClosetItems();
-
-        alert(`해당 의상이 판매 완료되었습니다.\n정산 금액 +${salePrice.toLocaleString()}원이 잔고에 즉시 환전 처리되었습니다.`);
+      // UI 및 중고나라 갱신
+      updateUIBalance();
+      renderJoonggoApp();
     }
-</script>
-
+  </script>
 </body>
 </html>
