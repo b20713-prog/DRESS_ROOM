@@ -25,7 +25,6 @@
     }
   </script>
   <style>
-    /* 귀여운 폰트 및 파스텔 배경 감성 */
     @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Gowun+Dodum&display=swap');
     body {
       font-family: 'Gowun Dodum', sans-serif;
@@ -35,7 +34,6 @@
     .title-font {
       font-family: 'Gamja Flower', cursive;
     }
-    /* 스크롤바 숨기기 및 슬림화 */
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -46,7 +44,6 @@
       background: #FFB7C5;
       border-radius: 3px;
     }
-    /* 치비 아바타 바운스 애니메이션 */
     @keyframes chibi-bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-4px); }
@@ -114,7 +111,6 @@
       </div>
 
       <div class="flex-1 relative flex items-center justify-center p-4">
-        
         <div class="absolute inset-x-0 bottom-12 h-24 bg-pink-200/40 rounded-t-[50%] blur-sm pointer-events-none"></div>
         <div class="absolute top-8 left-8 text-white/50 text-3xl select-none">☁️</div>
         <div class="absolute top-12 right-12 text-white/50 text-4xl select-none">☁️</div>
@@ -125,38 +121,33 @@
           <span id="ticker-item-price" class="font-mono"></span>
         </div>
 
-        <div class="chibi-character relative w-[180px] h-[280px] flex items-center justify-center">
+        <div class="chibi-character relative w-[180px] h-[280px]">
           
           <div id="layer-hair-back" class="absolute inset-0 z-[5]"></div>
 
-          <div id="layer-body-base" class="absolute inset-0 z-[10] flex flex-col items-center justify-center">
-            <div class="relative w-28 h-28 bg-[#FFE5D9] rounded-full shadow-inner border border-[#FAD2C0] flex items-center justify-center -mt-16">
-              <div class="absolute bottom-6 left-3 w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
-              <div class="absolute bottom-6 right-3 w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
-              <div class="absolute bottom-8 left-6 w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+          <div id="layer-body-base" class="absolute inset-0 z-[10] pointer-events-none">
+            <div class="absolute top-[40px] left-[40px] w-[100px] h-[100px] bg-[#FFE5D9] rounded-full border border-[#FAD2C0]">
+              <div class="absolute bottom-[20px] left-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-[20px] right-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-[28px] left-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
                 <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
                 <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
               </div>
-              <div class="absolute bottom-8 right-6 w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+              <div class="absolute bottom-[28px] right-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
                 <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
                 <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
               </div>
-              <div class="absolute bottom-5 w-3 h-2 bg-rose-400 rounded-b-full"></div>
+              <div class="absolute bottom-[16px] left-[46px] w-2 h-1.5 bg-rose-400 rounded-b-full"></div>
             </div>
-            <div class="w-4 h-6 bg-[#FFE5D9] -mt-1 border-x border-[#FAD2C0]"></div>
-            <div class="relative w-12 h-16 bg-[#FFE5D9] rounded-b-2xl border-x border-[#FAD2C0] flex justify-between">
-              <div class="absolute -left-4 top-0 w-4 h-12 bg-[#FFE5D9] rounded-full border-l border-[#FAD2C0] origin-top rotate-[25deg]"></div>
-              <div class="absolute -right-4 top-0 w-4 h-12 bg-[#FFE5D9] rounded-full border-r border-[#FAD2C0] origin-top -rotate-[25deg]"></div>
-            </div>
-            <div class="w-10 h-16 flex justify-between px-1 -mt-1">
-              <div class="w-3.5 h-full bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
-              <div class="w-3.5 h-full bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
-            </div>
+            <div class="absolute top-[134px] left-[84px] w-3 h-5 bg-[#FFE5D9] border-x border-[#FAD2C0]"></div>
+            <div class="absolute top-[144px] left-[68px] w-[44px] h-[52px] bg-[#FFE5D9] rounded-b-xl border-x border-b border-[#FAD2C0]"></div>
+            <div class="absolute top-[144px] left-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-l border-b border-[#FAD2C0] origin-top rotate-[20deg]"></div>
+            <div class="absolute top-[144px] right-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-r border-b border-[#FAD2C0] origin-top -rotate-[20deg]"></div>
+            <div class="absolute top-[194px] left-[72px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
+            <div class="absolute top-[194px] left-[94px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
           </div>
 
-          <div id="layer-socks" class="absolute inset-0 z-[20] pointer-events-none"></div>
-
-          <div id="layer-shoes" class="absolute inset-0 z-[25] pointer-events-none"></div>
+          <div id="layer-shoes" class="absolute inset-0 z-[20] pointer-events-none"></div>
 
           <div id="layer-bottom" class="absolute inset-0 z-[30] pointer-events-none"></div>
 
@@ -164,14 +155,11 @@
 
           <div id="layer-dress" class="absolute inset-0 z-[40] pointer-events-none"></div>
 
-          <div id="layer-necklace" class="absolute inset-0 z-[45] pointer-events-none"></div>
-
           <div id="layer-hair-front" class="absolute inset-0 z-[50] pointer-events-none"></div>
 
-          <div id="layer-earring" class="absolute inset-0 z-[55] pointer-events-none"></div>
+          <div id="layer-accessory" class="absolute inset-0 z-[55] pointer-events-none"></div>
 
-          <div id="layer-accessory" class="absolute inset-0 z-[60] pointer-events-none"></div>
-          <div id="layer-bag" class="absolute inset-0 z-[61] pointer-events-none"></div>
+          <div id="layer-bag" class="absolute inset-0 z-[60] pointer-events-none"></div>
 
         </div>
 
@@ -204,8 +192,7 @@
         <button onclick="filterWardrobe('shoes')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">신발</button>
         <button onclick="filterWardrobe('accessory')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">액세서리</button>
       </div>
-      <div class="flex-1 overflow-y-auto grid grid-cols-3 gap-2 p-1" id="wardrobe-list">
-        </div>
+      <div class="flex-1 overflow-y-auto grid grid-cols-3 gap-2 p-1" id="wardrobe-list"></div>
     </div>
 
     <div id="modal-phone" class="absolute inset-0 bg-neutral-900/90 z-50 transform translate-y-full transition-transform duration-300 ease-out flex items-center justify-center p-4">
@@ -231,7 +218,7 @@
           </button>
           <button onclick="openApp('joonggo')" class="flex flex-col items-center space-y-1.5">
             <div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-orange-400">🤝</div>
-            <span class="text-[11px] font-bold text-orange-200 font-bold">중고나라(주식)</span>
+            <span class="text-[11px] font-bold text-orange-200">중고나라(주식)</span>
           </button>
         </div>
 
@@ -246,14 +233,15 @@
       </div>
     </div>
 
-    <div id="gacha-result-modal" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 hidden">
+    <div id="gacha-result-modal" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 hidden animate-fade-in">
       <div class="bg-white rounded-[32px] p-6 text-center w-full max-w-[320px] shadow-2xl border-4 border-pink-200 scale-90 transition-transform duration-300" id="gacha-card">
         <h4 class="title-font text-2xl font-black text-pink-500 mb-2">🎉 아이템 획득! 🎉</h4>
-        <div class="w-32 h-32 mx-auto bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center my-4 overflow-hidden relative" id="gacha-item-preview">
-          </div>
+        
+        <div class="w-full h-40 bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center my-4 overflow-hidden relative shadow-inner" id="gacha-item-preview"></div>
+        
         <div class="mb-4">
           <span id="gacha-item-grade" class="px-3 py-1 rounded-full text-xs font-black text-white mr-1">SSS</span>
-          <span id="gacha-item-name" class="font-bold text-lg text-gray-800">골든 리본 헤어밴드</span>
+          <span id="gacha-item-name" class="font-bold text-lg text-gray-800 block mt-2">아이템명</span>
         </div>
         <div class="text-xs text-gray-500 mb-6">기본가: <span id="gacha-item-price" class="font-bold"></span>원</div>
         <button onclick="closeGachaResult()" class="w-full bg-brandPink hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-all shadow-md">확인</button>
@@ -263,64 +251,188 @@
   </div>
 
   <script>
-    // --- 1. 전역 상태 관리 객체 (State) ---
     const AppState = {
       user: {
         id: "",
         name: "러블리치비",
         gender: "female",
         balance: 100000,
-        inventory: [], // 소유 중인 아이템 인스턴스 { instanceId, id, currentPrice, purchasePrice }
+        inventory: [],
         equipped: {
           hair: null, top: null, bottom: null, dress: null,
-          shoes: null, socks: null, accessory: null, bag: null
+          shoes: null, accessory: null, bag: null
         }
       },
       currentWardrobeTab: 'all',
-      marketPrices: {} // 실시간 시세 기록 { itemId: { current, change, trend } }
+      marketPrices: {}
     };
 
     // --- 2. 아이템 기본 데이터베이스 (Item DB) ---
-    // CSS 드로잉 정보(cssRender)가 포함되어 무점검 즉시 렌더링을 보장합니다.
+    // CSS 렌더 구조를 아바타 절대 좌표계에 완벽히 매핑했습니다.
     const ITEM_DATABASE = {
       // 💇 헤어 카테고리
-      'hair_c_black': { id: 'hair_c_black', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 8000, cssBack: 'bg-neutral-800 w-[120px] h-[130px] rounded-b-3xl absolute top-[20px] left-[30px]', cssFront: 'bg-neutral-800 w-[114px] h-[36px] rounded-b-xl absolute top-[20px] left-[33px]' },
-      'hair_b_brown': { id: 'hair_b_brown', name: '밀크브라운 번 헤어', category: 'hair', grade: 'B', basePrice: 15000, cssBack: 'bg-amber-800 w-[70px] h-[70px] rounded-full absolute top-1.5 left-[55px]', cssFront: 'bg-amber-800 w-[112px] h-[40px] rounded-b-2xl absolute top-5 left-[34px]' },
-      'hair_a_twintail': { id: 'hair_a_twintail', name: '라벤더 양갈래 헤어', category: 'hair', grade: 'A', basePrice: 28000, cssBack: 'bg-indigo-300 w-[120px] h-[140px] rounded-b-[40px] absolute top-[20px] left-[30px] shadow-sm', cssFront: 'bg-indigo-300 w-[112px] h-[35px] rounded-b-3xl absolute top-[20px] left-[34px] border-b-2 border-indigo-400' },
-      'hair_ss_pink': { id: 'hair_ss_pink', name: '딸기우유 더블번', category: 'hair', grade: 'SS', basePrice: 55000, cssBack: 'bg-rose-300 w-[125px] h-[145px] rounded-b-[45px] absolute top-[20px] left-[27px]', cssFront: 'bg-rose-300 w-[114px] h-[42px] rounded-b-[24px] absolute top-[20px] left-[33px] border-b border-rose-400' },
-      'hair_sss_cyber': { id: 'hair_sss_cyber', name: '네온 홀로그램 트윈', category: 'hair', grade: 'SSS', basePrice: 120000, cssBack: 'bg-sky-300 w-[120px] h-[160px] rounded-b-[50px] absolute top-[18px] left-[30px] shadow-cyan-300 shadow-md', cssFront: 'bg-sky-300 w-[114px] h-[40px] rounded-b-3xl absolute top-[20px] left-[33px] border-b-2 border-cyan-400' },
+      'hair_c_black': {
+        id: 'hair_c_black', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 8000,
+        renderBack: () => `<div class="absolute top-[34px] left-[30px] w-[120px] h-[150px] bg-neutral-800 rounded-b-[40px]"></div>`,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-neutral-800 rounded-b-xl border-b-2 border-neutral-900"></div>`
+      },
+      'hair_b_brown': {
+        id: 'hair_b_brown', name: '밀크브라운 똥머리', category: 'hair', grade: 'B', basePrice: 15000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[34px] w-[112px] h-[112px] bg-amber-800 rounded-full"></div>
+          <div class="absolute top-[14px] left-[70px] w-[40px] h-[40px] bg-amber-800 rounded-full shadow-inner"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[32px] bg-amber-800 rounded-b-2xl border-b border-amber-950"></div>`
+      },
+      'hair_a_twintail': {
+        id: 'hair_a_twintail', name: '라벤더 양갈래 헤어', category: 'hair', grade: 'A', basePrice: 28000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[32px] w-[116px] h-[120px] bg-indigo-300 rounded-b-[40px]"></div>
+          <div class="absolute top-[100px] left-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
+          <div class="absolute top-[100px] right-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[30px] bg-indigo-300 rounded-b-2xl border-b-2 border-indigo-400"></div>`
+      },
+      'hair_ss_pink': {
+        id: 'hair_ss_pink', name: '딸기우유 더블번', category: 'hair', grade: 'SS', basePrice: 55000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[30px] w-[120px] h-[110px] bg-rose-300 rounded-b-[45px]"></div>
+          <div class="absolute top-[18px] left-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
+          <div class="absolute top-[18px] right-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[38px] bg-rose-300 rounded-b-[20px] border-b border-rose-400"></div>`
+      },
+      'hair_sss_cyber': {
+        id: 'hair_sss_cyber', name: '네온 홀로그램 트윈', category: 'hair', grade: 'SSS', basePrice: 120000,
+        renderBack: () => `
+          <div class="absolute top-[32px] left-[30px] w-[120px] h-[130px] bg-cyan-300 rounded-b-[50px] shadow-cyan-300/50 shadow-lg"></div>
+          <div class="absolute top-[110px] left-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
+          <div class="absolute top-[110px] right-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-cyan-300 rounded-b-3xl border-b-2 border-cyan-400 shadow-cyan-300/30 shadow-md"></div>`
+      },
 
       // 👕 상의 카테고리
-      'top_c_white': { id: 'top_c_white', name: '흰색 데일리 반팔', category: 'top', grade: 'C', basePrice: 5000, css: 'bg-white w-[52px] h-[26px] absolute top-[154px] left-[64px] rounded-b-md border border-neutral-300' },
-      'top_b_sailor': { id: 'top_b_sailor', name: '스쿨 세일러 카라', category: 'top', grade: 'B', basePrice: 18000, css: 'bg-blue-100 w-[54px] h-[28px] absolute top-[153px] left-[63px] rounded-b-lg border-2 border-blue-400' },
-      'top_a_hood': { id: 'top_a_hood', name: '라임 스트릿 후드', category: 'top', grade: 'A', basePrice: 32000, css: 'bg-lime-400 w-[58px] h-[32px] absolute top-[151px] left-[61px] rounded-b-xl border border-lime-500' },
-      'top_ss_blouse': { id: 'top_ss_blouse', name: '러플 실크 블라우스', category: 'top', grade: 'SS', basePrice: 65000, css: 'bg-pink-100 w-[54px] h-[30px] absolute top-[152px] left-[63px] rounded-b-xl border-t-4 border-pink-300 border-x border-b border-pink-200' },
+      'top_c_white': {
+        id: 'top_c_white', name: '흰색 데일리 반팔', category: 'top', grade: 'C', basePrice: 5000,
+        render: () => `
+          <div class="absolute top-[144px] left-[66px] w-[48px] h-[32px] bg-white rounded-b-md border border-neutral-300"></div>
+          <div class="absolute top-[144px] left-[52px] w-[14px] h-[16px] bg-white rounded-l-md border-l border-t border-b border-neutral-300"></div>
+          <div class="absolute top-[144px] right-[52px] w-[14px] h-[16px] bg-white rounded-r-md border-r border-t border-b border-neutral-300"></div>
+        `
+      },
+      'top_b_sailor': {
+        id: 'top_b_sailor', name: '스쿨 세일러 카라', category: 'top', grade: 'B', basePrice: 18000,
+        render: () => `
+          <div class="absolute top-[143px] left-[65px] w-[50px] h-[34px] bg-blue-100 rounded-b-lg border-2 border-blue-400"></div>
+          <div class="absolute top-[143px] left-[52px] w-[14px] h-[18px] bg-blue-400 rounded-l-md"></div>
+          <div class="absolute top-[143px] right-[52px] w-[14px] h-[18px] bg-blue-400 rounded-r-md"></div>
+          <div class="absolute top-[152px] left-[84px] w-[12px] h-[10px] bg-red-400 rounded-full"></div>
+        `
+      },
+      'top_a_hood': {
+        id: 'top_a_hood', name: '라임 스트릿 후드', category: 'top', grade: 'A', basePrice: 32000,
+        render: () => `
+          <div class="absolute top-[142px] left-[64px] w-[52px] h-[40px] bg-lime-400 rounded-b-xl border border-lime-500"></div>
+          <div class="absolute top-[142px] left-[50px] w-[16px] h-[28px] bg-lime-400 rounded-l-xl"></div>
+          <div class="absolute top-[142px] right-[50px] w-[16px] h-[28px] bg-lime-400 rounded-r-xl"></div>
+        `
+      },
+      'top_ss_blouse': {
+        id: 'top_ss_blouse', name: '러플 실크 블라우스', category: 'top', grade: 'SS', basePrice: 65000,
+        render: () => `
+          <div class="absolute top-[143px] left-[65px] w-[50px] h-[36px] bg-pink-100 rounded-b-xl border-t-4 border-pink-300 border-x border-b border-pink-200 shadow-sm"></div>
+          <div class="absolute top-[143px] left-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
+          <div class="absolute top-[143px] right-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
+        `
+      },
 
       // 👖 하의 카테고리
-      'bottom_c_pants': { id: 'bottom_c_pants', name: '트레이닝 트랙바지', category: 'bottom', grade: 'C', basePrice: 5000, css: 'bg-zinc-500 w-[42px] h-[36px] absolute top-[180px] left-[69px] rounded-b-sm border border-neutral-600' },
-      'bottom_b_skirt': { id: 'bottom_b_skirt', name: '파스텔 테니스 스커트', category: 'bottom', grade: 'B', basePrice: 12000, css: 'bg-sky-200 w-[50px] h-[30px] absolute top-[180px] left-[65px] rounded-b-xl border-b-4 border-sky-400' },
-      'bottom_a_jeans': { id: 'bottom_a_jeans', name: '크롭 데님 진', category: 'bottom', grade: 'A', basePrice: 26000, css: 'bg-indigo-400 w-[44px] h-[40px] absolute top-[180px] left-[68px] rounded-b-md border border-indigo-600' },
-      'bottom_ss_frill': { id: 'bottom_ss_frill', name: '앤틱 하트 프릴스커트', category: 'bottom', grade: 'SS', basePrice: 58000, css: 'bg-pink-400 w-[54px] h-[34px] absolute top-[180px] left-[63px] rounded-b-[18px] border-b-4 border-white' },
+      'bottom_c_pants': {
+        id: 'bottom_c_pants', name: '트레이닝 트랙바지', category: 'bottom', grade: 'C', basePrice: 5000,
+        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[32px] bg-zinc-500 rounded-b-sm border border-neutral-600"></div>`
+      },
+      'bottom_b_skirt': {
+        id: 'bottom_b_skirt', name: '파스텔 테니스 스커트', category: 'bottom', grade: 'B', basePrice: 12000,
+        render: () => `<div class="absolute top-[186px] left-[64px] w-[52px] h-[24px] bg-sky-200 rounded-b-xl border-b-4 border-sky-400"></div>`
+      },
+      'bottom_a_jeans': {
+        id: 'bottom_a_jeans', name: '크롭 데님 진', category: 'bottom', grade: 'A', basePrice: 26000,
+        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[38px] bg-indigo-400 rounded-b-md border border-indigo-600"></div>`
+      },
+      'bottom_ss_frill': {
+        id: 'bottom_ss_frill', name: '앤틱 하트 프릴스커트', category: 'bottom', grade: 'SS', basePrice: 58000,
+        render: () => `<div class="absolute top-[186px] left-[63px] w-[54px] h-[28px] bg-pink-400 rounded-b-[14px] border-b-4 border-white shadow-sm"></div>`
+      },
 
-      // 👗 원피스 카테고리 (장착 시 기존 상/하의 해제)
-      'dress_a_gothic': { id: 'dress_a_gothic', name: '고딕 메이드 로리타', category: 'dress', grade: 'A', basePrice: 42000, css: 'bg-neutral-800 w-[60px] h-[66px] absolute top-[152px] left-[60px] rounded-b-[24px] border-b-8 border-white border-x-2 border-t border-neutral-900 shadow-lg' },
-      'dress_ss_princess': { id: 'dress_ss_princess', name: '로즈가든 쉬폰 드레스', category: 'dress', grade: 'SS', basePrice: 85000, css: 'bg-pink-200 w-[64px] h-[70px] absolute top-[151px] left-[58px] rounded-b-[30px] border-b-8 border-pink-400 border-x border-pink-300' },
-      'dress_sss_galaxy': { id: 'dress_sss_galaxy', name: '밀키웨이 밤하늘 가운', category: 'dress', grade: 'SSS', basePrice: 195000, css: 'bg-indigo-950 w-[66px] h-[74px] absolute top-[150px] left-[57px] rounded-b-[32px] border-b-[10px] border-amber-300 shadow-indigo-500 shadow-lg' },
+      // 👗 원피스 카테고리
+      'dress_a_gothic': {
+        id: 'dress_a_gothic', name: '고딕 메이드 로리타', category: 'dress', grade: 'A', basePrice: 42000,
+        render: () => `
+          <div class="absolute top-[143px] left-[62px] w-[56px] h-[68px] bg-neutral-800 rounded-b-[20px] border-b-[6px] border-white border-x border-neutral-900 shadow-lg"></div>
+          <div class="absolute top-[143px] left-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-l-md"></div>
+          <div class="absolute top-[143px] right-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-r-md"></div>
+        `
+      },
+      'dress_ss_princess': {
+        id: 'dress_ss_princess', name: '로즈가든 쉬폰 드레스', category: 'dress', grade: 'SS', basePrice: 85000,
+        render: () => `
+          <div class="absolute top-[142px] left-[60px] w-[60px] h-[72px] bg-pink-200 rounded-b-[26px] border-b-[8px] border-pink-400 border-x border-pink-300 shadow-md"></div>
+          <div class="absolute top-[142px] left-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
+          <div class="absolute top-[142px] right-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
+        `
+      },
+      'dress_sss_galaxy': {
+        id: 'dress_sss_galaxy', name: '밀키웨이 밤하늘 가운', category: 'dress', grade: 'SSS', basePrice: 195000,
+        render: () => `
+          <div class="absolute top-[141px] left-[58px] w-[64px] h-[76px] bg-indigo-950 rounded-b-[30px] border-b-[8px] border-amber-300 shadow-indigo-500 shadow-lg"></div>
+          <div class="absolute top-[141px] left-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-l-lg"></div>
+          <div class="absolute top-[141px] right-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-r-lg"></div>
+        `
+      },
 
       // 👟 신발 카테고리
-      'shoes_c_sneakers': { id: 'shoes_c_sneakers', name: '클래식 스니커즈', category: 'shoes', grade: 'C', basePrice: 4000, css: 'bg-white w-12 h-6 absolute top-[230px] left-[66px] rounded-b-full border border-neutral-300' },
-      'shoes_a_boots': { id: 'shoes_a_boots', name: '블랙 가죽 레이스업', category: 'shoes', grade: 'A', basePrice: 22000, css: 'bg-neutral-900 w-12 h-8 absolute top-[228px] left-[66px] rounded-b-md border-b-4 border-red-500' },
-      'shoes_ss_bunny': { id: 'shoes_ss_bunny', name: '폭신폭신 토끼 슬리퍼', category: 'shoes', grade: 'SS', basePrice: 48000, css: 'bg-pink-100 w-[50px] h-7 absolute top-[229px] left-[65px] rounded-b-xl border-t-2 border-pink-300 shadow-sm' },
+      'shoes_c_sneakers': {
+        id: 'shoes_c_sneakers', name: '클래식 스니커즈', category: 'shoes', grade: 'C', basePrice: 4000,
+        render: () => `
+          <div class="absolute top-[238px] left-[69px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
+          <div class="absolute top-[238px] left-[91px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
+        `
+      },
+      'shoes_a_boots': {
+        id: 'shoes_a_boots', name: '블랙 가죽 레이스업', category: 'shoes', grade: 'A', basePrice: 22000,
+        render: () => `
+          <div class="absolute top-[234px] left-[69px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
+          <div class="absolute top-[234px] left-[91px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
+        `
+      },
+      'shoes_ss_bunny': {
+        id: 'shoes_ss_bunny', name: '폭신폭신 토끼 슬리퍼', category: 'shoes', grade: 'SS', basePrice: 48000,
+        render: () => `
+          <div class="absolute top-[236px] left-[67px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
+          <div class="absolute top-[236px] left-[89px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
+        `
+      },
 
       // 🎀 액세서리 및 잡화 카테고리
-      'accessory_b_ribbon': { id: 'accessory_b_ribbon', name: '레드 벨벳 헤어리본', category: 'accessory', grade: 'B', basePrice: 9000, css: 'bg-red-500 w-20 h-4 absolute top-[18px] left-[50px] rounded-full shadow-md' },
-      'accessory_a_catears': { id: 'accessory_a_catears', name: '네코 네온 귓속말 귀', category: 'accessory', grade: 'A', basePrice: 25000, css: 'bg-zinc-800 w-24 h-6 absolute top-[15px] left-[48px] rounded-full border-t-4 border-cyan-300' },
-      'accessory_sss_angel': { id: 'accessory_sss_angel', name: '수호천사 홀리 윙', category: 'accessory', grade: 'SSS', basePrice: 150000, css: 'bg-gradient-to-r from-amber-100 to-white w-[184px] h-10 absolute top-[120px] left-[-2px] rounded-full shadow-yellow-200 shadow-md opacity-90' },
-      
-      'bag_ss_heart': { id: 'bag_ss_heart', name: '하트 글리터 크로스백', category: 'bag', grade: 'SS', basePrice: 52000, css: 'bg-rose-400 w-8 h-8 absolute top-[176px] left-[44px] rounded-full border border-pink-300' }
+      'accessory_b_ribbon': {
+        id: 'accessory_b_ribbon', name: '레드 벨벳 헤어리본', category: 'accessory', grade: 'B', basePrice: 9000,
+        render: () => `<div class="absolute top-[28px] left-[48px] w-[84px] h-[14px] bg-red-500 rounded-full shadow-md"></div>`
+      },
+      'accessory_a_catears': {
+        id: 'accessory_a_catears', name: '네코 네온 헤드셋', category: 'accessory', grade: 'A', basePrice: 25000,
+        render: () => `<div class="absolute top-[26px] left-[46px] w-[88px] h-[16px] bg-zinc-800 rounded-full border-t-4 border-cyan-300"></div>`
+      },
+      'accessory_sss_angel': {
+        id: 'accessory_sss_angel', name: '수호천사 홀리 윙', category: 'accessory', grade: 'SSS', basePrice: 150000,
+        render: () => `<div class="absolute top-[110px] left-[-10px] w-[200px] h-[24px] bg-gradient-to-r from-amber-100 to-white rounded-full shadow-yellow-200/50 shadow-md opacity-90"></div>`
+      },
+      'bag_ss_heart': {
+        id: 'bag_ss_heart', name: '하트 글리터 백', category: 'bag', grade: 'SS', basePrice: 52000,
+        render: () => `<div class="absolute top-[170px] left-[44px] w-[28px] h-[28px] bg-rose-400 rounded-full border border-pink-300 shadow-md flex items-center justify-center text-[10px] text-white">❤️</div>`
+      }
     };
 
-    // 등급별 컬러링 스타일 맵
     const GRADE_COLORS = {
       'C': { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' },
       'B': { bg: 'bg-teal-400', border: 'border-teal-400', text: 'text-teal-600' },
@@ -330,7 +442,6 @@
       'SSS': { bg: 'bg-gradient-to-r from-amber-400 to-yellow-500', border: 'border-yellow-500', text: 'text-yellow-600' }
     };
 
-    // --- 3. 유틸리티 함수 및 초기화 ---
     function formatMoney(num) {
       return Number(num).toLocaleString('ko-KR');
     }
@@ -345,7 +456,6 @@
       }
     }
 
-    // --- 4. 로그인 및 캐릭터 세팅 흐름 ---
     function handleLogin() {
       const id = document.getElementById('login-id').value;
       if (!id) return alert("아이디를 입력해주세요.");
@@ -364,13 +474,10 @@
 
     function handleSelectGender(gender) {
       AppState.user.gender = gender;
-      
-      // UI 상 텍스트 갱신
       document.getElementById('display-name').innerText = AppState.user.name;
       document.getElementById('display-gender').innerText = gender === 'female' ? '여' : '남';
       updateUIBalance();
 
-      // 성별에 맞는 초기 기본 아이템 인벤토리에 강제 주입 & 자동 착용
       const defaultHair = spawnItem('hair_c_black');
       const defaultTop = spawnItem('top_c_white');
       const defaultBottom = spawnItem('bottom_c_pants');
@@ -381,12 +488,9 @@
 
       document.getElementById('screen-gender').classList.add('hidden');
       initMarketPrices();
-      
-      // 시세 변동 1초 루프 활성화
       setInterval(runMarketTicker, 1000);
     }
 
-    // 아이템 인스턴스 생성 헬퍼
     function spawnItem(itemId) {
       const baseItem = ITEM_DATABASE[itemId];
       const instanceId = 'inst_' + Math.random().toString(36).substr(2, 9);
@@ -408,7 +512,6 @@
       const itemData = ITEM_DATABASE[itemInstance.id];
       const category = itemData.category;
 
-      // 규칙: 원피스(dress) 착용 시 상/하의 해제
       if (category === 'dress') {
         AppState.user.equipped.top = null;
         AppState.user.equipped.bottom = null;
@@ -419,7 +522,6 @@
       } else {
         AppState.user.equipped[category] = itemInstance;
       }
-
       renderAvatar();
     }
 
@@ -431,68 +533,55 @@
     function renderAvatar() {
       const eq = AppState.user.equipped;
 
-      // 1. 헤어 파트
       const layerHairBack = document.getElementById('layer-hair-back');
       const layerHairFront = document.getElementById('layer-hair-front');
       if (eq.hair) {
         const hData = ITEM_DATABASE[eq.hair.id];
-        layerHairBack.innerHTML = `<div class="${hData.cssBack}"></div>`;
-        layerHairFront.innerHTML = `<div class="${hData.cssFront}"></div>`;
+        layerHairBack.innerHTML = hData.renderBack();
+        layerHairFront.innerHTML = hData.renderFront();
       } else {
         layerHairBack.innerHTML = '';
         layerHairFront.innerHTML = '';
       }
 
-      // 2. 상의 파트
       const layerTop = document.getElementById('layer-top');
       if (eq.top) {
-        const tData = ITEM_DATABASE[eq.top.id];
-        layerTop.innerHTML = `<div class="${tData.css}"></div>`;
+        layerTop.innerHTML = ITEM_DATABASE[eq.top.id].render();
       } else {
         layerTop.innerHTML = '';
       }
 
-      // 3. 하의 파트
       const layerBottom = document.getElementById('layer-bottom');
       if (eq.bottom) {
-        const bData = ITEM_DATABASE[eq.bottom.id];
-        layerBottom.innerHTML = `<div class="${bData.css}"></div>`;
+        layerBottom.innerHTML = ITEM_DATABASE[eq.bottom.id].render();
       } else {
         layerBottom.innerHTML = '';
       }
 
-      // 4. 원피스 파트
       const layerDress = document.getElementById('layer-dress');
       if (eq.dress) {
-        const dData = ITEM_DATABASE[eq.dress.id];
-        layerDress.innerHTML = `<div class="${dData.css}"></div>`;
+        layerDress.innerHTML = ITEM_DATABASE[eq.dress.id].render();
       } else {
         layerDress.innerHTML = '';
       }
 
-      // 5. 신발 파트
       const layerShoes = document.getElementById('layer-shoes');
       if (eq.shoes) {
-        const sData = ITEM_DATABASE[eq.shoes.id];
-        layerShoes.innerHTML = `<div class="${sData.css}"></div>`;
+        layerShoes.innerHTML = ITEM_DATABASE[eq.shoes.id].render();
       } else {
         layerShoes.innerHTML = '';
       }
 
-      // 6. 액세서리 파트
       const layerAccessory = document.getElementById('layer-accessory');
       if (eq.accessory) {
-        const aData = ITEM_DATABASE[eq.accessory.id];
-        layerAccessory.innerHTML = `<div class="${aData.css}"></div>`;
+        layerAccessory.innerHTML = ITEM_DATABASE[eq.accessory.id].render();
       } else {
         layerAccessory.innerHTML = '';
       }
 
-      // 7. 가방 파트
       const layerBag = document.getElementById('layer-bag');
       if (eq.bag) {
-        const bgData = ITEM_DATABASE[eq.bag.id];
-        layerBag.innerHTML = `<div class="${bgData.css}"></div>`;
+        layerBag.innerHTML = ITEM_DATABASE[eq.bag.id].render();
       } else {
         layerBag.innerHTML = '';
       }
@@ -510,7 +599,6 @@
 
     function filterWardrobe(category) {
       AppState.currentWardrobeTab = category;
-      // 탭 액티브 표시 교체
       const tabs = document.querySelectorAll('#wardrobe-tabs button');
       tabs.forEach(btn => {
         btn.classList.replace('bg-brandPink', 'bg-pink-50');
@@ -518,7 +606,6 @@
       });
       event.target.classList.replace('bg-pink-50', 'bg-brandPink');
       event.target.classList.replace('text-gray-500', 'text-white');
-
       renderWardrobeList();
     }
 
@@ -528,7 +615,11 @@
 
       const filtered = AppState.user.inventory.filter(inst => {
         const item = ITEM_DATABASE[inst.id];
-        return AppState.currentWardrobeTab === 'all' || item.category === AppState.currentWardrobeTab;
+        if (AppState.currentWardrobeTab === 'all') return true;
+        if (AppState.currentWardrobeTab === 'accessory') {
+          return item.category === 'accessory' || item.category === 'bag';
+        }
+        return item.category === AppState.currentWardrobeTab;
       });
 
       if (filtered.length === 0) {
@@ -552,11 +643,10 @@
           renderWardrobeList();
         };
 
-        // 미니 아이콘 형태의 드로잉 대리체
         card.innerHTML = `
           <div class="w-14 h-14 bg-white rounded-xl border border-pink-100 flex items-center justify-center relative overflow-hidden mb-1">
             <span class="absolute top-1 right-1 text-[8px] font-black ${gradeStyle.text}">${item.grade}</span>
-            <span class="text-2xl">${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : '🎁'}</span>
+            <span class="text-2xl">${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : item.category === 'shoes' ? '👟' : '🎁'}</span>
           </div>
           <span class="text-[9px] font-bold text-gray-700 truncate w-full text-center">${item.name}</span>
           ${isEquipped ? '<span class="absolute top-1 left-1 bg-brandPink text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">착용중</span>' : ''}
@@ -593,7 +683,7 @@
 
       if (appName === 'ably') {
         title.innerText = '🛍️ 에이블리 뽑기';
-        body.innerHTML = renderShoppingAppHtml('에이블리', 30000, { 'SSS': 0.5, 'SS': 2.5, 'S': 7.0, 'A': 15.0, 'B': 35.0, 'C': 40.0 }, 'bg-pink-600');
+        body.innerHTML = renderShoppingAppHtml('에이블리', 30000, { 'SSS': 0.5, 'SS': 2.5, 'S': 7.0, 'A': 15.0, 'B': 35.0, 'C': 40.0 }, 'bg-pink-500');
       } else if (appName === 'musinsa') {
         title.innerText = '🎩 무신사 셀렉트';
         body.innerHTML = renderShoppingAppHtml('무신사', 50000, { 'SSS': 1.5, 'SS': 4.5, 'S': 10.0, 'A': 24.0, 'B': 40.0, 'C': 20.0 }, 'bg-black');
@@ -639,7 +729,6 @@
       `;
     }
 
-    // 가중치 가챠 확률 추출 로직
     function handleGacha(appName, cost, odds) {
       if (AppState.user.balance < cost) {
         return alert("돈이 부족합니다! 중고나라에 소지품을 판매해보세요.");
@@ -648,7 +737,6 @@
       AppState.user.balance -= cost;
       updateUIBalance();
 
-      // 확률 판정
       const rand = Math.random() * 100;
       let sum = 0;
       let selectedGrade = 'C';
@@ -661,21 +749,68 @@
         }
       }
 
-      // 해당 등급 아이템 중 필터링
       const candidateItems = Object.values(ITEM_DATABASE).filter(i => i.grade === selectedGrade);
-      // 만약 S 등급 등 예외 매칭이 없으면 차상위로 롤백 방지용 전체 매치
       const randomItem = candidateItems.length > 0 
         ? candidateItems[Math.floor(Math.random() * candidateItems.length)]
         : ITEM_DATABASE['hair_c_black'];
 
-      // 인벤토리 생성
       const newInst = spawnItem(randomItem.id);
-
-      // 가챠 연출 모달 팝업
       triggerGachaResultModal(randomItem, newInst);
-      
-      // 앱 내의 잔액 텍스트 실시간 동기화
       openApp(appName === '에이블리' ? 'ably' : appName === '무신사' ? 'musinsa' : 'kream');
+    }
+
+    // --- 📌 [신규 추가] 가챠 결과 가상 아바타 실루엣 렌더링 엔진 ---
+    function renderPreviewAvatar(itemId) {
+      const itemData = ITEM_DATABASE[itemId];
+      if (!itemData) return '';
+
+      let hairBackHtml = '';
+      let hairFrontHtml = '';
+      let topHtml = '';
+      let bottomHtml = '';
+      let dressHtml = '';
+      let shoesHtml = '';
+      let accessoryHtml = '';
+      let bagHtml = '';
+
+      if (itemData.category === 'hair') {
+        hairBackHtml = itemData.renderBack();
+        hairFrontHtml = itemData.renderFront();
+      } else if (itemData.category === 'top') {
+        topHtml = itemData.render();
+      } else if (itemData.category === 'bottom') {
+        bottomHtml = itemData.render();
+      } else if (itemData.category === 'dress') {
+        dressHtml = itemData.render();
+      } else if (itemData.category === 'shoes') {
+        shoesHtml = itemData.render();
+      } else if (itemData.category === 'accessory') {
+        accessoryHtml = itemData.render();
+      } else if (itemData.category === 'bag') {
+        bagHtml = itemData.render();
+      }
+
+      return `
+        <div class="relative w-[180px] h-[280px] scale-[0.55] origin-center -my-14 pointer-events-none">
+          ${hairBackHtml}
+          <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-[40px] left-[40px] w-[100px] h-[100px] bg-neutral-400 rounded-full"></div>
+            <div class="absolute top-[134px] left-[84px] w-3 h-5 bg-neutral-400"></div>
+            <div class="absolute top-[144px] left-[68px] w-[44px] h-[52px] bg-neutral-400 rounded-b-xl"></div>
+            <div class="absolute top-[144px] left-[52px] w-[14px] h-[40px] bg-neutral-400 rounded-full"></div>
+            <div class="absolute top-[144px] right-[52px] w-[14px] h-[40px] bg-neutral-400 rounded-full"></div>
+            <div class="absolute top-[194px] left-[72px] w-[14px] h-[50px] bg-neutral-400 rounded-b-full"></div>
+            <div class="absolute top-[194px] left-[94px] w-[14px] h-[50px] bg-neutral-400 rounded-b-full"></div>
+          </div>
+          ${shoesHtml}
+          ${bottomHtml}
+          ${topHtml}
+          ${dressHtml}
+          ${hairFrontHtml}
+          ${accessoryHtml}
+          ${bagHtml}
+        </div>
+      `;
     }
 
     function triggerGachaResultModal(itemData, inst) {
@@ -686,7 +821,6 @@
       const gradeTxt = document.getElementById('gacha-item-grade');
       const priceTxt = document.getElementById('gacha-item-price');
 
-      // 이펙트 클래스 세팅
       const gradeColor = GRADE_COLORS[itemData.grade];
       gradeTxt.className = `px-3 py-1 rounded-full text-xs font-black text-white mr-1 ${gradeColor.bg}`;
       gradeTxt.innerText = itemData.grade + " GRADE";
@@ -694,8 +828,8 @@
       nameTxt.innerText = itemData.name;
       priceTxt.innerText = formatMoney(itemData.basePrice);
 
-      // 프리뷰에 아이콘 대입
-      preview.innerHTML = `<span class="text-6xl">${itemData.category === 'hair' ? '💇' : itemData.category === 'top' ? '👕' : itemData.category === 'bottom' ? '👖' : itemData.category === 'dress' ? '👗' : '🎁'}</span>`;
+      // 실루엣 뷰어 출력
+      preview.innerHTML = renderPreviewAvatar(itemData.id);
 
       modal.classList.remove('hidden');
       setTimeout(() => {
@@ -714,18 +848,15 @@
     function runMarketTicker() {
       const banner = document.getElementById('ticker-banner');
       const itemKeys = Object.keys(ITEM_DATABASE);
-      // 무작위로 한 아이템 선정해서 배너 상단에 1초 단위 시세 실시간 알림 송출
       const pickedKey = itemKeys[Math.floor(Math.random() * itemKeys.length)];
       
       for (let key in AppState.marketPrices) {
         const itemData = ITEM_DATABASE[key];
         const oldPrice = AppState.marketPrices[key].current;
         
-        // [-0.15, 0.15] 범위 무작위 변동률 r
         const r = (Math.random() * 0.3) - 0.15;
         let newPrice = oldPrice * (1 + r);
 
-        // 하한가 상한가 경계선 작동
         const minPrice = itemData.basePrice * 0.4;
         const maxPrice = itemData.basePrice * 2.5;
 
@@ -737,7 +868,6 @@
         AppState.marketPrices[key].trend = newPrice >= oldPrice ? 'up' : 'down';
       }
 
-      // 변동 전광판 갱신
       const tickerData = AppState.marketPrices[pickedKey];
       const tickerItem = ITEM_DATABASE[pickedKey];
       document.getElementById('ticker-item-name').innerText = `📈 [시세변동] ${tickerItem.name}`;
@@ -749,7 +879,6 @@
       `;
       banner.classList.replace('opacity-0', 'opacity-100');
       
-      // 만약 중고나라 앱이 켜져있다면 중고나라 앱 리렌더링
       const appContainer = document.getElementById('phone-app-container');
       const appTitle = document.getElementById('app-title');
       if (!appContainer.classList.contains('hidden') && appTitle.innerText.includes('중고나라')) {
@@ -783,7 +912,7 @@
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center text-xl relative">
               <span class="absolute top-0.5 right-0.5 text-[6px] ${gradeStyle.text}">${item.grade}</span>
-              ${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : '🎁'}
+              ${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : item.category === 'shoes' ? '👟' : '🎁'}
             </div>
             <div>
               <div class="text-xs font-bold text-white flex items-center">
@@ -819,18 +948,13 @@
       const mData = AppState.marketPrices[inst.id];
       const itemData = ITEM_DATABASE[inst.id];
 
-      // 판매 금액 지급
       AppState.user.balance += mData.current;
       
-      // 만약 착용중인 옷이면 자동 탈의 처리
       if (checkEquipped(instanceId)) {
         unequipItem(itemData.category);
       }
 
-      // 인벤토리에서 제거
       AppState.user.inventory.splice(idx, 1);
-
-      // UI 및 중고나라 갱신
       updateUIBalance();
       renderJoonggoApp();
     }
