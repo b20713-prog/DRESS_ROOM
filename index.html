@@ -10,9 +10,8 @@
             --phone-bg: #1a1a1d;
             --phone-screen: #ffffff;
             --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-bg: rgba(255, 255, 255, 0.95);
             --text-dark: #2d3436;
-            --text-light: #ffffff;
             --shadow: 0 10px 20px rgba(0,0,0,0.1);
             --border-radius: 25px;
             
@@ -28,243 +27,232 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
         body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-dark); overflow: hidden; }
 
-        /* --- 공통 스타일 --- */
         button { cursor: pointer; border: none; transition: all 0.2s; font-weight: 600; }
         button:hover { transform: translateY(-2px); opacity: 0.9; }
         button:active { transform: translateY(0); }
-
         .hidden { display: none !important; }
 
-        /* --- 게임 컨테이너 --- */
-        #game-container { display: flex; width: 1100px; height: 800px; background: #fff; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
+        /* 메인 컨테이너 */
+        #game-container { display: flex; width: 1200px; height: 850px; background: #fff; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
 
-        /* --- 로그인 & 설정 화면 (Glassmorphism) --- */
+        /* 회원가입/로그인/성별 설정 화면 */
         .overlay-screen { position: absolute; width: 100%; height: 100%; background: var(--primary-grad); display: flex; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(10px); transition: opacity 0.5s; }
-        .glass-box { background: rgba(255, 255, 255, 0.2); border-radius: var(--border-radius); padding: 50px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; width: 450px; }
-        .glass-box h2 { color: #fff; margin-bottom: 30px; font-size: 2rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .input-group { margin-bottom: 20px; text-align: left; }
+        .glass-box { background: rgba(255, 255, 255, 0.2); border-radius: var(--border-radius); padding: 40px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; width: 450px; }
+        .glass-box h2 { color: #fff; margin-bottom: 25px; font-size: 2rem; }
+        .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; color: #fff; margin-bottom: 8px; font-size: 0.9rem; font-weight: bold; }
-        .glass-box input, .glass-box select { width: 100%; padding: 15px; border: none; border-radius: 12px; background: rgba(255,255,255,0.9); font-size: 1rem; outline: none; }
+        .glass-box input { width: 100%; padding: 12px; border: none; border-radius: 10px; background: rgba(255,255,255,0.9); font-size: 1rem; outline: none; }
         
-        .main-btn { width: 100%; padding: 15px; border-radius: 12px; background: #fff; color: #764ba2; font-size: 1.1rem; font-weight: bold; margin-top: 10px; }
+        .main-btn { width: 100%; padding: 14px; border-radius: 10px; background: #fff; color: #764ba2; font-size: 1.1rem; font-weight: bold; margin-top: 10px; }
         .sub-btn-text { color: rgba(255,255,255,0.8); text-decoration: underline; background: none; margin-top: 15px; font-size: 0.9rem; }
 
         .gender-btns { display: flex; gap: 15px; margin-top: 20px; }
-        .gender-btn { flex: 1; padding: 20px; background: rgba(255,255,255,0.9); border-radius: 15px; font-size: 1rem; color: var(--text-dark); }
+        .gender-btn { flex: 1; padding: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 15px; font-size: 1rem; color: var(--text-dark); }
         .gender-btn.selected { background: #ff7675; color: #fff; box-shadow: 0 5px 15px rgba(255,118,117,0.4); }
 
-        /* --- 메인 드레스룸 (왼쪽) --- */
-        .dressroom-area { flex: 1.3; background: #fdfdfd; padding: 30px; display: flex; flex-direction: column; position: relative; border-right: 1px solid #eee; }
-        .room-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
-        .room-title { font-size: 1.5rem; font-weight: 800; color: #333; }
+        /* 드레스룸 (왼쪽) */
+        .dressroom-area { flex: 1.4; background: #fdfdfd; padding: 30px; display: flex; flex-direction: column; position: relative; border-right: 1px solid #eee; }
+        .room-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
+        .room-title { font-size: 1.6rem; font-weight: 800; color: #333; }
         .room-title span { color: #764ba2; }
 
-        /* 캐릭터 캔버스 영역 */
-        .character-display { flex: 1; background: radial-gradient(circle, rgba(238,174,202,0.2) 0%, rgba(148,187,233,0.2) 100%); border-radius: 20px; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        #char-canvas { width: 400px; height: 600px; position: relative; }
-        .svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        /* ★ 핵심 수정: 절대 깨지지 않는 고정 뷰포트 캐릭터 디스플레이 */
+        .character-display { flex: 1; background: radial-gradient(circle, rgba(238,174,202,0.15) 0%, rgba(148,187,233,0.15) 100%); border-radius: 20px; position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        #char-canvas { width: 400px; height: 600px; position: relative; background: transparent; }
+        .svg-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .svg-layer svg { width: 100%; height: 100%; display: block; }
 
-        /* 하단 컨트롤러 */
         .main-controls { display: flex; gap: 15px; margin-top: 20px; }
         .ctrl-btn { flex: 1; padding: 18px; border-radius: 15px; color: #fff; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-closet { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
         .btn-phone { background: linear-gradient(135deg, #2d3436, #636e72); }
 
-        /* 옷장 패널 (Sliding) */
-        .closet-panel { position: absolute; bottom: 0; left: 0; width: 100%; height: 0; background: rgba(255,255,255,0.98); z-index: 10; transition: height 0.4s ease; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
-        .closet-panel.open { height: 70%; }
+        /* 옷장 패널 */
+        .closet-panel { position: absolute; bottom: 0; left: 0; width: 100%; height: 0; background: var(--panel-bg); z-index: 10; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column; }
+        .closet-panel.open { height: 60%; }
         .closet-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-        .closet-header h3 { font-size: 1.2rem; }
         .close-closet { background: none; font-size: 1.5rem; color: #999; }
-
-        .closet-tabs { display: flex; padding: 10px 20px; gap: 10px; border-bottom: 1px solid #eee; background: #f9f9f9; }
-        .tab-btn { padding: 8px 15px; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-size: 0.85rem; color: #666; }
+        .closet-tabs { display: flex; padding: 10px 20px; gap: 8px; border-bottom: 1px solid #eee; background: #f9f9f9; overflow-x: auto; white-space: nowrap; }
+        .tab-btn { padding: 6px 14px; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-size: 0.85rem; color: #666; flex-shrink: 0; }
         .tab-btn.active { background: #764ba2; color: #fff; border-color: #764ba2; }
-
-        .closet-content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; overflow-y: auto; }
-        .item-card { background: #fff; border: 1px solid #eee; border-radius: 15px; padding: 10px; text-align: center; cursor: pointer; position: relative; transition: border-color 0.2s; }
-        .item-card:hover { border-color: #a29bfe; background: #faf9ff; }
-        .item-card.equipped { border-2px solid #6c5ce7; background: #eeecff; }
-        .item-icon-container { width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; }
-        .item-icon-container svg { max-width: 100%; max-height: 100%; }
-        .item-name { font-size: 0.8rem; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-grade-badge { position: absolute; top: 5px; left: 5px; font-size: 0.7rem; padding: 2px 6px; border-radius: 8px; color: #fff; font-weight: bold; }
-
-        /* --- 핸드폰 영역 (오른쪽) --- */
-        .phone-area { flex: 0.7; background: #f0f0f0; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; }
+        .closet-content { flex: 1; padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px; overflow-y: auto; }
         
-        /* 잔고 표시 (폰 위에 둥둥) */
-        .balance-display { position: absolute; top: 30px; right: 30px; background: #fff; padding: 12px 20px; border-radius: 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; font-weight: bold; z-index: 5; }
+        .item-card { background: #fff; border: 2px solid #eee; border-radius: 15px; padding: 10px; text-align: center; cursor: pointer; position: relative; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 140px; }
+        .item-card:hover { border-color: #a29bfe; }
+        .item-card.equipped { border-color: #6c5ce7; background: #eeecff; }
+        .item-preview { width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .item-preview svg { width: 100%; height: 100%; object-fit: contain; }
+        .item-name { font-size: 0.8rem; color: #333; margin-top: 5px; width: 100%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .item-grade-badge { position: absolute; top: 5px; left: 5px; font-size: 0.65rem; padding: 2px 6px; border-radius: 8px; color: #fff; font-weight: bold; }
+
+        /* 핸드폰 영역 (오른쪽) */
+        .phone-area { flex: 0.8; background: #f0f0f0; display: flex; justify-content: center; align-items: center; padding: 20px; position: relative; }
+        .balance-display { position: absolute; top: 25px; right: 25px; background: #fff; padding: 10px 18px; border-radius: 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 8px; font-weight: bold; z-index: 5; border: 1px solid #eee; }
         .balance-display span { color: #2ed573; font-size: 1.1rem; }
 
-        /* 폰 물리 프레임 */
-        .phone-frame { width: 320px; height: 650px; background: var(--phone-bg); border-radius: 40px; padding: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); border: 4px solid #333; position: relative; overflow: hidden; }
-        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 150px; height: 25px; background: #333; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10; }
-        
-        /* 폰 화면 */
-        .phone-screen { width: 100%; height: 100%; background: var(--phone-screen); border-radius: 30px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
-        
-        /* 스크린 헤더 (시간 등) */
-        .screen-header { height: 35px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; color: #000; padding-top: 5px; }
+        /* 스마트폰 모형 기기 프레임 */
+        .phone-frame { width: 335px; height: 680px; background: var(--phone-bg); border-radius: 45px; padding: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); border: 4px solid #333; position: relative; }
+        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 24px; background: #333; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10; }
+        .phone-home-bar { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 110px; height: 4px; background: #000; border-radius: 2px; z-index: 10; }
+        .phone-screen { width: 100%; height: 100%; background: var(--phone-screen); border-radius: 35px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+        .screen-header { height: 38px; padding: 12px 22px 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; color: #000; z-index: 9; }
 
-        /* 홈 화면 (앱 아이콘들) */
+        /* 홈화면 어플리케이션 아이콘 */
         .phone-home { flex: 1; padding: 30px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-content: start; }
-        .app-icon { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; cursor: pointer; }
-        .app-img { width: 65px; height: 65px; border-radius: 18px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); margin-bottom: 8px; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .app-name { font-size: 0.75rem; color: #333; font-weight: 600; }
+        .app-icon { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .app-img { width: 68px; height: 68px; border-radius: 18px; box-shadow: 0 8px 15px rgba(0,0,0,0.08); margin-bottom: 8px; display: flex; justify-content: center; align-items: center; font-weight: 900; color: #fff; font-size: 1.3rem; }
+        .app-name { font-size: 0.8rem; color: #333; font-weight: 600; }
+        .icon-ably { background: linear-gradient(135deg, #ff9a9e, #ff6b6b); }
+        .icon-musinsa { background: #000; font-style: italic; font-size: 1rem; }
+        .icon-kream { background: #222; color: #33ee88; border: 1px solid #33ee88; font-size: 0.9rem; }
+        .icon-joonggo { background: linear-gradient(135deg, #34e89e, #0f3443); }
 
-        /* 앱별 아이콘 스타일 (SVG 그라데이션) */
-        .icon-ably { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); color: #fff; font-size: 1.5rem; font-weight: 900; }
-        .icon-musinsa { background: #000; color: #fff; font-family: 'Helvetica Neue', sans-serif; font-style: italic; font-weight: 900; font-size: 1.2rem; }
-        .icon-kream { background: #222; border: 1px solid #33ee88; color: #33ee88; font-weight: 800; font-size: 0.8rem; }
-        .icon-joonggo { background: linear-gradient(135deg, #34e89e 0%, #0f3443 100%); display: flex; justify-content: center; align-items: center; }
-
-        /* 앱 내부 화면 공통 */
-        .app-window { position: absolute; top: 35px; left: 0; width: 100%; height: calc(100% - 35px); background: #fff; z-index: 5; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.3s ease; border-top-left-radius: 20px; border-top-right-radius: 20px; }
+        /* 내부 앱 윈도우 */
+        .app-window { position: absolute; top: 38px; left: 0; width: 100%; height: calc(100% - 38px); background: #fff; z-index: 5; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); border-top-left-radius: 20px; border-top-right-radius: 20px; }
         .app-window.open { transform: translateY(0); }
-        .app-header { padding: 15px; display: flex; align-items: center; border-bottom: 1px solid #eee; position: relative; }
-        .back-btn { background: none; font-size: 1.2rem; margin-right: 10px; color: #333; }
-        .app-title { font-size: 1rem; font-weight: bold; }
-
-        /* 쇼핑 앱 내부 */
-        .shop-content { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
-        .shop-desc { text-align: center; color: #666; font-size: 0.9rem; line-height: 1.4; }
-        .draw-btn { padding: 15px 30px; border-radius: 25px; color: #fff; font-size: 1rem; width: 100%; }
+        .app-header { padding: 15px; display: flex; align-items: center; border-bottom: 1px solid #eee; font-weight: bold; }
+        .back-btn { background: none; font-size: 1.1rem; margin-right: 10px; color: #333; }
         
-        #app-ably .app-header { background-color: #fff0f0; color: #ff6b6b; }
+        .shop-content { flex: 1; padding: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
+        .shop-desc { color: #666; font-size: 0.9rem; line-height: 1.5; }
+        .draw-btn { width: 100%; padding: 16px; border-radius: 25px; color: #fff; font-size: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        #app-ably .app-header { background: #fff0f2; color: #ff6b6b; }
         #app-ably .draw-btn { background: linear-gradient(135deg, #ff9a9e, #ff6b6b); }
-        #app-musinsa .app-header { background-color: #000; color: #fff; }
+        #app-musinsa .app-header { background: #000; color: #fff; }
         #app-musinsa .app-header .back-btn { color: #fff; }
         #app-musinsa .draw-btn { background: #000; }
-        #app-kream .app-header { background-color: #222; color: #33ee88; }
+        #app-kream .app-header { background: #222; color: #33ee88; }
         #app-kream .app-header .back-btn { color: #33ee88; }
         #app-kream .draw-btn { background: #222; border: 2px solid #33ee88; color: #33ee88; }
 
-        /* 중고나라 내부 */
-        .joonggo-content { flex: 1; overflow-y: auto; }
-        .market-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; gap: 15px; }
-        .market-img { width: 50px; height: 50px; background: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
-        .market-info { flex: 1; }
-        .market-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
-        .market-price { font-size: 0.85rem; color: #666; font-weight: bold; }
+        /* 중고나라 내부 리스트 */
+        .joonggo-content { flex: 1; overflow-y: auto; padding: 10px; }
+        .market-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f5f5f5; gap: 12px; }
+        .market-preview { width: 50px; height: 50px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .market-preview svg { width: 100%; height: 100%; }
+        .market-info { flex: 1; min-width: 0; }
+        .market-name { font-size: 0.85rem; font-weight: bold; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .market-price { font-size: 0.8rem; font-weight: bold; color: #555; margin-top: 2px; }
         .market-price.up { color: #ff4757; }
         .market-price.down { color: #1e90ff; }
-        .sell-btn { padding: 8px 15px; background: #764ba2; color: #fff; border-radius: 10px; font-size: 0.8rem; }
+        .sell-btn { padding: 6px 12px; background: #764ba2; color: #fff; border-radius: 6px; font-size: 0.75rem; }
 
-        /* 가챠 결과 모달 */
-        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        /* 결과 연출 모달 */
+        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .modal.open { opacity: 1; pointer-events: auto; }
-        .result-box { background: #fff; border-radius: var(--border-radius); padding: 40px; text-align: center; width: 350px; transform: scale(0.8); transition: transform 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .result-box { background: #fff; border-radius: var(--border-radius); padding: 35px; text-align: center; width: 340px; transform: scale(0.8); transition: transform 0.3s; }
         .modal.open .result-box { transform: scale(1); }
-        .result-box h3 { margin-bottom: 10px; font-size: 1.2rem; }
-        .result-grade { font-size: 2rem; font-weight: 900; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .result-icon { width: 150px; height: 150px; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; background: #f9f9f9; border-radius: 20px; padding: 10px; }
-        .result-icon svg { max-width: 100%; max-height: 100%; }
+        .result-grade { font-size: 2.2rem; font-weight: 900; margin: 10px 0; }
+        .result-preview { width: 140px; height: 140px; margin: 15px auto; background: #fdfdfd; border-radius: 15px; border: 1px solid #eee; padding: 10px; display: flex; justify-content: center; align-items: center; }
+        .result-preview svg { width: 100%; height: 100%; }
         .result-name { font-size: 1rem; font-weight: bold; margin-bottom: 20px; }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #999; }
-        
-        /* 폰 하단 홈 바 */
-        .phone-home-bar { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: #000; border-radius: 2px; z-index: 10; }
-
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <!-- 로그인 화면 -->
-    <div id="start-screen" class="overlay-screen">
+    <!-- 1단계: 회원가입 화면 -->
+    <div id="register-screen" class="overlay-screen">
         <div class="glass-box">
-            <h2>Welcome</h2>
+            <h2>Sign Up</h2>
+            <div class="input-group">
+                <label>생성할 아이디</label>
+                <input type="text" id="reg-id" placeholder="ID를 입력하세요">
+            </div>
+            <div class="input-group">
+                <label>비밀번호</label>
+                <input type="password" id="reg-pw" placeholder="Password를 입력하세요">
+            </div>
+            <button class="main-btn" onclick="accountSystem.register()">회원가입 완료</button>
+            <button class="sub-btn-text" onclick="accountSystem.switchScreen('login')">이미 계정이 있습니다 (로그인)</button>
+        </div>
+    </div>
+
+    <!-- 2단계: 로그인 화면 -->
+    <div id="login-screen" class="overlay-screen hidden">
+        <div class="glass-box">
+            <h2>Login</h2>
             <div class="input-group">
                 <label>아이디</label>
-                <input type="text" id="login-id" placeholder="id_admin">
+                <input type="text" id="login-id" placeholder="ID">
             </div>
             <div class="input-group">
                 <label>비밀번호</label>
                 <input type="password" id="login-pw" placeholder="••••••">
             </div>
-            <button class="main-btn" onclick="app.login()">로그인</button>
-            <button class="sub-btn-text">회원가입</button>
+            <button class="main-btn" onclick="accountSystem.login()">로그인</button>
+            <button class="sub-btn-text" onclick="accountSystem.switchScreen('register')">계정이 없으신가요? (회원가입)</button>
         </div>
     </div>
 
-    <!-- 이름 입력 화면 -->
+    <!-- 3단계: 이름 입력 화면 -->
     <div id="name-screen" class="overlay-screen hidden">
         <div class="glass-box">
             <h2>Your Name</h2>
             <div class="input-group">
-                <label>드레스룸 이름을 입력하세요</label>
-                <input type="text" id="user-name" placeholder="스타일리스트">
+                <label>드레스룸의 이름을 설정하세요</label>
+                <input type="text" id="user-name" placeholder="홍길동">
             </div>
-            <button class="main-btn" onclick="app.setInfo()">시작하기</button>
+            <button class="main-btn" onclick="accountSystem.setRoomName()">확인</button>
         </div>
     </div>
 
-    <!-- 성별 선택 화면 -->
+    <!-- 4단계: 성별 선택 화면 -->
     <div id="gender-screen" class="overlay-screen hidden">
         <div class="glass-box">
             <h2>Select Gender</h2>
             <div class="gender-btns">
-                <button class="gender-btn" id="btn-male" onclick="app.setGender('male')">남자</button>
-                <button class="gender-btn" id="btn-female" onclick="app.setGender('female')">여자</button>
+                <button class="gender-btn" id="btn-male" onclick="accountSystem.selectGender('male')">남자 캐릭터</button>
+                <button class="gender-btn" id="btn-female" onclick="accountSystem.selectGender('female')">여자 캐릭터</button>
             </div>
-            <button class="main-btn hidden" id="gender-submit" onclick="app.startGame()" style="margin-top: 30px;">확인</button>
+            <button class="main-btn hidden" id="gender-submit" onclick="accountSystem.finishSetup()">드레스룸 입장</button>
         </div>
     </div>
 
-    <!-- 메인 드레스룸 (왼쪽) -->
+    <!-- 메인 메인 드레스룸 화면 -->
     <div class="dressroom-area">
         <div class="room-header">
-            <h1 class="room-title"><span id="display-user-name">지수</span>의 드레스룸</h1>
+            <h1 class="room-title"><span id="display-room-name">-</span>의 드레스룸</h1>
         </div>
         
+        <!-- 고정 좌표 배치의 캐릭터 영역 -->
         <div class="character-display">
             <div id="char-canvas">
-                <!-- SVG 레이어들이 여기에 삽입됨 -->
+                <!-- SVG 레이어들이 동적으로 생성됨 -->
             </div>
         </div>
 
         <div class="main-controls">
-            <button class="ctrl-btn btn-closet" onclick="ui.toggleCloset(true)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                옷장 열기
-            </button>
-            <button class="ctrl-btn btn-phone" onclick="ui.focusPhone()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                핸드폰
-            </button>
+            <button class="ctrl-btn btn-closet" onclick="ui.toggleCloset(true)">👗 옷장 열기</button>
+            <button class="ctrl-btn btn-phone" onclick="ui.scrollPhone()">📱 스마트폰</button>
         </div>
 
-        <!-- 옷장 Sliding Panel -->
+        <!-- 슬라이딩 옷장 -->
         <div id="closet-panel" class="closet-panel">
             <div class="closet-header">
-                <h3>My Closet</h3>
-                <button class="close-closet" onclick="ui.toggleCloset(false)">×</button>
+                <h3>내 옷장 리스트</h3>
+                <button class="close-closet" onclick="ui.toggleCloset(false)">✕</button>
             </div>
             <div class="closet-tabs">
                 <button class="tab-btn active" onclick="ui.changeTab('all', this)">전체</button>
                 <button class="tab-btn" onclick="ui.changeTab('hair', this)">헤어</button>
                 <button class="tab-btn" onclick="ui.changeTab('top', this)">상의</button>
                 <button class="tab-btn" onclick="ui.changeTab('bottom', this)">하의</button>
+                <button class="tab-btn" onclick="ui.changeTab('onepiece', this)">원피스</button>
                 <button class="tab-btn" onclick="ui.changeTab('shoes', this)">신발</button>
+                <button class="tab-btn" onclick="ui.changeTab('socks', this)">양말</button>
+                <button class="tab-btn" onclick="ui.changeTab('bag', this)">가방</button>
+                <button class="tab-btn" onclick="ui.changeTab('necklace', this)">목걸이</button>
+                <button class="tab-btn" onclick="ui.changeTab('earrings', this)">귀걸이</button>
             </div>
-            <div id="closet-content" class="closet-content">
-                <!-- 아이템 카드 동적 생성 -->
-            </div>
+            <div id="closet-content" class="closet-content"></div>
         </div>
     </div>
 
-    <!-- 핸드폰 영역 (오른쪽) -->
+    <!-- 핸드폰 디스플레이 -->
     <div class="phone-area">
-        <div class="balance-display">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#2ed573"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"></path></svg>
-            <span id="balance-amount">100,000</span> 원
-        </div>
+        <div class="balance-display">💰 잔고: <span id="balance-amount">100,000</span>원</div>
 
         <div class="phone-frame">
             <div class="phone-notch"></div>
@@ -273,522 +261,505 @@
             <div class="phone-screen">
                 <div class="screen-header">
                     <span id="phone-time">12:00</span>
-                    <span>📶 🔋</span>
+                    <span>⚡ LTE 100%</span>
                 </div>
 
-                <!-- 홈 화면 -->
+                <!-- 폰 홈화면 -->
                 <div class="phone-home">
                     <div class="app-icon" onclick="ui.openApp('ably')">
                         <div class="app-img icon-ably">A</div>
                         <span class="app-name">에이블리</span>
                     </div>
                     <div class="app-icon" onclick="ui.openApp('musinsa')">
-                        <div class="app-img icon-musinsa">MUSINSA</div>
+                        <div class="app-img icon-musinsa">M</div>
                         <span class="app-name">무신사</span>
                     </div>
                     <div class="app-icon" onclick="ui.openApp('kream')">
-                        <div class="app-img icon-kream">KREAM</div>
+                        <div class="app-img icon-kream">K</div>
                         <span class="app-name">크림</span>
                     </div>
                     <div class="app-icon" onclick="ui.openApp('joonggo')">
-                        <div class="app-img icon-joonggo">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"></path></svg>
-                        </div>
+                        <div class="app-img icon-joonggo">🤝</div>
                         <span class="app-name">중고나라</span>
                     </div>
                 </div>
 
-                <!-- 앱 화면들 -->
-                <!-- 에이블리 -->
+                <!-- 쇼핑 앱 내부 화면들 -->
                 <div id="app-ably" class="app-window">
-                    <div class="app-header">
-                        <button class="back-btn" onclick="ui.closeApp()">❮</button>
-                        <span class="app-title">ABLY</span>
-                    </div>
+                    <div class="app-header"><button class="back-btn" onclick="ui.closeApp()">◀</button> ABLY</div>
                     <div class="shop-content">
-                        <svg width="60" height="60" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#ff9a9e" fill-opacity="0.2" stroke="#ff9a9e" stroke-width="2"/><path d="M32 15 L38 28 L52 30 L42 40 L45 54 L32 47 L19 54 L22 40 L12 30 L26 28 Z" fill="#ff9a9e"/></svg>
-                        <p class="shop-desc">귀엽고 화려한 스윗걸 스타일!<br>등급: <b>C ~ S</b></p>
-                        <button class="draw-btn" onclick="game.drawItem('ably')">30,000원 뽑기</button>
+                        <p class="shop-desc">✨ <b>귀엽고 화려한 스윗걸 룩 컬렉션</b><br>획득 가능 등급: C ~ S 등급</p>
+                        <button class="draw-btn" onclick="game.draw('ably')">🛍️ 1회 랜덤 뽑기 (30,000원)</button>
                     </div>
                 </div>
 
-                <!-- 무신사 -->
                 <div id="app-musinsa" class="app-window">
-                    <div class="app-header">
-                        <button class="back-btn" onclick="ui.closeApp()">❮</button>
-                        <span class="app-title">MUSINSA</span>
-                    </div>
+                    <div class="app-header"><button class="back-btn" onclick="ui.closeApp()">◀</button> MUSINSA</div>
                     <div class="shop-content">
-                        <svg width="60" height="60" viewBox="0 0 64 64"><rect x="10" y="10" width="44" height="44" rx="10" fill="#000"/><text x="32" y="38" text-anchor="middle" fill="#fff" font-size="12" font-style="italic" font-weight="bold">M</text></svg>
-                        <p class="shop-desc">트렌디한 캐주얼 & 스트릿 룩<br>등급: <b>B ~ SS</b></p>
-                        <button class="draw-btn" onclick="game.drawItem('musinsa')">50,000원 뽑기</button>
+                        <p class="shop-desc">👟 <b>트렌디 캐주얼 & 모던 룩 컬렉션</b><br>획득 가능 등급: B ~ SS 등급</p>
+                        <button class="draw-btn" onclick="game.draw('musinsa')">🕶️ 1회 랜덤 뽑기 (50,000원)</button>
                     </div>
                 </div>
 
-                <!-- 크림 -->
                 <div id="app-kream" class="app-window">
-                    <div class="app-header">
-                        <button class="back-btn" onclick="ui.closeApp()">❮</button>
-                        <span class="app-title">KREAM</span>
-                    </div>
+                    <div class="app-header"><button class="back-btn" onclick="ui.closeApp()">◀</button> KREAM</div>
                     <div class="shop-content">
-                        <svg width="60" height="60" viewBox="0 0 64 64"><rect x="5" y="5" width="54" height="54" rx="10" fill="#222" stroke="#33ee88" stroke-width="2"/><text x="32" y="36" text-anchor="middle" fill="#33ee88" font-size="10" font-weight="bold">LIMITED</text></svg>
-                        <p class="shop-desc">한정판 스니커즈 & 명품 컬렉션<br>등급: <b>A ~ SSS</b></p>
-                        <button class="draw-btn" onclick="game.drawItem('kream')">80,000원 뽑기</button>
+                        <p class="shop-desc">🔥 <b>한정판 럭셔리 하이엔드 컬렉션</b><br>획득 가능 등급: A ~ SSS 등급</p>
+                        <button class="draw-btn" onclick="game.draw('kream')">💎 1회 랜덤 뽑기 (80,000원)</button>
                     </div>
                 </div>
 
-                <!-- 중고나라 -->
+                <!-- 중고나라 앱 내부 화면 -->
                 <div id="app-joonggo" class="app-window">
-                    <div class="app-header">
-                        <button class="back-btn" onclick="ui.closeApp()">❮</button>
-                        <span class="app-title">중고나라</span>
-                    </div>
-                    <div class="joonggo-content" id="market-list">
-                        <!-- 중고 매물 동적 생성 -->
-                    </div>
+                    <div class="app-header"><button class="back-btn" onclick="ui.closeApp()">◀</button> 중고나라 실시간 장터</div>
+                    <div class="joonggo-content" id="joonggo-list"></div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- 가챠 결과 모달 -->
+<!-- 뽑기 가챠 모달 결과창 -->
 <div id="result-modal" class="modal">
     <div class="result-box">
-        <h3>🎉 뽑기 성공!</h3>
+        <h3 style="color:#667eea">🎉 ITEM GET! 🎉</h3>
         <div id="result-grade" class="result-grade">SSS</div>
-        <div id="result-icon" class="result-icon"></div>
-        <div id="result-name" class="result-name">럭셔리 다이아몬드 목걸이</div>
-        <button class="main-btn" onclick="ui.closeModal()" style="background: var(--primary-grad); color: #fff;">확장 넣기</button>
+        <div id="result-preview" class="result-preview"></div>
+        <div id="result-name" class="result-name">아이템 이름</div>
+        <button class="main-btn" onclick="ui.closeModal()" style="background:var(--primary-grad); color:#fff;">옷장에 넣기</button>
     </div>
 </div>
 
 <script>
 /**
- * PREMIUM DRESSROOM SIMULATOR - 확률과 통계
+ * 🛠️ 완벽히 정렬된 400x600 해상도 고정형 디자인 시스템 에셋
  */
-
-// --- 1. SVG 자산 데이터 (디자인 강화) ---
-const SVG_ASSETS = {
+const ASSET_LIBRARY = {
+    // 1. 캐릭터 원본 베이스 (사지 분리 절대 없음)
     character: {
-        male: `<svg class="svg-layer" viewBox="0 0 400 600"><defs><linearGradient id="skinM" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffdbac"/><stop offset="100%" stop-color="#f1c27d"/></linearGradient></defs>
-            <!-- 팔 --> <ellipse cx="110" cy="300" rx="15" ry="80" fill="url(#skinM)" transform="rotate(10 110 300)"/><ellipse cx="290" cy="300" rx="15" ry="80" fill="url(#skinM)" transform="rotate(-10 290 300)"/>
-            <!-- 바디 --> <path d="M150 150 L250 150 L260 400 L140 400 Z" fill="url(#skinM)"/> 
-            <!-- 다리 --> <rect x="155" y="380" width="30" height="150" fill="url(#skinM)" rx="15"/><rect x="215" y="380" width="30" height="150" fill="url(#skinM)" rx="15"/>
-            <!-- 머리 --> <circle cx="200" cy="100" r="60" fill="url(#skinM)"/>
-            <!-- 눈코입 --> <circle cx="180" cy="90" r="4" fill="#333"/><circle cx="220" cy="90" r="4" fill="#333"/><path d="M195 110 Q200 115 205 110" stroke="#333" fill="none" stroke-width="2"/><circle cx="175" cy="105" r="5" fill="#ffb7b7" fill-opacity="0.5"/> <circle cx="225" cy="105" r="5" fill="#ffb7b7" fill-opacity="0.5"/>
-            </svg>`,
-        female: `<svg class="svg-layer" viewBox="0 0 400 600"><defs><linearGradient id="skinF" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5eb"/><stop offset="100%" stop-color="#ffdbac"/></linearGradient></defs>
-            <!-- 팔 --> <ellipse cx="115" cy="290" rx="12" ry="75" fill="url(#skinF)" transform="rotate(15 115 290)"/><ellipse cx="285" cy="290" rx="12" ry="75" fill="url(#skinF)" transform="rotate(-15 285 290)"/>
-            <!-- 바디 --> <path d="M160 150 L240 150 C260 250, 260 300, 245 380 L155 380 C140 300, 140 250, 160 150 Z" fill="url(#skinF)"/>
-            <!-- 다리 --> <rect x="165" y="370" width="25" height="160" fill="url(#skinF)" rx="12"/><rect x="210" y="370" width="25" height="160" fill="url(#skinF)" rx="12"/>
-            <!-- 머리 --> <circle cx="200" cy="95" r="55" fill="url(#skinF)"/>
-            <!-- 눈코입 --> <ellipse cx="180" cy="88" rx="3" ry="4" fill="#333"/><ellipse cx="220" cy="88" rx="3" ry="4" fill="#333"/><path d="M180 82 L185 84 M220 82 L215 84" stroke="#333" stroke-width="1"/><path d="M196 108 Q200 112 204 108" stroke="#e74c3c" fill="none" stroke-width="2"/><circle cx="175" cy="102" r="6" fill="#ffcccc"/> <circle cx="225" cy="102" r="6" fill="#ffcccc"/>
-            </svg>`
+        male: `<svg viewBox="0 0 400 600">
+            <defs><linearGradient id="sm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffebd4"/><stop offset="100%" stop-color="#f3cbb0"/></linearGradient></defs>
+            <!-- 양다리 고정 --> <rect x="160" y="380" width="30" height="160" fill="url(#sm)" rx="15"/><rect x="210" y="380" width="30" height="160" fill="url(#sm)" rx="15"/>
+            <!-- 일체형 몸통 및 목 --> <path d="M140 160 L260 160 L250 390 L150 390 Z" fill="url(#sm)"/><rect x="185" y="130" width="30" height="40" fill="url(#sm)"/>
+            <!-- 양팔 고정 결합 --> <path d="M140 160 Q110 260 120 320" stroke="url(#sm)" stroke-width="26" stroke-linecap="round" fill="none"/><path d="M260 160 Q290 260 280 320" stroke="url(#sm)" stroke-width="26" stroke-linecap="round" fill="none"/>
+            <!-- 두상 및 생기있는 안면 구조 --> <circle cx="200" cy="100" r="50" fill="url(#sm)"/>
+            <circle cx="185" cy="95" r="4.5" fill="#222"/><circle cx="215" cy="95" r="4.5" fill="#222"/>
+            <path d="M178 86 Q185 83 192 86 M208 86 Q215 83 222 86" stroke="#444" stroke-width="2" fill="none"/>
+            <path d="M198 106 Q200 107 202 106 V110 Z" fill="#f3a493"/>
+            <path d="M194 116 Q200 124 206 116" stroke="#e74c3c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="178" cy="106" r="6" fill="#ff7675" fill-opacity="0.4"/><circle cx="222" cy="106" r="6" fill="#ff7675" fill-opacity="0.4"/>
+        </svg>`,
+        female: `<svg viewBox="0 0 400 600">
+            <defs><linearGradient id="sf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5eb"/><stop offset="100%" stop-color="#ffe3d1"/></linearGradient></defs>
+            <!-- 양다리 고정 --> <rect x="165" y="380" width="26" height="160" fill="url(#sf)" rx="13"/><rect x="209" y="380" width="26" height="160" fill="url(#sf)" rx="13"/>
+            <!-- 곡선 일체형 몸통 및 목 --> <path d="M145 160 L255 160 C265 240, 255 330, 245 390 L155 390 C145 330, 135 240, 145 160 Z" fill="url(#sf)"/><rect x="187" y="130" width="26" height="40" fill="url(#sf)"/>
+            <!-- 양팔 고정 결합 --> <path d="M145 160 Q115 250 125 310" stroke="url(#sf)" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M255 160 Q285 250 275 310" stroke="url(#sf)" stroke-width="22" stroke-linecap="round" fill="none"/>
+            <!-- 두상 및 러블리 안면 구조 --> <circle cx="200" cy="98" r="46" fill="url(#sf)"/>
+            <ellipse cx="184" cy="95" rx="4" ry="4.5" fill="#111"/><ellipse cx="216" cy="95" rx="4" ry="4.5" fill="#111"/>
+            <path d="M176 86 Q184 82 191 85 M209 85 Q216 82 224 86" stroke="#333" stroke-width="2" fill="none"/>
+            <path d="M194 116 Q200 122 206 116" stroke="#ff4757" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="177" cy="104" r="7" fill="#ffb3ba"/><circle cx="223" cy="104" r="7" fill="#ffb3ba"/>
+        </svg>`
     },
-    items: {
-        // 기본 아이템
-        basic_hair: `<svg viewBox="0 0 400 600"><path d="M140 80 Q200 10 260 80 L270 250 Q200 280 130 250 Z" fill="#2d3436"/></svg>`,
-        basic_top: `<svg viewBox="0 0 400 600"><path d="M150 150 L250 150 L260 280 L140 280 Z" fill="white" stroke="#eee"/><path d="M150 150 L120 200 L140 220 L160 180 Z" fill="white" stroke="#eee"/><path d="M250 150 L280 200 L260 220 L240 180 Z" fill="white" stroke="#eee"/></svg>`,
-        basic_bottom: `<svg viewBox="0 0 400 600"><path d="M140 350 L260 350 L255 500 L210 500 L200 380 L190 500 L145 500 Z" fill="#a4b0be"/></svg>`,
-        
-        // 에이블리 (Cute)
-        ably_hair_1: `<svg viewBox="0 0 400 600"><circle cx="160" cy="70" r="25" fill="#ff9a9e"/><circle cx="240" cy="70" r="25" fill="#ff9a9e"/><path d="M150 50 Q200 20 250 50 A60 60 0 0 1 250 130 L150 130 A60 60 0 0 1 150 50 Z" fill="#ff9a9e"/><rect x="140" y="110" width="120" height="80" rx="10" fill="#ff9a9e"/></svg>`,
-        ably_top_1: `<svg viewBox="0 0 400 600"><path d="M160 150 L240 150 L250 270 L150 270 Z" fill="#ffdef0"/><circle cx="200" cy="190" r="15" fill="#ff6b6b"/><path d="M185 190 L215 190 M200 175 L200 205" stroke="white" stroke-width="3"/></svg>`,
-        ably_bottom_1: `<svg viewBox="0 0 400 600"><path d="M155 350 L245 350 L260 450 L140 450 Z" fill="#ffb3ba"/><path d="M140 450 Q155 465 170 450 Q185 435 200 450 Q215 465 230 450 Q245 435 260 450" stroke="#ff6b6b" fill="none" stroke-width="2"/></svg>`,
-        
-        // 무신사 (Casual)
-        muni_top_1: `<svg viewBox="0 0 400 600"><rect x="130" y="140" width="140" height="150" rx="15" fill="#222"/><rect x="90" y="160" width="50" height="100" rx="10" fill="#222"/><rect x="260" y="160" width="50" height="100" rx="10" fill="#222"/><text x="200" y="220" text-anchor="middle" fill="white" font-size="20" font-weight="bold">M</text></svg>`,
-        muni_bottom_1: `<svg viewBox="0 0 400 600"><path d="M140 350 H260 V530 H215 V420 H185 V530 H140 Z" fill="#353b48"/><rect x="145" y="380" width="30" height="40" rx="5" fill="#2f3640"/><rect x="225" y="380" width="30" height="40" rx="5" fill="#2f3640"/></svg>`,
-        muni_shoes_1: `<svg viewBox="0 0 400 600"><rect x="150" y="520" width="40" height="25" rx="8" fill="black"/><rect x="210" y="520" width="40" height="25" rx="8" fill="black"/><path d="M155 525 L185 525" stroke="white" stroke-width="2"/></svg>`,
 
-        // 크림 (Premium/Limited)
-        kream_shoes_1: `<svg viewBox="0 0 400 600"><defs><linearGradient id="gradSSS" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff00c8"/><stop offset="100%" stop-color="#ff4757"/></linearGradient></defs>
-            <!-- Left Shoe --> <path d="M150 510 H195 V545 H160 Q150 545 150 535 Z" fill="#e74c3c"/><path d="M150 520 H195 V535 H150 Z" fill="white"/><circle cx="158" cy="528" r="3" fill="#e74c3c"/><path d="M165 520 L165 512 M172 520 L172 512 M179 520 L179 512" stroke="black" stroke-width="1.5"/>
-            <!-- Right Shoe --> <path d="M205 510 H250 V535 Q250 545 240 545 H205 Z" fill="#e74c3c"/><path d="M205 520 H250 V535 H205 Z" fill="white"/><circle cx="242" cy="528" r="3" fill="#e74c3c"/><path d="M221 520 L221 512 M228 520 L228 512 M235 520 L235 512" stroke="black" stroke-width="1.5"/>
-            </svg>`,
-        kream_top_1: `<svg viewBox="0 0 400 600"><path d="M140 140 H260 V290 H140 Z" fill="#222"/><path d="M140 140 L100 180 L120 210 L140 190 Z" fill="#e74c3c"/><path d="M260 140 L300 180 L280 210 L260 190 Z" fill="#e74c3c"/><rect x="180" y="140" width="40" height="150" fill="#333"/><path d="M200 140 V290" stroke="#33ee88" stroke-width="2" stroke-dasharray="5 3"/><text x="170" y="180" fill="#33ee88" font-size="8">KRM</text></svg>`,
-        kream_acc_1: `<svg viewBox="0 0 400 600"><ellipse cx="200" cy="160" rx="40" ry="15" fill="none" stroke="#f1c40f" stroke-width="3"/><circle cx="200" cy="175" r="10" fill="#f1c40f"/><circle cx="200" cy="175" r="4" fill="#33ee88"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite" /></circle></svg>`
+    // 2. 의상 및 악세사리 컴포넌트 (모두 동일 좌표 0 0 400 600 스케일 배치)
+    items: {
+        /* 기본 아이템 (C) */
+        basic_hair: `<svg viewBox="0 0 400 600"><path d="M140 90 Q200 20 260 90 C280 140, 275 240, 270 280 Q250 220, 200 220 Q150 220, 130 280 C125 240, 120 140, 140 90 Z" fill="#2c3e50"/></svg>`,
+        basic_top: `<svg viewBox="0 0 400 600"><path d="M145 160 L255 160 L250 260 L150 260 Z" fill="#ffffff" stroke="#ddd" stroke-width="2"/><path d="M145 160 L115 200 L135 215 L155 180 Z" fill="#ffffff" stroke="#ddd" stroke-width="2"/><path d="M255 160 L285 200 L265 215 L245 180 Z" fill="#ffffff" stroke="#ddd" stroke-width="2"/></svg>`,
+        basic_bottom: `<svg viewBox="0 0 400 600"><path d="M150 260 H250 V430 H210 V330 H190 V430 H150 Z" fill="#7f8c8d"/></svg>`,
+
+        /* 에이블리 (Cute & Pink 스타일) */
+        ably_hair: `<svg viewBox="0 0 400 600"><circle cx="140" cy="70" r="22" fill="#ff9a9e"/><circle cx="260" cy="70" r="22" fill="#ff9a9e"/><path d="M145 80 Q200 30 255 80 C270 120, 260 170, 255 190 Q200 160, 145 190 C140 170, 130 120, 145 80 Z" fill="#ff9a9e"/><path d="M135 60 L145 75 L155 60 M245 60 L255 75 L265 60" stroke="#fff" stroke-width="3" fill="none"/></svg>`,
+        ably_top: `<svg viewBox="0 0 400 600"><path d="M145 160 L255 160 L255 250 L145 250 Z" fill="#fff0f5"/><path d="M130 160 C110 190, 120 220, 150 200 Z" fill="#ffb3ba"/><path d="M270 160 C290 190, 280 220, 250 200 Z" fill="#ffb3ba"/><circle cx="200" cy="200" r="10" fill="#ff4757"/><path d="M190 200 Q200 185 210 200 Q200 215 190 200 Z" fill="#ff4757"/></svg>`,
+        ably_bottom: `<svg viewBox="0 0 400 600"><path d="M150 250 H250 L265 350 H135 Z" fill="#ffccd5" stroke="#ffb3ba"/><path d="M135 350 Q150 365 165 350 Q180 335 195 350 Q210 365 225 350 Q240 335 255 350 Q270 365 275 350" fill="none" stroke="#ff4757" stroke-width="3"/></svg>`,
+        ably_shoes: `<svg viewBox="0 0 400 600"><rect x="155" y="520" width="36" height="30" rx="10" fill="#ff7675"/><rect x="209" y="520" width="36" height="30" rx="10" fill="#ff7675"/><circle cx="173" cy="530" r="5" fill="#fff"/><circle cx="227" cy="530" r="5" fill="#fff"/></svg>`,
+        ably_ear: `<svg viewBox="0 0 400 600"><circle cx="148" cy="115" r="7" fill="#ff9ff3"/><circle cx="252" cy="115" r="7" fill="#ff9ff3"/></svg>`,
+
+        /* 무신사 (Casual & Street 스타일) */
+        musi_hair: `<svg viewBox="0 0 400 600"><path d="M146 80 Q200 30 254 80 Q270 120, 260 160 C240 140, 220 140, 200 150 C180 140, 160 140, 140 160 C130 120, 134 80, 146 80 Z" fill="#d2b48c"/></svg>`,
+        musi_top: `<svg viewBox="0 0 400 600"><path d="M135 155 L265 155 L260 270 L140 270 Z" fill="#222222"/><path d="M135 155 L100 200 L125 220 L145 185 Z" fill="#222222"/><path d="M265 155 L300 200 L275 220 L255 185 Z" fill="#222222"/><text x="200" y="225" text-anchor="middle" fill="#fff" font-size="24" font-weight="900" font-style="italic">MSS</text></svg>`,
+        musi_bottom: `<svg viewBox="0 0 400 600"><path d="M145 265 H255 L265 500 H215 V360 H185 V500 H135 Z" fill="#3b3b98"/><rect x="140" y="320" width="25" height="35" rx="4" fill="#1e272e"/><rect x="235" y="320" width="25" height="35" rx="4" fill="#1e272e"/></svg>`,
+        musi_bag: `<svg viewBox="0 0 400 600"><path d="M110 160 L290 280" stroke="#57606f" stroke-width="6" fill="none"/><rect x="230" y="240" width="55" height="45" rx="8" fill="#2f3542"/><circle cx="257" cy="262" r="5" fill="#f1c40f"/></svg>`,
+        musi_socks: `<svg viewBox="0 0 400 600"><rect x="160" y="470" width="30" height="60" fill="#ffffff"/><rect x="210" y="470" width="30" height="60" fill="#ffffff"/><rect x="160" y="480" width="30" height="6" fill="#ff4757"/><rect x="210" y="480" width="30" height="6" fill="#ff4757"/></svg>`,
+
+        /* 크림 (Luxury & Limited 에디션) */
+        kream_onepiece: `<svg viewBox="0 0 400 600"><defs><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e272e"/><stop offset="100%" stop-color="#485460"/></linearGradient></defs><path d="M145 160 H255 L275 260 L300 460 H100 L125 260 Z" fill="url(#kg)"/><path d="M145 160 L110 195 L130 215 L150 185 Z" fill="#1e272e"/><path d="M255 160 L290 195 L270 215 L250 185 Z" fill="#1e272e"/><path d="M100 460 Q200 490 300 460" stroke="#33ee88" stroke-width="4" fill="none"/></svg>`,
+        kream_shoes: `<svg viewBox="0 0 400 600">
+            <!-- Left Shoe --> <path d="M155 515 H195 V550 H155 Z" fill="#ff4757"/><path d="M155 530 H195 V550 H155 Z" fill="#ffffff"/><path d="M165 515 L165 505 M175 515 L175 505 M185 515 L185 505" stroke="#000" stroke-width="2"/>
+            <!-- Right Shoe --> <path d="M205 515 H245 V550 H205 Z" fill="#ff4757"/><path d="M205 530 H245 V550 H205 Z" fill="#ffffff"/><path d="M215 515 L215 505 M225 515 L225 505 M235 515 L235 505" stroke="#000" stroke-width="2"/>
+        </svg>`,
+        kream_neck: `<svg viewBox="0 0 400 600"><path d="M165 145 Q200 185 235 145" fill="none" stroke="#f1c40f" stroke-width="4"/><polygon points="200,175 208,160 192,160" fill="#33ee88"/></svg>`,
+        kream_bag: `<svg viewBox="0 0 400 600"><path d="M240 220 C220 160, 160 160, 140 220" fill="none" stroke="#d4af37" stroke-width="5"/><rect x="110" y="220" width="70" height="55" rx="12" fill="#111" stroke="#d4af37" stroke-width="2"/><circle cx="145" cy="247" r="7" fill="#d4af37"/></svg>`
     }
 };
 
-// --- 2. 아이템 데이터베이스 ---
-const ITEM_DATABASE = [
-    // Basic
-    { id: 'b_hair', name: '검정 긴 생머리', category: 'hair', grade: 'C', basePrice: 5000, shop: 'basic' },
-    { id: 'b_top', name: '흰색 반팔 티셔츠', category: 'top', grade: 'C', basePrice: 3000, shop: 'basic' },
-    { id: 'b_bottom', name: '회색 츄리닝 바지', category: 'bottom', grade: 'C', basePrice: 4000, shop: 'basic' },
-    // Ably
-    { id: 'a_hair_1', name: '핑크 트윈테일', category: 'hair', grade: 'A', basePrice: 55000, shop: 'ably' },
-    { id: 'a_top_1', name: '도트 리본 블라우스', category: 'top', grade: 'B', basePrice: 32000, shop: 'ably' },
-    { id: 'a_bottom_1', name: '프릴 테니스 스커트', category: 'bottom', grade: 'A', basePrice: 48000, shop: 'ably' },
-    // Musinsa
-    { id: 'm_top_1', name: 'M 로고 오버핏 후드', category: 'top', grade: 'S', basePrice: 89000, shop: 'musinsa' },
-    { id: 'm_bottom_1', name: '와이드 카고 팬츠', category: 'bottom', grade: 'B', basePrice: 65000, shop: 'musinsa' },
-    { id: 'm_shoes_1', name: '어글리 스니커즈', category: 'shoes', grade: 'A', basePrice: 120000, shop: 'musinsa' },
-    // Kream
-    { id: 'k_shoes_1', name: 'Limited 레트로 하이', category: 'shoes', grade: 'SSS', basePrice: 1500000, shop: 'kream' },
-    { id: 'k_top_1', name: '테크웨어 오버핏 자켓', category: 'top', grade: 'SS', basePrice: 450000, shop: 'kream' },
-    { id: 'k_acc_1', name: '퓨처리스틱 네온 목걸이', category: 'acc', grade: 'S', basePrice: 220000, shop: 'kream' }
+/**
+ * 📊 전체 아이템 아이디 데이터 베이스 정의
+ */
+const ITEM_DB = [
+    { id: 'basic_hair', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 4000, shop: 'basic' },
+    { id: 'basic_top', name: '기본 흰색 반팔티', category: 'top', grade: 'C', basePrice: 5000, shop: 'basic' },
+    { id: 'basic_bottom', name: '기본 회색 츄리닝', category: 'bottom', grade: 'C', basePrice: 6000, shop: 'basic' },
+    
+    { id: 'ably_hair', name: '스윗걸 핑크 트윈테일', category: 'hair', grade: 'A', basePrice: 42000, shop: 'ably' },
+    { id: 'ably_top', name: '도트 세일러 블라우스', category: 'top', grade: 'B', basePrice: 28000, shop: 'ably' },
+    { id: 'ably_bottom', name: '레인보우 테니스 스커트', category: 'bottom', grade: 'A', basePrice: 39000, shop: 'ably' },
+    { id: 'ably_shoes', name: '에나멜 리본 구두', category: 'shoes', grade: 'B', basePrice: 31000, shop: 'ably' },
+    { id: 'ably_ear', name: '큐티 하트 귀걸이', category: 'earrings', grade: 'S', basePrice: 75000, shop: 'ably' },
+
+    { id: 'musi_hair', name: '내추럴 브라운 댄디컷', category: 'hair', grade: 'B', basePrice: 35000, shop: 'musinsa' },
+    { id: 'musi_top', name: '무신사 오버핏 후드티', category: 'top', grade: 'B', basePrice: 49000, shop: 'musinsa' },
+    { id: 'musi_bottom', name: '스티치 와이드 데님', category: 'bottom', grade: 'A', basePrice: 68000, shop: 'musinsa' },
+    { id: 'musi_bag', name: '메신저 크로스백', category: 'bag', grade: 'S', basePrice: 115000, shop: 'musinsa' },
+    { id: 'musi_socks', name: '스트릿 미들 스포츠삭스', category: 'socks', grade: 'B', basePrice: 8000, shop: 'musinsa' },
+
+    { id: 'kream_onepiece', name: '리미티드 테크웨어 드레스', category: 'onepiece', grade: 'SS', basePrice: 480000, shop: 'kream' },
+    { id: 'kream_shoes', name: 'Retro High 한정판 스니커즈', category: 'shoes', grade: 'SSS', basePrice: 1250000, shop: 'kream' },
+    { id: 'kream_neck', name: '에메랄드 골드 펜던트', category: 'necklace', grade: 'S', basePrice: 280000, shop: 'kream' },
+    { id: 'kream_bag', name: '럭셔리 모노그램 미니백', category: 'bag', grade: 'SSS', basePrice: 3400000, shop: 'kream' }
 ];
 
-// --- 3. 확률 및 통계 설정 ---
-const PROBABILITY = {
-    ably: [
-        { grade: 'S', percentile: 5 },  // 5%
-        { grade: 'A', percentile: 20 }, // 15%
-        { grade: 'B', percentile: 50 }, // 30%
-        { grade: 'C', percentile: 100 }// 50%
-    ],
-    musinsa: [
-        { grade: 'SS', percentile: 3 },  // 3%
-        { grade: 'S', percentile: 10 },  // 7%
-        { grade: 'A', percentile: 30 },  // 20%
-        { grade: 'B', percentile: 100 }  // 70%
-    ],
-    kream: [
-        { grade: 'SSS', percentile: 1 }, // 1%
-        { grade: 'SS', percentile: 5 },  // 4%
-        { grade: 'S', percentile: 15 },  // 10%
-        { grade: 'A', percentile: 100 }  // 85%
-    ]
+// 확률 분할 정의
+const PROB_TABLE = {
+    ably: [{ grade: 'S', p: 8 }, { grade: 'A', p: 28 }, { grade: 'B', p: 68 }, { grade: 'C', p: 100 }],
+    musinsa: [{ grade: 'SS', p: 5 }, { grade: 'S', p: 15 }, { grade: 'A', p: 45 }, { grade: 'B', p: 100 }],
+    kream: [{ grade: 'SSS', p: 2 }, { grade: 'SS', p: 10 }, { grade: 'S', p: 30 }, { grade: 'A', p: 100 }]
 };
 
-const COSTS = { ably: 30000, musinsa: 50000, kream: 80000 };
+const APP_COSTS = { ably: 30000, musinsa: 50000, kream: 80000 };
 
-// --- 4. 게임 상태 관리 (User State) ---
-let userState = {
-    name: '',
+// 글로벌 가상 계정/엔진 인스턴스 정보
+let accounts = {}; 
+let currentUser = null;
+
+let state = {
+    roomName: '',
     gender: '',
     balance: 100000,
-    closet: [
-        { ...ITEM_DATABASE[0], instanceId: 1, currentPrice: 5000 }, // 기본 헤어
-        { ...ITEM_DATABASE[1], instanceId: 2, currentPrice: 3000 }, // 기본 상의
-        { ...ITEM_DATABASE[2], instanceId: 3, currentPrice: 4000 }  // 기본 하의
-    ],
-    equipped: {
-        hair: 1, // instanceId
-        top: 2,
-        bottom: 3,
-        shoes: null,
-        acc: null
-    },
-    itemCounter: 3 // 인스턴스 ID 생성을 위한 카운터
+    closet: [],
+    equipped: { hair: null, top: null, bottom: null, onepiece: null, shoes: null, socks: null, bag: null, necklace: null, earrings: null },
+    idCounter: 0
 };
 
-// --- 5. 핵심 게임 로직 ---
+/**
+ * 🔐 회원가입 & 로그인 계정 관리 모듈
+ */
+const accountSystem = {
+    switchScreen: (target) => {
+        document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`${target}-screen`).classList.remove('hidden');
+    },
+    register: () => {
+        const id = document.getElementById('reg-id').value.trim();
+        const pw = document.getElementById('reg-pw').value.trim();
+        if(!id || !pw) return alert('아이디와 비밀번호를 채워주세요.');
+        if(accounts[id]) return alert('이미 존재하는 아이디입니다.');
+        
+        accounts[id] = { pw: pw, gameData: null };
+        alert('회원가입 완료! 로그인 해주세요.');
+        accountSystem.switchScreen('login');
+    },
+    login: () => {
+        const id = document.getElementById('login-id').value.trim();
+        const pw = document.getElementById('login-pw').value.trim();
+        if(!accounts[id] || accounts[id].pw !== pw) return alert('아이디 또는 비밀번호가 틀립니다.');
+        
+        currentUser = id;
+        if(accounts[id].gameData) {
+            state = accounts[id].gameData;
+            accountSystem.loadDirectGame();
+        } else {
+            accountSystem.switchScreen('name');
+        }
+    },
+    setRoomName: () => {
+        const name = document.getElementById('user-name').value.trim();
+        if(!name) return alert('이름을 입력해주세요.');
+        state.roomName = name;
+        accountSystem.switchScreen('gender');
+    },
+    selectGender: (g) => {
+        state.gender = g;
+        document.getElementById('btn-male').classList.toggle('selected', g === 'male');
+        document.getElementById('btn-female').classList.toggle('selected', g === 'female');
+        document.getElementById('gender-submit').classList.remove('hidden');
+    },
+    finishSetup: () => {
+        // 기본 3종 지급 세팅
+        const basics = ['basic_hair', 'basic_top', 'basic_bottom'];
+        basics.forEach(bid => {
+            state.idCounter++;
+            const itemInfo = ITEM_DB.find(d => d.id === bid);
+            const inst = { ...itemInfo, instId: state.idCounter, currentPrice: itemInfo.basePrice, vol: 0 };
+            state.closet.push(inst);
+            state.equipped[inst.category] = inst.instId;
+        });
+
+        accountSystem.loadDirectGame();
+    },
+    loadDirectGame: () => {
+        document.querySelectorAll('.overlay-screen').forEach(el => el.classList.add('hidden'));
+        document.getElementById('display-room-name').innerText = state.roomName;
+        ui.updateBalanceView();
+        ui.rebuildCharacterDrawing();
+        
+        // 반복 주기를 통한 리얼타임 중고 마켓 연동
+        setInterval(game.tickMarketFluctuation, 3000);
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('phone-time').innerText = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+        }, 1000);
+    },
+    saveData: () => {
+        if(currentUser) accounts[currentUser].gameData = { ...state };
+    }
+};
+
+/**
+ * 🎲 통계적 코어 연산 & 데이터 핸들링 모듈
+ */
 const game = {
-    // 가챠 로직 (확률적 요소)
-    drawItem: (shop) => {
-        const cost = COSTS[shop];
-        if (userState.balance < cost) {
-            alert('잔고가 부족합니다!');
+    draw: (shop) => {
+        const cost = APP_COSTS[shop];
+        if(state.balance < cost) return alert('잔고가 부족합니다!');
+        
+        state.balance -= cost;
+        ui.updateBalanceView();
+
+        // 누적 백분율 테이블 분석을 통한 등급 판정
+        const roll = Math.random() * 100;
+        let finalGrade = 'C';
+        for(let target of PROB_TABLE[shop]) {
+            if(roll <= target.p) { finalGrade = target.grade; break; }
+        }
+
+        // 해당 매칭 풀 무작위 드롭
+        const pool = ITEM_DB.filter(d => d.shop === shop && d.grade === finalGrade);
+        if(pool.length === 0) { // 예외 보정
+            game.grantItem(ITEM_DB.filter(d => d.shop === shop)[0]);
+        } else {
+            const chosen = pool[Math.floor(Math.random() * pool.length)];
+            game.grantItem(chosen);
+        }
+    },
+    grantItem: (itemTemplate) => {
+        state.idCounter++;
+        // 등급별 시세 변동폭(Volatility) 설정
+        let vol = 0.08;
+        if(itemTemplate.grade === 'SSS') vol = 0.35;
+        else if(itemTemplate.grade === 'SS') vol = 0.22;
+        else if(itemTemplate.grade === 'S') vol = 0.15;
+
+        const newInstance = {
+            ...itemTemplate,
+            instId: state.idCounter,
+            currentPrice: itemTemplate.basePrice,
+            vol: vol,
+            trend: 'same'
+        };
+        state.closet.push(newInstance);
+        accountSystem.saveData();
+        ui.triggerGachaModal(newInstance);
+    },
+    tickMarketFluctuation: () => {
+        state.closet.forEach(item => {
+            if(item.shop === 'basic') return;
+            
+            // 난수 결합을 통한 정규 가우시안 근사 분포 변동
+            const ranFactor = (Math.random() + Math.random() + Math.random() - 1.5) / 1.5; 
+            const delta = 1 + (ranFactor * item.vol);
+            
+            const nextPrice = Math.max(Math.round(item.currentPrice * delta), Math.round(item.basePrice * 0.15));
+            item.trend = nextPrice > item.currentPrice ? 'up' : nextPrice < item.currentPrice ? 'down' : 'same';
+            item.currentPrice = nextPrice;
+        });
+        ui.renderMarketList();
+    },
+    sellItem: (instId) => {
+        const targetIdx = state.closet.findIndex(i => i.instId === instId);
+        if(targetIdx === -1) return;
+        
+        const targetItem = state.closet[targetIdx];
+        state.balance += targetItem.currentPrice;
+
+        // 탈의 연동 처리
+        for (let cat in state.equipped) {
+            if(state.equipped[cat] === instId) state.equipped[cat] = null;
+        }
+
+        state.closet.splice(targetIdx, 1);
+        accountSystem.saveData();
+        
+        ui.updateBalanceView();
+        ui.rebuildCharacterDrawing();
+        ui.renderMarketList();
+        if(document.getElementById('closet-panel').classList.contains('open')) ui.renderClosetGrid();
+    }
+};
+
+/**
+ * 🎨 인터페이스 화면 조작 및 SVG 래핑 엔진
+ */
+const ui = {
+    updateBalanceView: () => {
+        document.getElementById('balance-amount').innerText = state.balance.toLocaleString();
+    },
+    rebuildCharacterDrawing: () => {
+        const container = document.getElementById('char-canvas');
+        container.innerHTML = '';
+
+        // 1. 완벽 고정형 원본 사디 보정 본체 로딩
+        const baseWrap = document.createElement('div');
+        baseWrap.className = 'svg-layer';
+        baseWrap.innerHTML = ASSET_LIBRARY.character[state.gender];
+        container.appendChild(baseWrap);
+
+        // 2. 파트별 순차적 일치 레이어링 연산 (원피스 착용 시 상/하의 무효화 규칙 적용)
+        const categories = ['socks', 'shoes', 'bottom', 'top', 'onepiece', 'hair', 'earrings', 'necklace', 'bag'];
+        
+        const isWearingOnepiece = state.equipped['onepiece'] !== null;
+
+        categories.forEach(cat => {
+            if(isWearingOnepiece && (cat === 'top' || cat === 'bottom')) return; // 원피스 우선 규칙 적용
+            
+            const targetedId = state.equipped[cat];
+            if(!targetedId) return;
+
+            const inst = state.closet.find(i => i.instId === targetedId);
+            if(inst && ASSET_LIBRARY.items[inst.id]) {
+                const itemWrap = document.createElement('div');
+                itemWrap.className = 'svg-layer';
+                itemWrap.innerHTML = ASSET_LIBRARY.items[inst.id];
+                container.appendChild(itemWrap);
+            }
+        });
+    },
+    
+    // 옷장 뷰 액션 처리
+    currentTab: 'all',
+    toggleCloset: (isOpen) => {
+        document.getElementById('closet-panel').classList.toggle('open', isOpen);
+        if(isOpen) ui.renderClosetGrid();
+    },
+    changeTab: (category, btn) => {
+        ui.currentTab = category;
+        document.querySelectorAll('.closet-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ui.renderClosetGrid();
+    },
+    renderClosetGrid: () => {
+        const grid = document.getElementById('closet-content');
+        grid.innerHTML = '';
+        
+        let filtered = state.closet;
+        if(ui.currentTab !== 'all') {
+            filtered = state.closet.filter(i => i.category === ui.currentTab);
+        }
+
+        if(filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; color:#999; font-size:0.85rem; padding:40px 0;">아이템이 비어있습니다.</div>`;
             return;
         }
 
-        userState.balance -= cost;
-        ui.updateBalance();
-
-        // 1. 등급 결정 (통계적 확률)
-        const rand = Math.random() * 100; // 0 ~ 100 사이 난수
-        let selectedGrade = 'C';
-        const table = PROBABILITY[shop];
-        
-        for (let i = 0; i < table.length; i++) {
-            if (rand <= table[i].percentile) {
-                selectedGrade = table[i].grade;
-                break;
-            }
-        }
-
-        // 2. 해당 등급 & 해당 상점 아이템 중 램덤 선택
-        const possibleItems = ITEM_DATABASE.filter(item => item.shop === shop && item.grade === selectedGrade);
-        
-        // 데이터 부족 방지용 예외 처리
-        if (possibleItems.length === 0) {
-             const fallbackItems = ITEM_DATABASE.filter(item => item.grade === selectedGrade);
-             game.addDrawItemToCloset(fallbackItems[Math.floor(Math.random() * fallbackItems.length)]);
-        } else {
-             const finalItem = possibleItems[Math.floor(Math.random() * possibleItems.length)];
-             game.addDrawItemToCloset(finalItem);
-        }
-    },
-
-    addDrawItemToCloset: (itemData) => {
-        userState.itemCounter++;
-        const newItem = {
-            ...itemData,
-            instanceId: userState.itemCounter,
-            // 중고 가격 변동률 가중치 (고등급일수록 변동폭 큼)
-            volatility: itemData.grade === 'SSS' ? 0.3 : itemData.grade === 'SS' ? 0.2 : 0.1,
-            currentPrice: itemData.basePrice
-        };
-        userState.closet.push(newItem);
-        ui.showGachaResult(newItem);
-    },
-
-    // 중고나라 시세 변동 로직 (실시간 시계열 통계 묘사)
-    updateMarketPrices: () => {
-        userState.closet.forEach(item => {
-            if (item.shop === 'basic') return; // 기본 아이템은 가격 고정
-
-            // 가우시안 랜덤 근사 (정규 분포 묘사)
-            // (Math.random() + Math.random() + Math.random()) / 3 은 0.5 근처에 밀집된 분포를 만듦
-            const gaussionRand = (Math.random() + Math.random() + Math.random()) / 3;
-            const changeFactor = 1 + (gaussionRand - 0.5) * item.volatility * 2; // -volatility ~ +volatility 범위
-
-            // 가격 변동 적용 (최소 원가의 20%, 최대 500% 제한)
-            let newPrice = Math.round(item.currentPrice * changeFactor);
-            newPrice = Math.max(newPrice, item.basePrice * 0.2);
-            newPrice = Math.min(newPrice, item.basePrice * 5);
-            
-            // 이전 가격과 비교 (UI 표시용 상태)
-            item.priceStatus = newPrice > item.currentPrice ? 'up' : newPrice < item.currentPrice ? 'down' : 'same';
-            item.currentPrice = newPrice;
-        });
-        ui.renderJoonggo();
-    },
-
-    sellItem: (instanceId) => {
-        const itemIndex = userState.closet.findIndex(item => item.instanceId === instanceId);
-        if (itemIndex === -1) return;
-
-        const item = userState.closet[itemIndex];
-
-        // 착용 중인 아이템인지 확인
-        for (const part in userState.equipped) {
-            if (userState.equipped[part] === instanceId) {
-                userState.equipped[part] = null; // 착용 해제
-                break;
-            }
-        }
-
-        // 잔고 추가 및 옷장에서 삭제
-        userState.balance += item.currentPrice;
-        userState.closet.splice(itemIndex, 1);
-
-        ui.updateBalance();
-        ui.renderCloset();
-        ui.renderJoonggo();
-        ui.drawCharacter(); // 착용 해제 대비 갱신
-    }
-};
-
-// --- 6. UI 및 랜더링 엔진 ---
-const ui = {
-    // 초기 세팅
-    updateBalance: () => {
-        document.getElementById('balance-amount').innerText = userState.balance.toLocaleString();
-    },
-
-    // 캐릭터 그리기 (레이어 시스템)
-    drawCharacter: () => {
-        const canvas = document.getElementById('char-canvas');
-        canvas.innerHTML = ''; // 초기화
-
-        // 1. 바디 레이어
-        canvas.innerHTML += SVG_ASSETS.character[userState.gender];
-
-        // 2. 의상/헤어 레이어 (순서 중요: 신발 -> 하의 -> 상의 -> 헤어/악세)
-        const layers = ['shoes', 'bottom', 'top', 'hair', 'acc'];
-        layers.forEach(part => {
-            const instanceId = userState.equipped[part];
-            if (instanceId) {
-                const item = userState.closet.find(i => i.instanceId === instanceId);
-                if (item) {
-                    const svgContent = SVG_ASSETS.items[item.id];
-                    if (svgContent) {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'svg-layer';
-                        wrapper.innerHTML = svgContent;
-                        canvas.appendChild(wrapper);
-                    }
-                }
-            }
-        });
-    },
-
-    // 옷장 랜더링
-    currentTab: 'all',
-    toggleCloset: (show) => {
-        document.getElementById('closet-panel').classList.toggle('open', show);
-        if (show) ui.renderCloset();
-    },
-    changeTab: (tab, btn) => {
-        ui.currentTab = tab;
-        document.querySelectorAll('.closet-tabs .tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        ui.renderCloset();
-    },
-    renderCloset: () => {
-        const content = document.getElementById('closet-content');
-        content.innerHTML = '';
-
-        let itemsToRender = userState.closet;
-        if (ui.currentTab !== 'all') {
-            itemsToRender = userState.closet.filter(item => item.category === ui.currentTab);
-        }
-
-        itemsToRender.forEach(item => {
-            const isEquipped = Object.values(userState.equipped).includes(item.instanceId);
+        filtered.forEach(item => {
+            const isEquipped = Object.values(state.equipped).includes(item.instId);
             const card = document.createElement('div');
             card.className = `item-card ${isEquipped ? 'equipped' : ''}`;
-            card.onclick = () => ui.equipItem(item.instanceId);
+            card.onclick = () => ui.processEquip(item);
 
-            const gradeColor = getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`);
+            const badgeColor = getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`).trim();
 
             card.innerHTML = `
-                <span class="item-grade-badge" style="background-color: ${gradeColor}">${item.grade}</span>
-                <div class="item-icon-container">
-                    ${SVG_ASSETS.items[item.id]}
-                </div>
+                <span class="item-grade-badge" style="background:${badgeColor}">${item.grade}</span>
+                <div class="item-preview">${ASSET_LIBRARY.items[item.id]}</div>
                 <div class="item-name">${item.name}</div>
             `;
-            content.appendChild(card);
+            grid.appendChild(card);
         });
     },
-
-    equipItem: (instanceId) => {
-        const item = userState.closet.find(i => i.instanceId === instanceId);
-        if (!item) return;
-
-        const category = item.category;
-
-        // 이미 착용 중이면 해제, 아니면 착용
-        if (userState.equipped[category] === instanceId) {
-            // 기본 아이템은 해제 불가하게 하려면 조건 추가
-            userState.equipped[category] = null;
+    processEquip: (item) => {
+        const cat = item.category;
+        if(state.equipped[cat] === item.instId) {
+            state.equipped[cat] = null;
         } else {
-            userState.equipped[category] = instanceId;
-        }
+            // 원피스 스와핑 상쇄 규칙 정의
+            if(cat === 'onepiece') { state.equipped['top'] = null; state.equipped['bottom'] = null; }
+            if(cat === 'top' || cat === 'bottom') state.equipped['onepiece'] = null;
 
-        ui.renderCloset();
-        ui.drawCharacter();
+            state.equipped[cat] = item.instId;
+        }
+        accountSystem.saveData();
+        ui.renderClosetGrid();
+        ui.rebuildCharacterDrawing();
     },
 
-    // 폰 관련 UI
-    focusPhone: () => {
+    // 폰 화면 네비게이션
+    scrollPhone: () => {
         document.querySelector('.phone-area').scrollIntoView({ behavior: 'smooth' });
     },
     openApp: (appId) => {
-        document.querySelectorAll('.app-window').forEach(app => app.classList.remove('open'));
+        document.querySelectorAll('.app-window').forEach(el => el.classList.remove('open'));
         document.getElementById(`app-${appId}`).classList.add('open');
-        if (appId === 'joonggo') ui.renderJoonggo();
+        if(appId === 'joonggo') ui.renderMarketList();
     },
     closeApp: () => {
-        document.querySelectorAll('.app-window').forEach(app => app.classList.remove('open'));
+        document.querySelectorAll('.app-window').forEach(el => el.classList.remove('open'));
     },
+    
+    // 중고나라 인터페이스 빌더
+    renderMarketList: () => {
+        const container = document.getElementById('joonggo-list');
+        if(!document.getElementById('app-joonggo').classList.contains('open')) return;
 
-    // 중고나라 랜더링
-    renderJoonggo: () => {
-        const list = document.getElementById('market-list');
-        // 중고나라 앱이 열려있을 때만 갱신 (성능)
-        if (!document.getElementById('app-joonggo').classList.contains('open')) return;
-        
-        list.innerHTML = '';
+        const sellable = state.closet.filter(i => i.shop !== 'basic');
+        container.innerHTML = '';
 
-        // 기본 아이템 제외하고 판매 가능
-        const sellableItems = userState.closet.filter(item => item.shop !== 'basic');
-
-        if (sellableItems.length === 0) {
-            list.innerHTML = '<div style="text-align:center; padding:30px; color:#999; font-size:0.9rem;">팔 수 있는 옷이 없습니다.</div>';
+        if(sellable.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:50px 0; color:#999; font-size:0.9rem;">판매 가능한 옷이 없습니다.</div>`;
             return;
         }
 
-        sellableItems.forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'market-item';
+        sellable.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'market-item';
+            
+            let trendClass = '';
+            let arrow = '─';
+            if(item.trend === 'up') { trendClass = 'up'; arrow = '▲'; }
+            else if(item.trend === 'down') { trendClass = 'down'; arrow = '▼'; }
 
-            const statusClass = item.priceStatus === 'up' ? 'up' : item.priceStatus === 'down' ? 'down' : '';
-            const statusIcon = item.priceStatus === 'up' ? '▲' : item.priceStatus === 'down' ? '▼' : '-';
+            const gradeColor = getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`).trim();
 
-            itemDiv.innerHTML = `
-                <div class="market-img">${SVG_ASSETS.items[item.id]}</div>
+            row.innerHTML = `
+                <div class="market-preview">${ASSET_LIBRARY.items[item.id]}</div>
                 <div class="market-info">
-                    <div class="market-name">${item.name} <span style="color:${getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`)}">[${item.grade}]</span></div>
-                    <div class="market-price ${statusClass}">${item.currentPrice.toLocaleString()} 원 <span style="font-size:0.7rem">${statusIcon}</span></div>
+                    <div class="market-name">${item.name} <span style="color:${gradeColor}; font-size:0.75rem;">[${item.grade}]</span></div>
+                    <div class="market-price ${trendClass}">${item.currentPrice.toLocaleString()}원 <span style="font-size:0.7rem;">${arrow}</span></div>
                 </div>
-                <button class="sell-btn" onclick="game.sellItem(${item.instanceId})">판매</button>
+                <button class="sell-btn" onclick="game.sellItem(${item.instId})">즉시판매</button>
             `;
-            list.appendChild(itemDiv);
+            container.appendChild(row);
         });
     },
 
-    // 가챠 결과 모달
-    showGachaResult: (item) => {
+    // 모달창 팝업 연출
+    triggerGachaModal: (item) => {
         const modal = document.getElementById('result-modal');
-        const gradeEl = document.getElementById('result-grade');
+        const gradeBox = document.getElementById('result-grade');
         
-        gradeEl.innerText = item.grade;
-        gradeEl.style.color = getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`);
+        gradeBox.innerText = item.grade;
+        gradeBox.style.color = getComputedStyle(document.documentElement).getPropertyValue(`--${item.grade.toLowerCase()}-color`).trim();
         
-        document.getElementById('result-icon').innerHTML = SVG_ASSETS.items[item.id];
+        document.getElementById('result-preview').innerHTML = ASSET_LIBRARY.items[item.id];
         document.getElementById('result-name').innerText = item.name;
-
+        
         modal.classList.add('open');
     },
     closeModal: () => {
         document.getElementById('result-modal').classList.remove('open');
     }
 };
-
-// --- 7. 앱 흐름 제어 ---
-const app = {
-    login: () => {
-        // 간단 로그인
-        const id = document.getElementById('login-id').value;
-        const pw = document.getElementById('login-pw').value;
-        if (id && pw) {
-            document.getElementById('start-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('start-screen').classList.add('hidden');
-                document.getElementById('name-screen').classList.remove('hidden');
-            }, 500);
-        } else {
-            alert('아이디와 비밀번호를 입력해주세요. (아무값이나 입력 가능)');
-        }
-    },
-    setInfo: () => {
-        const name = document.getElementById('user-name').value;
-        if (name) {
-            userState.name = name;
-            document.getElementById('display-user-name').innerText = name;
-            document.getElementById('name-screen').classList.add('hidden');
-            document.getElementById('gender-screen').classList.remove('hidden');
-        } else {
-            alert('이름을 입력해주세요.');
-        }
-    },
-    setGender: (gender) => {
-        userState.gender = gender;
-        document.getElementById('btn-male').classList.toggle('selected', gender === 'male');
-        document.getElementById('btn-female').classList.toggle('selected', gender === 'female');
-        document.getElementById('gender-submit').classList.remove('hidden');
-    },
-    startGame: () => {
-        document.getElementById('gender-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('gender-screen').classList.add('hidden');
-            ui.updateBalance();
-            ui.drawCharacter();
-            
-            // 실시간 중고 시세 변동 시작 (3초마다)
-            setInterval(game.updateMarketPrices, 3000);
-            
-            // 폰 시간 갱신
-            updateClock();
-            setInterval(updateClock, 60000);
-        }, 500);
-    }
-};
-
-function updateClock() {
-    const now = new Date();
-    document.getElementById('phone-time').innerText = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-}
-
 </script>
 </body>
 </html>
