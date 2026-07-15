@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chiffon Atelier - High-End Dressroom</title>
+    <title>Chiffon Atelier Premium - High-End</title>
     <style>
         :root {
-            --bg-base: #ffeef2;
+            --bg-base: #fff0f3;
             --card-bg: #ffffff;
-            --accent-pink: #ffa3b1;
-            --accent-hot: #ff6584;
-            --border-soft: #ffe3e8;
-            --text-dark: #4a3e40;
-            --text-muted: #8c7e80;
-            --panel-round: 28px;
+            --accent-pink: #ffb3c1;
+            --accent-hot: #ff4d6d;
+            --border-soft: #ffe5ec;
+            --text-dark: #3c2f31;
+            --text-muted: #8a7a7c;
+            --panel-round: 30px;
 
-            --color-sss: #ff4d79;
-            --color-ss: #ff9f1c;
-            --color-s: #b5179e;
-            --color-a: #4361ee;
-            --color-b: #2ec4b6;
-            --color-c: #7f8c8d;
+            --color-sss: #ff0a54;
+            --color-ss: #ff7096;
+            --color-s: #ff85a1;
+            --color-a: #f72585;
+            --color-b: #7209b7;
+            --color-c: #9b5de5;
         }
 
         * { 
@@ -31,7 +31,7 @@
         }
         
         body { 
-            background-color: #ffdce3; 
+            background-color: #ffe5ec; 
             color: var(--text-dark); 
             display: flex; 
             justify-content: center; 
@@ -41,11 +41,11 @@
 
         .app-container {
             width: 430px;
-            height: 880px;
+            height: 900px;
             background: var(--bg-base);
-            border-radius: 36px;
-            box-shadow: 0 25px 50px rgba(180, 80, 100, 0.25);
-            border: 8px solid #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(255, 77, 109, 0.2);
+            border: 10px solid #ffffff;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -71,31 +71,36 @@
             background: var(--accent-hot); 
             color: white; 
             border: none; 
-            padding: 14px 20px; 
-            border-radius: 20px;
+            padding: 15px 22px; 
+            border-radius: 22px;
             font-weight: 800; 
             font-size: 1rem; 
             cursor: pointer; 
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 6px 12px rgba(255, 101, 132, 0.2);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
         }
         
         button:hover { 
-            background: #e04f6e; 
+            background: #ff0a54; 
             transform: translateY(-2px); 
-            box-shadow: 0 8px 16px rgba(255, 101, 132, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
         }
 
         input { 
             background: #ffffff; 
-            border: 2px solid #ffd5dc; 
-            padding: 14px; 
-            border-radius: 16px; 
+            border: 2.5px solid #ffe5ec; 
+            padding: 15px; 
+            border-radius: 18px; 
             margin-bottom: 12px; 
             outline: none; 
             font-size: 0.95rem;
             color: var(--text-dark);
             text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--accent-hot);
         }
 
         #screen-login { 
@@ -109,28 +114,30 @@
         }
         
         .brand-logo h1 { 
-            font-size: 2.6rem; 
+            font-size: 2.8rem; 
             font-weight: 900; 
             color: var(--accent-hot); 
-            text-shadow: 0 4px 8px rgba(255, 101, 132, 0.15);
+            text-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
+            letter-spacing: -1px;
         }
 
         .header { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 2px dashed var(--border-soft); 
+            border-bottom: 2px dashed #ffccd5; 
             padding-bottom: 14px; 
         }
         
         .balance-tag { 
-            background: #fff0f2; 
-            padding: 8px 16px; 
-            border-radius: 16px; 
+            background: #fff; 
+            padding: 8px 18px; 
+            border-radius: 18px; 
             font-weight: 900; 
             color: var(--accent-hot); 
             font-size: 0.95rem; 
-            border: 1.5px solid #ffccd5;
+            border: 2px solid #ffccd5;
+            box-shadow: 0 4px 8px rgba(255, 77, 109, 0.05);
         }
 
         .character-view {
@@ -141,16 +148,16 @@
             align-items: center;
             background: #ffffff; 
             margin: 16px 0; 
-            border-radius: 28px; 
-            border: 2px solid #ffccd5; 
+            border-radius: 32px; 
+            border: 2.5px solid #ffccd5; 
             overflow: hidden;
-            box-shadow: inset 0 4px 12px rgba(255, 163, 177, 0.1);
+            box-shadow: inset 0 4px 16px rgba(255, 179, 193, 0.15);
         }
         
         .canvas-container { 
             position: relative; 
             width: 320px; 
-            height: 480px; 
+            height: 520px; 
         }
         
         .layer { 
@@ -177,8 +184,8 @@
         
         .main-controls button { 
             flex: 1; 
-            padding: 16px; 
-            border-radius: 20px; 
+            padding: 18px; 
+            border-radius: 24px; 
         }
 
         .overlay-view {
@@ -192,9 +199,9 @@
             z-index: 10; 
             padding: 24px; 
             flex-direction: column;
-            border-top-left-radius: 32px; 
-            border-top-right-radius: 32px;
-            box-shadow: 0 -12px 30px rgba(255, 163, 177, 0.2); 
+            border-top-left-radius: 36px; 
+            border-top-right-radius: 36px;
+            box-shadow: 0 -15px 35px rgba(255, 77, 109, 0.15); 
             border-top: 3px solid #ffccd5;
         }
         
@@ -212,44 +219,49 @@
         .item-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 10px; 
+            gap: 12px; 
             overflow-y: auto; 
             flex: 1; 
             padding-right: 4px;
         }
         
         .item-card { 
-            background: #fffbfb; 
-            border: 2px solid #fff0f2; 
-            border-radius: 20px; 
+            background: #fffcfc; 
+            border: 2px solid #ffe5ec; 
+            border-radius: 22px; 
             padding: 10px; 
             text-align: center; 
             cursor: pointer; 
             position: relative; 
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .item-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-pink);
         }
         
         .item-card.equipped { 
             border: 3.5px solid var(--accent-hot); 
-            background: #fff3f5; 
+            background: #fff0f3; 
             transform: scale(0.97);
         }
         
         .item-grade-tag { 
             position: absolute; 
-            top: 6px; 
-            left: 6px; 
+            top: 8px; 
+            left: 8px; 
             font-size: 0.65rem; 
             font-weight: 900; 
-            padding: 2px 6px; 
-            border-radius: 8px; 
+            padding: 2px 7px; 
+            border-radius: 9px; 
             color: #ffffff; 
             z-index: 2;
         }
         
         .item-preview-svg { 
-            width: 84px; 
-            height: 84px; 
+            width: 86px; 
+            height: 86px; 
             margin: 4px auto; 
         }
 
@@ -262,20 +274,21 @@
         
         .app-icon-btn {
             background: #ffffff; 
-            border: 2px solid #ffdce3; 
-            border-radius: 24px; 
+            border: 2.5px solid #ffe5ec; 
+            border-radius: 26px; 
             padding: 24px;
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 10px; 
+            gap: 12px; 
             cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(255, 163, 177, 0.1);
-            transition: transform 0.2s;
+            box-shadow: 0 6px 12px rgba(255, 77, 109, 0.04);
+            transition: transform 0.25s, border-color 0.25s;
         }
 
         .app-icon-btn:hover {
             transform: translateY(-4px);
+            border-color: var(--accent-hot);
         }
 
         .used-list { 
@@ -292,21 +305,21 @@
             align-items: center; 
             background: #fffcfc; 
             padding: 16px; 
-            border-radius: 20px; 
-            border: 1.5px solid #ffe3e8; 
+            border-radius: 22px; 
+            border: 2px solid #ffe5ec; 
         }
         
-        .price-up { color: #f43f5e; font-weight: 900; }
-        .price-down { color: #3b82f6; font-weight: 900; }
+        .price-up { color: #ff0a54; font-weight: 900; }
+        .price-down { color: #3a86c8; font-weight: 900; }
         
         .probability-info { 
             background: #fff9fa; 
-            border: 1.5px solid #ffd5dc; 
-            border-radius: 18px; 
-            padding: 14px; 
+            border: 2px solid #ffe5ec; 
+            border-radius: 20px; 
+            padding: 16px; 
             margin-bottom: 20px; 
             font-size: 0.8rem; 
-            max-height: 180px; 
+            max-height: 200px; 
             overflow-y: auto; 
         }
         
@@ -331,33 +344,32 @@
             left: 50%; 
             transform: translate(-50%, -50%);
             background: #ffffff; 
-            border: 4px solid var(--accent-hot); 
-            padding: 24px; 
-            border-radius: 32px;
+            border: 5px solid var(--accent-hot); 
+            padding: 26px; 
+            border-radius: 36px;
             z-index: 100; 
             text-align: center; 
-            width: 88%; 
-            box-shadow: 0 20px 50px rgba(180, 80, 100, 0.4);
+            width: 90%; 
+            box-shadow: 0 25px 60px rgba(255, 10, 84, 0.35);
         }
 
         .gacha-image-container {
-            width: 140px;
-            height: 140px;
-            margin: 15px auto;
-            border: 2px dashed #ffccd5;
-            border-radius: 20px;
-            background: #fff8f9;
+            width: 150px;
+            height: 150px;
+            margin: 18px auto;
+            border: 2.5px dashed #ffccd5;
+            border-radius: 24px;
+            background: #fffcfc;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* 스크롤바 디자인 */
         ::-webkit-scrollbar {
             width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #fff0f2;
+            background: #fff0f3;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
@@ -373,30 +385,30 @@
     <div id="screen-login" class="screen active">
         <div class="brand-logo">
             <h1>Chiffon</h1>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px; font-weight: 700; letter-spacing: 1px;">PREMIUM DRESSUP GAME</p>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 8px; font-weight: 700; letter-spacing: 1.5px;">PREMIUM DRESSUP ATELIER</p>
         </div>
         <div class="auth-box" style="display:flex; flex-direction:column;">
             <input type="text" id="login-id" placeholder="아이디">
             <input type="password" id="login-pw" placeholder="비밀번호">
-            <button onclick="handleRegister()" style="background: #ffffff; border: 2px solid #ffd5dc; color: var(--text-muted); box-shadow: none; margin-bottom: 8px;">회원가입</button>
+            <button onclick="handleRegister()" style="background: #ffffff; border: 2.5px solid #ffe5ec; color: var(--text-muted); box-shadow: none; margin-bottom: 8px;">회원가입</button>
             <button onclick="handleLogin()">로그인</button>
         </div>
     </div>
 
     <div id="screen-setup" class="screen" style="background: #ffffff; justify-content: center;">
-        <h2 style="font-size: 1.6rem; font-weight: 900; margin-bottom: 24px; text-align:center; color: var(--accent-hot);">아틀리에 등록</h2>
-        <p style="text-align:center; font-size:0.85rem; color: var(--text-muted); margin-bottom: 20px;">디자이너명과 마음에 드는 성별 아바타를 골라주세요.</p>
+        <h2 style="font-size: 1.7rem; font-weight: 900; margin-bottom: 20px; text-align:center; color: var(--accent-hot);">아틀리에 등록</h2>
+        <p style="text-align:center; font-size:0.85rem; color: var(--text-muted); margin-bottom: 24px;">디자이너 이름과 희망하는 바디 룸을 설정해 주세요.</p>
         <input type="text" id="user-name" placeholder="디자이너 이름 입력">
         <div style="display: flex; gap: 12px; margin-top: 10px;">
             <button id="g-male" style="flex:1; background:#fff; border:2.5px solid #cbd5e1; color:#475569;" onclick="selectGender('male')">보이 룸</button>
             <button id="g-female" style="flex:1; background:#fff; border:2.5px solid #cbd5e1; color:#475569;" onclick="selectGender('female')">걸 룸</button>
         </div>
-        <button onclick="completeSetup()" style="margin-top: 30px; padding:16px;">부티크 입장하기</button>
+        <button onclick="completeSetup()" style="margin-top: 32px; padding:16px;">부티크 입장하기</button>
     </div>
 
     <div id="screen-main" class="screen">
         <div class="header">
-            <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-dark);"><span id="display-username" style="color:var(--accent-hot);">디자이너</span> 룸</div>
+            <div style="font-weight: 900; font-size: 1.15rem; color: var(--text-dark);"><span id="display-username" style="color:var(--accent-hot);">디자이너</span> 룸</div>
             <div class="balance-tag">💖 <span id="user-money">100,000</span>원</div>
         </div>
 
@@ -418,14 +430,14 @@
         </div>
 
         <div class="main-controls">
-            <button onclick="toggleOverlay('closet')" style="background: #5d5052; box-shadow: none;">👗 마이 드레스룸</button>
+            <button onclick="toggleOverlay('closet')" style="background: #4a3e40; box-shadow: none;">👗 마이 드레스룸</button>
             <button onclick="toggleOverlay('phone')">📱 스마트 스토어</button>
         </div>
 
         <div id="overlay-closet" class="overlay-view">
             <div class="overlay-header">
                 <h3 style="font-weight:900; color:var(--accent-hot); font-size:1.2rem;">🎀 내 옷장</h3>
-                <button onclick="toggleOverlay('closet')" style="background:#8c7e80; padding:6px 14px; font-size:0.85rem; box-shadow: none; border-radius:12px;">닫기</button>
+                <button onclick="toggleOverlay('closet')" style="background:#8a7a7c; padding:6px 14px; font-size:0.85rem; box-shadow: none; border-radius:12px;">닫기</button>
             </div>
             <div class="item-grid" id="closet-grid"></div>
         </div>
@@ -433,7 +445,7 @@
         <div id="overlay-phone" class="overlay-view" style="background:#fffafb;">
             <div class="overlay-header">
                 <h3 style="color:var(--text-dark); font-weight:900;">🛒 마켓 플레이스</h3>
-                <button onclick="toggleOverlay('phone')" style="background:#ff6584; padding:6px 14px; font-size:0.85rem; box-shadow: none; border-radius:12px;">끄기</button>
+                <button onclick="toggleOverlay('phone')" style="background:#ff4d6d; padding:6px 14px; font-size:0.85rem; box-shadow: none; border-radius:12px;">끄기</button>
             </div>
             <div class="phone-grid">
                 <div class="app-icon-btn" onclick="openApp('ably')"><span style="font-size:2.4rem;">🧸</span><span style="font-weight:800; font-size:0.9rem; color:var(--text-dark);">에이블리</span></div>
@@ -446,24 +458,24 @@
         <div id="overlay-shop" class="overlay-view" style="z-index:20;">
             <div class="overlay-header">
                 <h3 id="shop-title" style="font-weight:900;">SHOP</h3>
-                <button onclick="closeApp('shop')" style="background:#8c7e80; padding:6px 14px; font-size:0.85rem; box-shadow:none; border-radius:12px;">뒤로</button>
+                <button onclick="closeApp('shop')" style="background:#8a7a7c; padding:6px 14px; font-size:0.85rem; box-shadow:none; border-radius:12px;">뒤로</button>
             </div>
-            <div style="background:#fff4f6; padding:16px; border-radius:20px; text-align:center; margin-bottom:16px; border:1px solid #ffd5dc;">
+            <div style="background:#fff5f6; padding:16px; border-radius:22px; text-align:center; margin-bottom:16px; border:1.5px solid #ffe5ec;">
                 <p id="shop-desc" style="font-size:0.85rem; color:var(--text-muted); font-weight:600;"></p>
                 <h4 id="shop-cost" style="color:var(--accent-hot); font-size:1.3rem; font-weight:900; margin-top:6px;"></h4>
             </div>
-            <h5 style="margin-bottom:8px; font-size:0.85rem; font-weight:800; color:#4a3e40;">뽑기 가능한 디자이너 의상 리스트</h5>
+            <h5 style="margin-bottom:8px; font-size:0.85rem; font-weight:800; color:#3c2f31;">획득 가능한 브랜드 전용 아이템</h5>
             <div class="probability-info" id="shop-prob-list"></div>
-            <button onclick="triggerGacha()" style="width:100%; padding:16px; border-radius:20px;">디자이너 박스 오픈하기</button>
+            <button onclick="triggerGacha()" style="width:100%; padding:16px; border-radius:22px;">디자이너 박스 오픈하기</button>
         </div>
 
         <div id="overlay-junggo" class="overlay-view" style="z-index:20;">
             <div class="overlay-header">
                 <h3 style="color:var(--accent-hot); font-weight:900; font-size:1.1rem;">🤝 중고 패션 리셀 시장 (실시간 0.8초 변동)</h3>
-                <button onclick="closeApp('junggo')" style="background:#8c7e80; padding:6px 14px; font-size:0.85rem; box-shadow:none; border-radius:12px;">뒤로</button>
+                <button onclick="closeApp('junggo')" style="background:#8a7a7c; padding:6px 14px; font-size:0.85rem; box-shadow:none; border-radius:12px;">뒤로</button>
             </div>
-            <p style="font-size:0.8rem; color:var(--text-muted); font-weight:600; margin-bottom:14px; background:#fff3f5; padding:10px; border-radius:12px; border: 1px dashed #ffd5dc;">
-                📈 시세 그래프가 최고점(%)에 달했을 때 아이템을 되팔아 자본금을 불리세요!
+            <p style="font-size:0.8rem; color:var(--text-muted); font-weight:600; margin-bottom:14px; background:#fff0f3; padding:10px; border-radius:12px; border: 1.5px dashed #ffccd5;">
+                📈 시세가 최고점(%)에 달했을 때 수집 아이템을 리셀하여 이득을 챙기세요!
             </p>
             <div class="used-list" id="junggonara-list"></div>
         </div>
@@ -471,166 +483,168 @@
     </div>
 
     <div class="gacha-popup" id="gacha-popup">
-        <h3 style="margin-bottom:4px; font-size:1.35rem; color:var(--accent-hot); font-weight:900;">🎉 NEW ITEM GET!</h3>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">스토어 전용 한정판 의상 획득!</p>
+        <h3 style="margin-bottom:4px; font-size:1.4rem; color:var(--accent-hot); font-weight:900;">🎉 NEW ITEM GET!</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">스토어 한정판 프리미엄 디자이너 아이템 획득!</p>
         <div class="gacha-image-container" id="gacha-preview-container"></div>
-        <div id="gacha-result-name" style="font-size:1.15rem; font-weight:900; margin-bottom:4px; color:var(--text-dark);"></div>
+        <div id="gacha-result-name" style="font-size:1.2rem; font-weight:900; margin-bottom:4px; color:var(--text-dark);"></div>
         <div id="gacha-result-grade" style="font-size:1.1rem; margin-bottom:20px;"></div>
-        <button onclick="closeGachaPopup()" style="width:100%; padding:14px; border-radius:16px;">옷장으로 이동하기</button>
+        <button onclick="closeGachaPopup()" style="width:100%; padding:15px; border-radius:18px;">옷장으로 이동하기</button>
     </div>
 
 </div>
 
 <script>
     /* ========================================================
-       1. 레퍼런스 스타일: 프릴, 프릴칼라, 이중 레이스, 리본 완벽 구현 SVG 데이터
+       1. 프리미엄 명품 드로잉 데이터 (얼굴침범 해결 & 리얼인체화)
        ======================================================== */
     const VECTOR_DRAW = {
-        // 풍성하고 사랑스러운 프릴형 뒷머리 라인
-        'hair-back': (c, type) => {
-            if (type === 'twin') {
-                // 부드럽게 뒤로 묶인 풍성한 귀여운 트윈테일 묶음
-                return `
-                    <path d="M 24,35 Q 0,45 8,95 Q 22,95 28,52 Z" fill="${c}" />
-                    <path d="M 76,35 Q 100,45 92,95 Q 78,95 72,52 Z" fill="${c}" />
-                    <circle cx="21" cy="40" r="10" fill="${c}"/>
-                    <circle cx="79" cy="40" r="10" fill="${c}"/>
-                    <path d="M 12,32 Q 21,38 21,43 Q 11,44 12,32 Z" fill="#ff6584" />
-                    <path d="M 88,32 Q 79,38 79,43 Q 89,44 88,32 Z" fill="#ff6584" />
-                `;
-            }
-            if (type === 'wave') {
-                // 부드러운 여신물결 웨이브 컷
-                return `
-                    <path d="M 24,40 C 6,70 14,125 32,135 C 28,110 32,80 34,52 Z" fill="${c}" />
-                    <path d="M 76,40 C 94,70 86,125 68,135 C 72,110 68,80 66,52 Z" fill="${c}" />
-                    <path d="M 30,30 Q 50,22 70,30 Q 82,60 76,82 Q 24,82 30,30 Z" fill="${c}" />
-                `;
-            }
-            if (type === 'short') {
-                // 사랑스럽고 동글동글한 소프트 러블리 단발
-                return `
-                    <path d="M 22,35 C 12,58 16,88 32,92 C 34,70 32,55 35,48 Z" fill="${c}" />
-                    <path d="M 78,35 C 88,58 84,88 68,92 C 66,70 68,55 65,48 Z" fill="${c}" />
-                `;
-            }
-            // 일반 롱 헤어
-            return `<path d="M 23,38 C 12,65 10,125 25,138 C 32,110 68,110 75,138 C 88,125 86,65 77,38 Z" fill="${c}" />`;
-        },
-
-        // 절대 얼굴을 과하게 가리지 않고 이마를 예쁘게 노출시키는 풍성한 앞머리&옆머리
+        // [수정 핵심] 앞머리가 절대 이목구비(눈, 눈썹, 볼터치)를 덮지 않도록 아치형 곡선으로 완벽 개조!
         'hair-front': (c, type) => {
-            // 이마라인을 절대 덮지 않는 아치형 뱅
-            let baseFront = `<path d="M 24,35 Q 50,18 76,35 Q 78,45 74,52 C 66,42 60,35 50,36 C 40,35 34,42 26,52 Q 22,45 24,35 Z" fill="${c}" />`;
+            // 이마 끝 위에서 둥글게 가르마를 타고 양쪽으로 풍성하게 흐르는 고정 레이아웃
+            let baseFront = `
+                <path d="M 23,38 Q 48,15 50,30 Q 38,36 28,45 Z" fill="${c}" />
+                <path d="M 77,38 Q 52,15 50,30 Q 62,36 72,45 Z" fill="${c}" />
+                <path d="M 33,31 Q 50,22 67,31 Q 50,26 33,31 Z" fill="${c}" opacity="0.9" />
+            `;
             
             if (type === 'ribbon') {
-                // 귀여운 헤어 액세서리 리본 밴드 추가
                 return baseFront + `
-                    <path d="M 32,23 Q 50,16 68,23 Z" stroke="#ff6584" stroke-width="4" fill="none"/>
-                    <path d="M 28,15 Q 38,10 38,22 Q 28,24 28,15 Z" fill="#ff6d8e"/>
-                    <path d="M 72,15 Q 62,10 62,22 Q 72,24 72,15 Z" fill="#ff6d8e"/>
-                    <circle cx="50" cy="19" r="4" fill="#ffffff" />
+                    <path d="M 32,23 C 40,16 60,16 68,23" stroke="#ff4d6d" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                    <path d="M 28,15 Q 38,10 38,22 Q 28,24 28,15 Z" fill="#ff4d6d"/>
+                    <path d="M 72,15 Q 62,10 62,22 Q 72,24 72,15 Z" fill="#ff4d6d"/>
+                    <circle cx="50" cy="18" r="4.5" fill="#ffffff" />
                 `;
             }
             if (type === 'bang') { 
-                // 시스루 뱅과 길고 아름답게 정돈된 앞가르마 애교머리
+                // 시스루 느낌을 살린 가벼운 이마라인. 눈썹선을 절대 가리지 않고 끝만 살짝 흘러내립니다.
                 return `
-                    <path d="M 24,35 Q 50,18 76,35 Q 82,58 76,78 C 72,50 68,40 56,38 C 44,38 40,50 36,78 Q 30,58 24,35 Z" fill="${c}" />
-                    <path d="M 43,30 Q 50,33 57,30 L 57,36 Q 50,39 43,36 Z" fill="${c}" opacity="0.85"/>
+                    <path d="M 23,38 Q 48,15 50,30 Q 38,36 28,45 Z" fill="${c}" />
+                    <path d="M 77,38 Q 52,15 50,30 Q 62,36 72,45 Z" fill="${c}" />
+                    <path d="M 43,30 Q 46,36 44,40 Q 45,30 43,30 Z" fill="${c}" opacity="0.95"/>
+                    <path d="M 57,30 Q 54,36 56,40 Q 55,30 57,30 Z" fill="${c}" opacity="0.95"/>
                 `;
             }
             if (type === 'pure') { 
-                // 단정하고 맑은 느낌의 청순가련 옆머리 슬릭 연출
+                // 이마 정중앙을 환하게 드러내 이목구비를 최대로 화사하게 살리는 청순 헤어라인
                 return `
-                    <path d="M 24,35 Q 50,18 76,35 Q 82,60 78,82 C 73,50 68,40 50,36 C 32,40 27,50 22,82 Q 18,60 24,35 Z" fill="${c}" />
+                    <path d="M 22,35 Q 34,18 45,26 Q 30,34 24,48 Z" fill="${c}" />
+                    <path d="M 78,35 Q 66,18 55,26 Q 70,34 76,48 Z" fill="${c}" />
                 `;
             }
             return baseFront;
         },
+
+        // 풍성하고 아름답게 캐릭터의 뒤쪽을 감싸 대머리처럼 보이지 않게 설계한 뒷머리
+        'hair-back': (c, type) => {
+            if (type === 'twin') {
+                return `
+                    <path d="M 24,35 Q -3,45 6,95 Q 22,95 28,52 Z" fill="${c}" />
+                    <path d="M 76,35 Q 103,45 94,95 Q 78,95 72,52 Z" fill="${c}" />
+                    <circle cx="21" cy="40" r="10.5" fill="${c}"/>
+                    <circle cx="79" cy="40" r="10.5" fill="${c}"/>
+                    <path d="M 11,31 Q 21,37 21,43 Q 10,43 11,31 Z" fill="#ff4d6d" />
+                    <path d="M 89,31 Q 79,37 79,43 Q 90,43 89,31 Z" fill="#ff4d6d" />
+                `;
+            }
+            if (type === 'wave') {
+                return `
+                    <path d="M 24,40 C 4,72 12,128 32,138 C 26,112 30,82 34,52 Z" fill="${c}" />
+                    <path d="M 76,40 C 96,72 88,128 68,138 C 74,112 70,82 66,52 Z" fill="${c}" />
+                    <path d="M 30,28 Q 50,18 70,28 Q 82,60 76,82 Q 24,82 30,28 Z" fill="${c}" />
+                `;
+            }
+            if (type === 'short') {
+                return `
+                    <path d="M 22,35 C 10,60 14,92 32,96 C 34,72 32,58 35,48 Z" fill="${c}" />
+                    <path d="M 78,35 C 90,60 86,92 68,96 C 66,72 68,58 65,48 Z" fill="${c}" />
+                `;
+            }
+            return `<path d="M 23,38 C 10,65 8,130 25,142 C 32,112 68,112 75,142 C 92,130 90,65 77,38 Z" fill="${c}" />`;
+        },
         
-        // 퍼프 소매와 프릴 카라가 강조된 고급스러운 상의
+        // 프릴 셔링 어깨장식 및 봉봉 소매가 가득한 고품질 상의
         'top': (c, grade) => {
             let detail = (grade==="SSS" || grade==="SS") ? `
-                <path d="M 40,65 L 50,72 L 60,65" stroke="#ffffff" stroke-width="2" fill="none"/>
-                <circle cx="50" cy="74" r="3" fill="#ff6584"/>
-                <path d="M 43,58 Q 50,62 57,58" stroke="#ffccd5" stroke-width="1.5" fill="none" />` : '';
+                <path d="M 40,65 L 50,72 L 60,65" stroke="#ffffff" stroke-width="2.5" fill="none"/>
+                <circle cx="50" cy="74" r="3.5" fill="#ff4d6d"/>
+                <path d="M 42,58 Q 50,62 58,58" stroke="#ffccd5" stroke-width="2" fill="none" />` : '';
             return `
-                <path d="M 38,56 Q 50,64 62,56 Q 64,68 50,68 Q 36,68 38,56 Z" fill="#ffffff" stroke="#ffcbd5" stroke-width="1.5"/>
+                <path d="M 38,56 Q 50,64 62,56 Q 64,68 50,68 Q 36,68 38,56 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.8"/>
                 <path d="M 28,58 C 28,58 35,56 50,56 C 65,56 72,58 72,58 L 68,90 C 68,90 58,92 50,92 C 42,92 32,90 32,90 Z" fill="${c}" />
-                <path d="M 28,58 C 18,58 14,64 16,74 C 20,78 28,70 28,70 Z" fill="${c}" stroke="#fff" stroke-width="1"/>
-                <path d="M 72,58 C 82,58 86,64 84,74 C 80,78 72,70 72,70 Z" fill="${c}" stroke="#fff" stroke-width="1"/>
+                <path d="M 28,58 C 16,58 12,65 14,75 C 18,79 28,71 28,71 Z" fill="${c}" stroke="#fff" stroke-width="1.5"/>
+                <path d="M 72,58 C 84,58 88,65 86,75 C 82,79 72,71 72,71 Z" fill="${c}" stroke="#fff" stroke-width="1.5"/>
                 ${detail}
             `;
         },
         
-        // 프릴 플리츠와 주름라인이 가득 들어간 풍성한 미니스커트
+        // 정교한 주름선과 벨트 장식, 레이스 프릴 밑단이 어우러진 주름 미니스커트
         'bottom': (c, grade) => {
             let lines = (grade === "SSS" || grade === "SS") ? `
-                <path d="M 36,92 L 33,122 M 43,92 L 41,124 M 50,92 L 50,124 M 57,92 L 59,124 M 64,92 L 67,122" stroke="rgba(255,255,255,0.6)" stroke-width="1.8"/>
-                <rect x="42" y="93" width="16" height="5" rx="2" fill="#ffffff" stroke="#ff4d79" stroke-width="1"/>` : '';
+                <path d="M 36,92 L 33,122 M 43,92 L 41,124 M 50,92 L 50,124 M 57,92 L 59,124 M 64,92 L 67,122" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+                <rect x="41" y="93" width="18" height="6" rx="2" fill="#ffffff" stroke="#ff0a54" stroke-width="1.5"/>` : '';
             return `
                 <path d="M 32,90 Q 50,88 68,90 L 76,124 Q 50,128 24,124 Z" fill="${c}" />
-                <path d="M 24,124 Q 29,128 34,124 Q 39,128 44,124 Q 49,128 54,124 Q 59,128 64,124 Q 69,128 76,124" stroke="#ffffff" stroke-width="3" fill="none" />
+                <path d="M 24,124 Q 29,129 34,124 Q 39,129 44,124 Q 49,129 54,124 Q 59,129 64,124 Q 69,129 76,124" stroke="#ffffff" stroke-width="3.5" fill="none" />
                 ${lines}
             `;
         },
         
-        // 레퍼런스 스타일: 프릴 어깨 멜빵과 가슴 리본 장식이 아름다운 고급 롱 원피스
+        // 프릴 가방끈, 3중 레이스 볼륨 프릴 셔링 드레스
         'onepiece': (c, grade) => {
             let lace = (grade === "SSS" || grade === "SS") ? `
-                <path d="M 18,124 Q 34,130 50,124 Q 66,130 82,124 L 84,130 Q 66,138 50,130 Q 34,138 16,130 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1" />
-                <circle cx="50" cy="74" r="3" fill="#ff4d79"/>
-                <circle cx="50" cy="84" r="3" fill="#ff4d79"/>
-                <path d="M 44,64 Q 50,70 56,64" stroke="#ffffff" stroke-width="2.5" fill="none" />
-                <path d="M 45,61 Q 50,55 55,61 Q 50,65 45,61 Z" fill="#ff6584" />
-                <circle cx="50" cy="60" r="1.5" fill="#ffffff" />
+                <path d="M 18,124 Q 34,131 50,124 Q 66,131 82,124 L 84,131 Q 66,140 50,131 Q 34,140 16,131 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2" />
+                <circle cx="50" cy="75" r="3.5" fill="#ff0a54"/>
+                <circle cx="50" cy="85" r="3.5" fill="#ff0a54"/>
+                <path d="M 43,64 Q 50,71 57,64" stroke="#ffffff" stroke-width="3" fill="none" />
+                <path d="M 44,61 Q 50,54 56,61 Q 50,66 44,61 Z" fill="#ff4d6d" />
+                <circle cx="50" cy="59" r="1.8" fill="#ffffff" />
             ` : '';
             return `
                 <path d="M 28,58 Q 50,55 72,58 L 78,126 Q 50,132 22,126 Z" fill="${c}" />
-                <path d="M 28,58 C 16,56 12,65 14,76 C 20,78 28,70 28,70 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2"/>
-                <path d="M 72,58 C 84,56 88,65 86,76 C 80,78 72,70 72,70 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.2"/>
-                <path d="M 31,90 Q 50,94 69,90" stroke="#ffffff" stroke-width="4" fill="none"/>
+                <path d="M 28,58 C 15,56 11,66 13,77 C 19,79 28,71 28,71 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.5"/>
+                <path d="M 72,58 C 85,56 89,66 87,77 C 81,79 72,71 72,71 Z" fill="#ffffff" stroke="#ffccd5" stroke-width="1.5"/>
+                <path d="M 31,90 Q 50,94 69,90" stroke="#ffffff" stroke-width="4.5" fill="none"/>
                 ${lace}
             `;
         },
         
         'socks': (c) => `
-            <path d="M 36,112 L 46,112 L 46,136 L 36,136 Z M 54,112 L 64,112 L 64,136 L 54,136 Z" fill="${c}" />
-            <circle cx="41" cy="112" r="5" fill="#ffffff" />
-            <circle cx="59" cy="112" r="5" fill="#ffffff" />
+            <path d="M 35,112 L 46,112 L 45,136 L 36,136 Z M 54,112 L 65,112 L 64,136 L 55,136 Z" fill="${c}" />
+            <circle cx="40.5" cy="112" r="5.5" fill="#ffffff" />
+            <circle cx="59.5" cy="112" r="5.5" fill="#ffffff" />
         `,
         'shoes': (c) => `
-            <path d="M 33,134 Q 41,130 47,134 L 47,144 L 33,144 Z M 53,134 Q 59,130 67,134 L 67,144 L 53,144 Z" fill="${c}" />
-            <path d="M 33,137 L 47,140 M 33,140 L 47,137" stroke="#ffffff" stroke-width="1.5" />
-            <path d="M 53,137 L 67,140 M 53,140 L 67,137" stroke="#ffffff" stroke-width="1.5" />
-            <rect x="33" y="142" width="14" height="2" fill="#4a3e40" />
-            <rect x="53" y="142" width="14" height="2" fill="#4a3e40" />
+            <path d="M 32,134 Q 41,130 48,134 L 47,144 L 32,144 Z M 52,134 Q 59,130 68,134 L 68,144 L 52,144 Z" fill="${c}" />
+            <path d="M 32,137 L 48,140 M 32,140 L 48,137" stroke="#ffffff" stroke-width="1.5" />
+            <path d="M 52,137 L 68,140 M 52,140 L 68,137" stroke="#ffffff" stroke-width="1.5" />
+            <rect x="32" y="142" width="16" height="2" fill="#3c2f31" />
+            <rect x="52" y="142" width="16" height="2" fill="#3c2f31" />
         `,
         'hat': (c) => `
-            <path d="M 20,30 C 20,5 80,5 80,30 C 90,34 10,34 20,30 Z" fill="${c}" />
-            <path d="M 12,32 Q 50,22 88,32" stroke="#ffffff" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-            <circle cx="20" cy="30" r="4.5" fill="#ff6584" />
-            <circle cx="80" cy="30" r="4.5" fill="#ff6584" />
+            <path d="M 18,30 C 18,3 82,3 82,30 C 92,34 8,34 18,30 Z" fill="${c}" />
+            <path d="M 10,32 Q 50,21 90,32" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <circle cx="18" cy="30" r="5" fill="#ff4d6d" />
+            <circle cx="82" cy="30" r="5" fill="#ff4d6d" />
         `,
         'bag': (c) => `
-            <path d="M 12,94 Q 18,85 24,94 Q 30,85 36,94 Q 36,108 24,116 Q 12,108 12,94 Z" fill="${c}" stroke="#ffffff" stroke-width="2"/>
-            <path d="M 24,90 C 5,65 14,58 18,58" stroke="#ffccd5" stroke-width="2.5" fill="none" />
-            <circle cx="24" cy="95" r="3.5" fill="#ffffff" />
+            <path d="M 11,94 Q 18,84 25,94 Q 32,84 39,94 Q 39,109 25,118 Q 11,109 11,94 Z" fill="${c}" stroke="#ffffff" stroke-width="2"/>
+            <path d="M 25,90 C 5,64 13,57 17,57" stroke="#ffccd5" stroke-width="2.8" fill="none" />
+            <circle cx="25" cy="95" r="4" fill="#ffffff" />
         `,
         'necklace': (c) => `
-            <path d="M 37,57 Q 50,68 63,57" stroke="${c}" stroke-width="3" fill="none" />
-            <path d="M 45,63 L 55,63 L 50,70 Z" fill="#ff4d79"/>
+            <path d="M 36,57 Q 50,69 64,57" stroke="${c}" stroke-width="3.5" fill="none" />
+            <path d="M 44,63 L 56,63 L 50,71 Z" fill="#ff0a54"/>
         `,
         'earring': (c) => `
-            <line x1="33" y1="46" x2="33" y2="58" stroke="#cbd5e1" stroke-width="2"/>
-            <path d="M 30,58 Q 33,54 36,58 Q 36,63 33,66 Q 30,63 30,58 Z" fill="${c}"/>
-            <line x1="67" y1="46" x2="67" y2="58" stroke="#cbd5e1" stroke-width="2"/>
-            <path d="M 64,58 Q 67,54 70,58 Q 70,63 67,66 Q 64,63 64,58 Z" fill="${c}"/>
+            <line x1="32" y1="46" x2="32" y2="58" stroke="#cbd5e1" stroke-width="2"/>
+            <path d="M 29,58 Q 32,54 35,58 Q 35,63 32,66 Q 29,63 29,58 Z" fill="${c}"/>
+            <line x1="68" y1="46" x2="68" y2="58" stroke="#cbd5e1" stroke-width="2"/>
+            <path d="M 65,58 Q 68,54 71,58 Q 71,63 68,66 Q 65,63 65,58 Z" fill="${c}"/>
         `
     };
 
     /* ========================================================
-       2. 대폭 향상된 등급별 프리미엄 명품 옷장 데이터베이스
+       2. 프리미엄 스토어 아이템 데이터베이스
        ======================================================== */
     const ITEM_DATABASE = {
         ably: [
@@ -640,7 +654,7 @@
             { id: "ah4", name: "소프트 피치 클래식 레이어", category: "hair", subType: "pure", grade: "A", originalPrice: 38000, color: "#fcd34d" },
             { id: "ah5", name: "라일락 안개꽃 가벼운 단발", category: "hair", subType: "short", grade: "B", originalPrice: 22000, color: "#d8b4fe" },
             { id: "ah6", name: "마일드 버터 베이직 볼륨 컷", category: "hair", subType: "base", grade: "C", originalPrice: 10000, color: "#fef08a" },
-            // 시각 비주얼이 환상적인 에이블리 의류 파츠
+            
             { id: "a1", name: "체리 블러썸 리본 하프 원피스", category: "onepiece", grade: "SSS", originalPrice: 140000, color: "#ffccd5" },
             { id: "a2", name: "엔젤 핑크 가죽 하트 크로스백", category: "bag", grade: "SS", originalPrice: 80000, color: "#ff8da1" },
             { id: "a3", name: "플로럴 레이스 초커 목걸이", category: "necklace", grade: "S", originalPrice: 40000, color: "#ff4d73" },
@@ -656,7 +670,7 @@
             { id: "mh4", name: "카키 브론즈 내추럴 트윈테일", category: "hair", subType: "twin", grade: "A", originalPrice: 42000, color: "#854d0e" },
             { id: "mh5", name: "미드나잇 오션 볼륨 가르마", category: "hair", subType: "pure", grade: "B", originalPrice: 25000, color: "#1e3a8a" },
             { id: "mh6", name: "밀크 그레이 스무스 클래식 컷", category: "hair", subType: "base", grade: "C", originalPrice: 15000, color: "#94a3b8" },
-            // 멋진 스트릿 감각의 무신사 아이템
+            
             { id: "m1", name: "클래식 새틴 테일러드 드레스", category: "onepiece", grade: "SSS", originalPrice: 220000, color: "#334155" },
             { id: "m2", name: "매트블랙 가죽 체인 숄더백", category: "bag", grade: "SS", originalPrice: 92000, color: "#0f172a" },
             { id: "m3", name: "모던 카우하이드 플랫폼 슈즈", category: "shoes", grade: "SS", originalPrice: 95000, color: "#1e293b" },
@@ -672,7 +686,7 @@
             { id: "kh4", name: "스노우 펄 트윈 볼륨 테일", category: "hair", subType: "twin", grade: "A", originalPrice: 145000, color: "#f1f5f9" },
             { id: "kh5", name: "다크 세레나데 울프 레이어 컷", category: "hair", subType: "short", grade: "B", originalPrice: 75000, color: "#020617" },
             { id: "kh6", name: "체슈넛 브라운 에센셜 보브 컷", category: "hair", subType: "base", grade: "C", originalPrice: 45000, color: "#7c2d12" },
-            // 하이엔드 럭셔리 품목
+            
             { id: "k1", name: "황실 다이아몬드 하트 귀걸이", category: "earring", grade: "SSS", originalPrice: 750000, color: "#fbbf24" },
             { id: "k2", name: "로열 버킨 스칼렛 미니 사첼백", category: "bag", grade: "SSS", originalPrice: 670000, color: "#991b1b" },
             { id: "k3", name: "골든 엠프리스 자수 보닛 드레스", category: "onepiece", grade: "SSS", originalPrice: 720000, color: "#d97706" },
@@ -690,9 +704,9 @@
     ];
 
     const SHOP_META = {
-        ably: { cost: 15000, title: "🧸 에이블리", desc: "사랑스럽고 유니크한 프릴 & 리본 아이템 컬렉션!", probs: { SSS: 2, SS: 8, S: 15, A: 25, B: 25, C: 25 } },
-        musinsa: { cost: 25000, title: "👒 무신사", desc: "힙하고 정제된 실루엣의 데일리 프리미엄 아웃핏!", probs: { SSS: 4, SS: 10, S: 16, A: 25, B: 25, C: 20 } },
-        kream: { cost: 45000, title: "🎀 크림", desc: "하이엔드 럭셔리 보석, 한정판 명품 레이스 파츠!", probs: { SSS: 6, SS: 12, S: 18, A: 24, B: 20, C: 20 } }
+        ably: { cost: 15000, title: "🧸 에이블리", desc: "사랑스러운 유니크 프릴 & 리본 아이템 제작소!", probs: { SSS: 2, SS: 8, S: 15, A: 25, B: 25, C: 25 } },
+        musinsa: { cost: 25000, title: "👒 무신사", desc: "힙하고 정제된 프리미엄 라인업 디자이너 에디션!", probs: { SSS: 4, SS: 10, S: 16, A: 25, B: 25, C: 20 } },
+        kream: { cost: 45000, title: "🎀 크림", desc: "극상의 럭셔리 실크 가공 자수 오트쿠튀르 컬렉션!", probs: { SSS: 6, SS: 12, S: 18, A: 24, B: 20, C: 20 } }
     };
 
     let usersDb = JSON.parse(localStorage.getItem("chiffon_core_v8")) || {};
@@ -702,7 +716,7 @@
     let marketPrices = {};
 
     /* ========================================================
-       3. 중고나라 연동 실시간 시세 변동 알고리즘 (0.8초 주기 업데이트)
+       3. 실시간 리셀 시세 계산 알고리즘 (0.8초 주기)
        ======================================================== */
     function initMarketPrices() {
         const fullList = [...ITEM_DATABASE.ably, ...ITEM_DATABASE.musinsa, ...ITEM_DATABASE.kream, ...DEFAULT_ITEMS];
@@ -727,23 +741,23 @@
     }
 
     /* ========================================================
-       4. 시스템 코어 로직 및 회원 관리
+       4. 회원가입 및 세션 관리 코어
        ======================================================== */
     function handleRegister() {
         const id = document.getElementById("login-id").value.trim();
         const pw = document.getElementById("login-pw").value.trim();
-        if(!id || !pw) return alert("아이디와 비밀번호를 알맞게 입력해 주세요.");
-        if(usersDb[id]) return alert("이미 사용 중인 계정 이름입니다.");
+        if(!id || !pw) return alert("아이디와 비밀번호를 제대로 입력해 주세요.");
+        if(usersDb[id]) return alert("이미 존재해 사용하는 아이디입니다.");
 
         usersDb[id] = { password: pw, setupCompleted: false };
         localStorage.setItem("chiffon_core_v8", JSON.stringify(usersDb));
-        alert("성공적으로 가입되었습니다. 가입한 계정으로 로그인해 주세요!");
+        alert("성공적으로 회원가입 완료! 등록하신 계정으로 접속해 주세요.");
     }
 
     function handleLogin() {
         const id = document.getElementById("login-id").value.trim();
         const pw = document.getElementById("login-pw").value.trim();
-        if(!usersDb[id] || usersDb[id].password !== pw) return alert("계정 정보가 올바르지 않습니다.");
+        if(!usersDb[id] || usersDb[id].password !== pw) return alert("입력하신 회원 정보가 올바르지 않습니다.");
 
         currentUser = id;
         if(usersDb[currentUser].setupCompleted) {
@@ -766,7 +780,7 @@
 
     function completeSetup() {
         const name = document.getElementById("user-name").value.trim();
-        if(!name) return alert("아틀리에 이름을 작성해 주세요.");
+        if(!name) return alert("부티크 디자인 아틀리에 이름을 정해 주세요.");
 
         const baseCloset = [
             { ...DEFAULT_ITEMS[0], instanceId: "def_hair_inst" },
@@ -778,7 +792,7 @@
             ...usersDb[currentUser],
             nickname: name,
             gender: userGender,
-            money: 100000, // 정밀 반영 완료: 초기 자금 10만원 설정
+            money: 100000, // 요구하신 대로 10만원 정밀 보증 세팅
             closet: baseCloset,
             equipped: { hair: "def_hair_inst", top: "def_top_inst", bottom: "def_bottom_inst", onepiece: null }
         };
@@ -806,7 +820,7 @@
     }
 
     /* ========================================================
-       5. 아바타 둥글고 자연스러운 인체 곡선 모델링 캔버스 랜더러
+       5. [수정 핵심] 아주 예쁘게 수정한 둥근 어깨 및 리얼 볼륨 인체 실루엣 렌더러
        ======================================================== */
     function renderCharacterCanvas() {
         const d = usersDb[currentUser];
@@ -815,27 +829,27 @@
         const bodyLayer = document.getElementById("layer-body");
         bodyLayer.innerHTML = `
             <svg viewBox="0 0 100 150">
-                <circle cx="50" cy="34" r="13.5" fill="#fff5f3" stroke="#ffcbd5" stroke-width="0.8" />
+                <circle cx="50" cy="34" r="13" fill="#fff3f0" stroke="#ffccd5" stroke-width="0.8" />
                 
-                <path d="M 47.5,45 Q 50,49 52.5,45 L 52.5,56 L 47.5,56 Z" fill="#fff5f3" />
+                <path d="M 48,44 Q 50,48 52,44 L 52,54 L 48,54 Z" fill="#fff3f0" />
                 
-                <path d="M 31,56 Q 50,52 69,56 Q 73,78 68,96 Q 50,97 32,96 Q 27,78 31,56 Z" fill="#fff5f3" stroke="#ffcbd5" stroke-width="0.8" />
+                <path d="M 32,54 C 38,52 44,52 50,52 C 56,52 62,52 68,54 C 71,68 67,95 65,95 Q 50,97 35,95 C 33,68 29,54 32,54 Z" fill="#fff3f0" stroke="#ffccd5" stroke-width="0.8" />
                 
-                <path d="M 31,56 Q 16,68 18,88 Q 22,88 28,70" fill="none" stroke="#fff5f3" stroke-width="4.5" stroke-linecap="round"/>
-                <path d="M 69,56 Q 84,68 82,88 Q 78,88 72,70" fill="none" stroke="#fff5f3" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M 32,54 Q 18,65 24,86 Q 27,86 29,72" fill="none" stroke="#fff3f0" stroke-width="4.2" stroke-linecap="round"/>
+                <path d="M 68,54 Q 82,65 76,86 Q 73,86 71,72" fill="none" stroke="#fff3f0" stroke-width="4.2" stroke-linecap="round"/>
                 
-                <path d="M 40,96 Q 41,120 41,142" fill="none" stroke="#fff5f3" stroke-width="5.5" stroke-linecap="round"/>
-                <path d="M 60,96 Q 59,120 59,142" fill="none" stroke="#fff5f3" stroke-width="5.5" stroke-linecap="round"/>
+                <path d="M 36,95 Q 31,114 38,118 Q 42,118 41,142 Q 37,142 36,95" fill="#fff3f0" stroke="#ffccd5" stroke-width="0.5" />
+                <path d="M 64,95 Q 69,114 62,118 Q 58,118 59,142 Q 63,142 64,95" fill="#fff3f0" stroke="#ffccd5" stroke-width="0.5" />
                 
-                <circle cx="43.5" cy="33.5" r="2.2" fill="#4a3e40" />
-                <circle cx="56.5" cy="33.5" r="2.2" fill="#4a3e40" />
-                <circle cx="44.5" cy="32.5" r="0.8" fill="#ffffff" />
-                <circle cx="57.5" cy="32.5" r="0.8" fill="#ffffff" />
+                <circle cx="44" cy="34" r="2.2" fill="#3c2f31" />
+                <circle cx="56" cy="34" r="2.2" fill="#3c2f31" />
+                <circle cx="44.8" cy="33" r="0.8" fill="#ffffff" />
+                <circle cx="56.8" cy="33" r="0.8" fill="#ffffff" />
                 
-                <path d="M 48.5,39.5 Q 50,41 51.5,39.5" stroke="#ff6584" stroke-width="1.3" fill="none" stroke-linecap="round" />
+                <ellipse cx="41" cy="37" rx="3" ry="1.8" fill="#ff4d6d" opacity="0.3" />
+                <ellipse cx="59" cy="37" rx="3" ry="1.8" fill="#ff4d6d" opacity="0.3" />
                 
-                <ellipse cx="40" cy="36.5" rx="3.2" ry="1.8" fill="#ff6584" opacity="0.32" />
-                <ellipse cx="60" cy="36.5" rx="3.2" ry="1.8" fill="#ff6584" opacity="0.32" />
+                <path d="M 49,39.5 Q 50,40.8 51,39.5" stroke="#ff4d6d" stroke-width="1.3" fill="none" stroke-linecap="round" />
             </svg>
         `;
 
@@ -885,7 +899,7 @@
     }
 
     /* ========================================================
-       6. 옷장 아이템 착용 및 탈착 상호작용
+       6. 마이 드레스룸 리스트 출력 및 아이템 착용 조작
        ======================================================== */
     function renderCloset() {
         const grid = document.getElementById("closet-grid");
@@ -908,7 +922,7 @@
             card.innerHTML = `
                 <div class="item-grade-tag grade-bg-${item.grade}">${item.grade}</div>
                 <div class="item-preview-svg">${previewSvg}</div>
-                <p style="font-size:0.75rem; font-weight:800; color:var(--text-dark); text-overflow:ellipsis; overflow:hidden; white-space:nowrap; margin-top: 4px;">${item.name}</p>
+                <p style="font-size:0.75rem; font-weight:800; color:var(--text-dark); text-overflow:ellipsis; overflow:hidden; white-space:nowrap; margin-top:4px;">${item.name}</p>
             `;
             grid.appendChild(card);
         });
@@ -938,7 +952,7 @@
     }
 
     /* ========================================================
-       7. 오버레이 패널 제어 및 한정 가챠 상점
+       7. 오버레이 패널 핸들링 및 프리미엄 상점 구매 시스템
        ======================================================== */
     function toggleOverlay(id) {
         const overlay = document.getElementById("overlay-" + id);
@@ -962,14 +976,14 @@
         const meta = SHOP_META[appName];
         document.getElementById("shop-title").innerText = meta.title;
         document.getElementById("shop-desc").innerText = meta.desc;
-        document.getElementById("shop-cost").innerText = `1회 제작비: ${meta.cost.toLocaleString()}원`;
+        document.getElementById("shop-cost").innerText = `1회 제작 비용: ${meta.cost.toLocaleString()}원`;
 
         const pBox = document.getElementById("shop-prob-list");
         pBox.innerHTML = "";
         
         ITEM_DATABASE[appName].forEach(item => {
             pBox.innerHTML += `
-                <div class="prob-row" style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <div class="prob-row" style="display:flex; justify-content:space-between; margin-bottom:6px;">
                     <span class="grade-${item.grade}">[${item.grade}] ${item.name}</span>
                     <span style="font-weight:800; color:var(--text-dark);">${meta.probs[item.grade]}%</span>
                 </div>`;
@@ -984,7 +998,7 @@
     function triggerGacha() {
         const meta = SHOP_META[activeShop];
         const d = usersDb[currentUser];
-        if(d.money < meta.cost) return alert("자금이 부족합니다! 중고나라 마켓에서 가지고 계신 의상을 가치 분배하여 재정비하세요.");
+        if(d.money < meta.cost) return alert("자금이 부족합니다! 옷장에 수집한 미착용 의류를 중고나라에 리셀하여 자본금을 충당하세요.");
 
         d.money -= meta.cost;
         const rand = Math.random() * 100;
@@ -1009,7 +1023,6 @@
         localStorage.setItem("chiffon_core_v8", JSON.stringify(usersDb));
         refreshMainUI();
 
-        // [최우선 피드백 해결] 가챠 결과에서 밋밋한 텍스트 대신 실제 뽑은 디자인 렌더링 적용!
         const previewContainer = document.getElementById("gacha-preview-container");
         let previewSvg = "";
         if (template.category === 'hair') {
@@ -1033,7 +1046,7 @@
     }
 
     /* ========================================================
-       8. 중고나라 실시간 정밀 시세 변동 및 의류 매각
+       8. 중고나라 실시간 마켓 리셀 매각 시스템
        ======================================================== */
     function updateJunggonaraUI() {
         const container = document.getElementById("junggonara-list");
@@ -1044,7 +1057,7 @@
         const sellableItems = d.closet.filter(item => !item.instanceId.startsWith("def_"));
 
         if(sellableItems.length === 0) {
-            container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px 0; font-weight:700;">되팔 수 있는 수집 의류가 존재하지 않습니다.</p>`;
+            container.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:40px 0; font-weight:700;">중고로 매각할 수 있는 브랜드 아이템이 옷장에 없습니다.</p>`;
             return;
         }
 
@@ -1055,7 +1068,7 @@
             const row = document.createElement("div");
             row.className = "used-item";
             row.innerHTML = `
-                <div style="max-width: 65%;">
+                <div style="max-width:65%;">
                     <span class="grade-${item.grade}" style="font-size:0.85rem; font-weight:800;">[${item.grade}] ${item.name}</span>
                     <div style="font-size:0.75rem; color:var(--text-muted); margin-top:3px;">
                         구입 원가: ${item.originalPrice.toLocaleString()}원 (${(scale*100).toFixed(0)}%)
