@@ -1,1069 +1,568 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>확률형 시세 변동 드레스룸 웹앱</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brandPink: {
-              100: '#FFF0F5',
-              200: '#FFD1DC',
-              300: '#FFB7C5',
-              400: '#FFA0B4',
-              DEFAULT: '#FF69B4',
-            },
-            brandSky: '#E0F6FF',
-            brandPurple: '#F3E8FF'
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Gowun+Dodum&display=swap');
-    body {
-      font-family: 'Gowun Dodum', sans-serif;
-      background: radial-gradient(circle, #FFF0F5 0%, #E0F6FF 100%);
-      user-select: none;
-    }
-    .title-font {
-      font-family: 'Gamja Flower', cursive;
-    }
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #FFF0F5;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #FFB7C5;
-      border-radius: 3px;
-    }
-    @keyframes chibi-bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-    .chibi-character {
-      animation: chibi-bounce 3s ease-in-out infinite;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>확률형 시세 변동 드레스룸 웹앱</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandPink: {
+              100: '#FFF0F5',
+              200: '#FFD1DC',
+              300: '#FFB7C5',
+              400: '#FFA0B4',
+              DEFAULT: '#FF69B4',
+            },
+            brandSky: '#E0F6FF',
+            brandPurple: '#F3E8FF'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Gowun+Dodum&display=swap');
+    body {
+      font-family: 'Gowun Dodum', sans-serif;
+      background: radial-gradient(circle, #FFF0F5 0%, #E0F6FF 100%);
+      user-select: none;
+    }
+    .title-font {
+      font-family: 'Gamja Flower', cursive;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFF0F5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FFB7C5;
+      border-radius: 3px;
+    }
+    @keyframes chibi-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .chibi-character {
+      animation: chibi-bounce 3s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body class="h-screen w-screen flex items-center justify-center overflow-hidden">
 
-  <div class="relative w-full max-w-[420px] h-[92vh] bg-white rounded-[40px] shadow-2xl border-[12px] border-pink-200 overflow-hidden flex flex-col">
-    
-    <div id="screen-login" class="absolute inset-0 z-50 bg-brandPink-100 flex flex-col items-center justify-center p-6">
-      <div class="text-center mb-6">
-        <h1 class="title-font text-5xl text-brandPink-400 font-bold mb-2">🎀 Pastel Closet 🎀</h1>
-        <p class="text-gray-500 text-sm">실시간 주식형 중고 옷입히기 게임</p>
-      </div>
-      
-      <div class="flex w-full max-w-xs mb-4 bg-white rounded-t-2xl border-t border-x border-pink-100 overflow-hidden">
-        <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink">로그인</button>
-        <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100">회원가입</button>
-      </div>
-
-      <div class="w-full bg-white rounded-b-3xl rounded-tl-none p-6 shadow-md border-x border-b border-pink-100 space-y-4">
-        <div id="form-login" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1">아이디</label>
-            <input id="login-id" type="text" placeholder="아이디를 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1">비밀번호</label>
-            <input id="login-pw" type="password" placeholder="비밀번호를 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
-          </div>
-          <button onclick="handleLogin()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">시작하기</button>
-        </div>
-
-        <div id="form-signup" class="space-y-4 hidden">
-          <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1">신규 아이디</label>
-            <input id="signup-id" type="text" placeholder="사용할 아이디" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1">신규 비밀번호</label>
-            <input id="signup-pw" type="password" placeholder="사용할 비밀번호" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
-          </div>
-          <button onclick="handleSignup()" class="w-full bg-emerald-300 hover:bg-emerald-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">회원 등록 완료</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="screen-name" class="absolute inset-0 z-40 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
-      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-6">당신의 이름은?</h2>
-      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 text-center">
-        <input id="user-nickname" type="text" placeholder="닉네임을 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-brandPink mb-4" />
-        <button onclick="handleSaveName()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-transform active:scale-95">다음 단계</button>
-      </div>
-    </div>
-
-    <div id="screen-gender" class="absolute inset-0 z-30 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
-      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-8">성별을 선택해주세요</h2>
-      <div class="grid grid-cols-2 gap-4 w-full">
-        <button onclick="handleSelectGender('female')" class="bg-white hover:bg-pink-50 border-4 border-pink-200 hover:border-brandPink rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
-          <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👩🏻‍🦰</div>
-          <span class="font-bold text-gray-700">여성 캐릭터</span>
-        </button>
-        <button onclick="handleSelectGender('male')" class="bg-white hover:bg-blue-50 border-4 border-blue-200 hover:border-blue-400 rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
-          <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👦🏻</div>
-          <span class="font-bold text-gray-700">남성 캐릭터</span>
-        </button>
-      </div>
-    </div>
-
-    <div id="screen-main" class="flex-1 flex flex-col h-full bg-brandSky relative">
-      
-      <div class="bg-white/80 backdrop-blur-md px-4 py-3 border-b border-pink-100 flex justify-between items-center z-20">
-        <div>
-          <span id="display-name" class="text-sm font-bold text-gray-700">러블리치비</span>
-          <span class="text-xs text-brandPink px-2 py-0.5 bg-pink-100 rounded-full ml-1" id="display-gender">여</span>
-        </div>
-        <div class="bg-pink-50 border border-pink-200 rounded-full px-3 py-1 flex items-center shadow-inner">
-          <span class="text-xs text-pink-500 font-extrabold mr-1">₩</span>
-          <span id="display-balance" class="text-sm font-black text-gray-800">100,000</span>
-        </div>
-      </div>
-
-      <div class="flex-1 relative flex items-center justify-center p-4">
-        <div class="absolute inset-x-0 bottom-12 h-24 bg-pink-200/40 rounded-t-[50%] blur-sm pointer-events-none"></div>
-        <div class="absolute top-8 left-8 text-white/50 text-3xl select-none">☁️</div>
-        <div class="absolute top-12 right-12 text-white/50 text-4xl select-none">☁️</div>
-        <div class="absolute top-20 left-16 text-yellow-200/80 text-xl select-none">⭐</div>
-
-        <div id="ticker-banner" class="absolute top-4 inset-x-4 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex justify-between items-center z-10 transition-all opacity-0 pointer-events-none">
-          <span id="ticker-item-name" class="font-bold"></span>
-          <span id="ticker-item-price" class="font-mono"></span>
-        </div>
-
-        <div class="chibi-character relative w-[180px] h-[280px]">
-          
-          <div id="layer-hair-back" class="absolute inset-0 z-[5]"></div>
-
-          <div id="layer-body-base" class="absolute inset-0 z-[10] pointer-events-none">
-            <div class="absolute top-[40px] left-[40px] w-[100px] h-[100px] bg-[#FFE5D9] rounded-full border border-[#FAD2C0]">
-              <div class="absolute bottom-[20px] left-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
-              <div class="absolute bottom-[20px] right-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
-              <div class="absolute bottom-[28px] left-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
-                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
-                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
-              </div>
-              <div class="absolute bottom-[28px] right-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
-                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
-                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
-              </div>
-              <div class="absolute bottom-[16px] left-[46px] w-2 h-1.5 bg-rose-400 rounded-b-full"></div>
-            </div>
-            <div class="absolute top-[134px] left-[84px] w-3 h-5 bg-[#FFE5D9] border-x border-[#FAD2C0]"></div>
-            <div class="absolute top-[144px] left-[68px] w-[44px] h-[52px] bg-[#FFE5D9] rounded-b-xl border-x border-b border-[#FAD2C0]"></div>
-            <div class="absolute top-[144px] left-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-l border-b border-[#FAD2C0] origin-top rotate-[20deg]"></div>
-            <div class="absolute top-[144px] right-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-r border-b border-[#FAD2C0] origin-top -rotate-[20deg]"></div>
-            <div class="absolute top-[194px] left-[72px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
-            <div class="absolute top-[194px] left-[94px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
-          </div>
-
-          <div id="layer-shoes" class="absolute inset-0 z-[20] pointer-events-none"></div>
-
-          <div id="layer-bottom" class="absolute inset-0 z-[30] pointer-events-none"></div>
-
-          <div id="layer-top" class="absolute inset-0 z-[35] pointer-events-none"></div>
-
-          <div id="layer-dress" class="absolute inset-0 z-[40] pointer-events-none"></div>
-
-          <div id="layer-hair-front" class="absolute inset-0 z-[50] pointer-events-none"></div>
-
-          <div id="layer-accessory" class="absolute inset-0 z-[55] pointer-events-none"></div>
-
-          <div id="layer-bag" class="absolute inset-0 z-[60] pointer-events-none"></div>
-
-        </div>
-
-      </div>
-
-      <div class="bg-white px-6 py-4 border-t border-pink-100 flex justify-around items-center z-10 shadow-2xl">
-        <button onclick="openWardrobe()" class="flex flex-col items-center space-y-1 group">
-          <div class="w-12 h-12 bg-pink-50 group-hover:bg-brandPink-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">👗</div>
-          <span class="text-xs font-bold text-gray-600">옷장 열기</span>
-        </button>
-        <button onclick="openSmartPhone()" class="flex flex-col items-center space-y-1 group">
-          <div class="w-12 h-12 bg-sky-50 group-hover:bg-sky-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">📱</div>
-          <span class="text-xs font-bold text-gray-600">스마트폰</span>
-        </button>
-      </div>
-
-    </div>
-
-    <div id="modal-wardrobe" class="absolute inset-x-0 bottom-0 h-[75%] bg-white rounded-t-[32px] border-t-4 border-pink-200 z-50 transform translate-y-full transition-transform duration-300 ease-out flex flex-col p-4 shadow-2xl">
-      <div class="flex justify-between items-center mb-3">
-        <h3 class="title-font text-2xl text-brandPink font-bold">내 옷장</h3>
-        <button onclick="closeWardrobe()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">✕</button>
-      </div>
-      <div class="flex space-x-1 overflow-x-auto pb-2 mb-2 border-b border-gray-100" id="wardrobe-tabs">
-        <button onclick="filterWardrobe('all')" class="px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap">전체</button>
-        <button onclick="filterWardrobe('hair')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">헤어</button>
-        <button onclick="filterWardrobe('top')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">상의</button>
-        <button onclick="filterWardrobe('bottom')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">하의</button>
-        <button onclick="filterWardrobe('dress')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">원피스</button>
-        <button onclick="filterWardrobe('shoes')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">신발</button>
-        <button onclick="filterWardrobe('accessory')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">액세서리</button>
-      </div>
-      <div class="flex-1 overflow-y-auto grid grid-cols-3 gap-2 p-1" id="wardrobe-list"></div>
-    </div>
-
-    <div id="modal-phone" class="absolute inset-0 bg-neutral-900/90 z-50 transform translate-y-full transition-transform duration-300 ease-out flex items-center justify-center p-4">
-      <div class="w-full h-full bg-gradient-to-b from-[#121212] to-[#242424] rounded-[36px] border-4 border-neutral-700 overflow-hidden flex flex-col relative shadow-2xl">
-        <div class="px-6 py-4 flex justify-between items-center border-b border-neutral-800">
-          <span class="text-white font-black text-xs font-mono">10:01 PM</span>
-          <div class="w-20 h-4 bg-black rounded-full absolute left-1/2 -translate-x-1/2 top-2"></div>
-          <button onclick="closeSmartPhone()" class="text-red-400 font-bold text-sm bg-red-900/30 px-3 py-1 rounded-full">닫기</button>
-        </div>
-        
-        <div id="phone-homescreen" class="flex-1 p-6 grid grid-cols-3 gap-y-6 gap-x-4 content-start">
-          <button onclick="openApp('ably')" class="flex flex-col items-center space-y-1.5">
-            <div class="w-16 h-16 bg-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-pink-400">🛍️</div>
-            <span class="text-[11px] font-bold text-gray-300">에이블리</span>
-          </button>
-          <button onclick="openApp('musinsa')" class="flex flex-col items-center space-y-1.5">
-            <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-neutral-800">🎩</div>
-            <span class="text-[11px] font-bold text-gray-300">무신사</span>
-          </button>
-          <button onclick="openApp('kream')" class="flex flex-col items-center space-y-1.5">
-            <div class="w-16 h-16 bg-emerald-700 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-emerald-600">⚡</div>
-            <span class="text-[11px] font-bold text-gray-300">크림 KREAM</span>
-          </button>
-          <button onclick="openApp('joonggo')" class="flex flex-col items-center space-y-1.5">
-            <div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-orange-400">🤝</div>
-            <span class="text-[11px] font-bold text-orange-200">중고나라(주식)</span>
-          </button>
-        </div>
-
-        <div id="phone-app-container" class="absolute inset-0 bg-neutral-900 z-10 hidden flex flex-col pt-12">
-          <div class="px-4 py-3 bg-neutral-800 text-white flex justify-between items-center border-b border-neutral-700">
-            <span id="app-title" class="font-bold text-sm">앱 이름</span>
-            <button onclick="backToHome()" class="text-xs text-neutral-400 bg-neutral-700 px-3 py-1 rounded-full font-bold">Home</button>
-          </div>
-          <div id="app-body" class="flex-1 overflow-y-auto p-4 bg-neutral-900"></div>
-        </div>
-
-      </div>
-    </div>
-
-    <div id="gacha-result-modal" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 hidden animate-fade-in">
-      <div class="bg-white rounded-[32px] p-6 text-center w-full max-w-[320px] shadow-2xl border-4 border-pink-200 scale-90 transition-transform duration-300" id="gacha-card">
-        <h4 class="title-font text-2xl font-black text-pink-500 mb-2">🎉 아이템 획득! 🎉</h4>
-        
-        <div class="w-full h-40 bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center my-4 overflow-hidden relative shadow-inner" id="gacha-item-preview"></div>
-        
-        <div class="mb-4">
-          <span id="gacha-item-grade" class="px-3 py-1 rounded-full text-xs font-black text-white mr-1">SSS</span>
-          <span id="gacha-item-name" class="font-bold text-lg text-gray-800 block mt-2">아이템명</span>
-        </div>
-        <div class="text-xs text-gray-500 mb-6">기본가: <span id="gacha-item-price" class="font-bold"></span>원</div>
-        <button onclick="closeGachaResult()" class="w-full bg-brandPink hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-all shadow-md">확인</button>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    const AppState = {
-      user: {
-        id: "",
-        name: "러블리치비",
-        gender: "female",
-        balance: 100000,
-        inventory: [],
-        equipped: {
-          hair: null, top: null, bottom: null, dress: null,
-          shoes: null, accessory: null, bag: null
-        }
-      },
-      currentWardrobeTab: 'all',
-      marketPrices: {}
-    };
-
-    // --- 2. 아이템 기본 데이터베이스 (Item DB) ---
-    const ITEM_DATABASE = {
-      // 💇 헤어 카테고리
-      'hair_c_black': {
-        id: 'hair_c_black', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 8000,
-        renderBack: () => `<div class="absolute top-[34px] left-[30px] w-[120px] h-[150px] bg-neutral-800 rounded-b-[40px]"></div>`,
-        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-neutral-800 rounded-b-xl border-b-2 border-neutral-900"></div>`
-      },
-      'hair_b_brown': {
-        id: 'hair_b_brown', name: '밀크브라운 똥머리', category: 'hair', grade: 'B', basePrice: 15000,
-        renderBack: () => `
-          <div class="absolute top-[34px] left-[34px] w-[112px] h-[112px] bg-amber-800 rounded-full"></div>
-          <div class="absolute top-[14px] left-[70px] w-[40px] h-[40px] bg-amber-800 rounded-full shadow-inner"></div>
-        `,
-        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[32px] bg-amber-800 rounded-b-2xl border-b border-amber-950"></div>`
-      },
-      'hair_a_twintail': {
-        id: 'hair_a_twintail', name: '라벤더 양갈래 헤어', category: 'hair', grade: 'A', basePrice: 28000,
-        renderBack: () => `
-          <div class="absolute top-[34px] left-[32px] w-[116px] h-[120px] bg-indigo-300 rounded-b-[40px]"></div>
-          <div class="absolute top-[100px] left-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
-          <div class="absolute top-[100px] right-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
-        `,
-        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[30px] bg-indigo-300 rounded-b-2xl border-b-2 border-indigo-400"></div>`
-      },
-      'hair_ss_pink': {
-        id: 'hair_ss_pink', name: '딸기우유 더블번', category: 'hair', grade: 'SS', basePrice: 55000,
-        renderBack: () => `
-          <div class="absolute top-[34px] left-[30px] w-[120px] h-[110px] bg-rose-300 rounded-b-[45px]"></div>
-          <div class="absolute top-[18px] left-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
-          <div class="absolute top-[18px] right-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
-        `,
-        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[38px] bg-rose-300 rounded-b-[20px] border-b border-rose-400"></div>`
-      },
-      'hair_sss_cyber': {
-        id: 'hair_sss_cyber', name: '네온 홀로그램 트윈', category: 'hair', grade: 'SSS', basePrice: 120000,
-        renderBack: () => `
-          <div class="absolute top-[32px] left-[30px] w-[120px] h-[130px] bg-cyan-300 rounded-b-[50px] shadow-cyan-300/50 shadow-lg"></div>
-          <div class="absolute top-[110px] left-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
-          <div class="absolute top-[110px] right-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
-        `,
-        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-cyan-300 rounded-b-3xl border-b-2 border-cyan-400 shadow-cyan-300/30 shadow-md"></div>`
-      },
-
-      // 👕 상의 카테고리
-      'top_c_white': {
-        id: 'top_c_white', name: '흰색 데일리 반팔', category: 'top', grade: 'C', basePrice: 5000,
-        render: () => `
-          <div class="absolute top-[144px] left-[66px] w-[48px] h-[32px] bg-white rounded-b-md border border-neutral-300"></div>
-          <div class="absolute top-[144px] left-[52px] w-[14px] h-[16px] bg-white rounded-l-md border-l border-t border-b border-neutral-300"></div>
-          <div class="absolute top-[144px] right-[52px] w-[14px] h-[16px] bg-white rounded-r-md border-r border-t border-b border-neutral-300"></div>
-        `
-      },
-      'top_b_sailor': {
-        id: 'top_b_sailor', name: '스쿨 세일러 카라', category: 'top', grade: 'B', basePrice: 18000,
-        render: () => `
-          <div class="absolute top-[143px] left-[65px] w-[50px] h-[34px] bg-blue-100 rounded-b-lg border-2 border-blue-400"></div>
-          <div class="absolute top-[143px] left-[52px] w-[14px] h-[18px] bg-blue-400 rounded-l-md"></div>
-          <div class="absolute top-[143px] right-[52px] w-[14px] h-[18px] bg-blue-400 rounded-r-md"></div>
-          <div class="absolute top-[152px] left-[84px] w-[12px] h-[10px] bg-red-400 rounded-full"></div>
-        `
-      },
-      'top_a_hood': {
-        id: 'top_a_hood', name: '라임 스트릿 후드', category: 'top', grade: 'A', basePrice: 32000,
-        render: () => `
-          <div class="absolute top-[142px] left-[64px] w-[52px] h-[40px] bg-lime-400 rounded-b-xl border border-lime-500"></div>
-          <div class="absolute top-[142px] left-[50px] w-[16px] h-[28px] bg-lime-400 rounded-l-xl"></div>
-          <div class="absolute top-[142px] right-[50px] w-[16px] h-[28px] bg-lime-400 rounded-r-xl"></div>
-        `
-      },
-      'top_ss_blouse': {
-        id: 'top_ss_blouse', name: '러플 실크 블라우스', category: 'top', grade: 'SS', basePrice: 65000,
-        render: () => `
-          <div class="absolute top-[143px] left-[65px] w-[50px] h-[36px] bg-pink-100 rounded-b-xl border-t-4 border-pink-300 border-x border-b border-pink-200 shadow-sm"></div>
-          <div class="absolute top-[143px] left-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
-          <div class="absolute top-[143px] right-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
-        `
-      },
-
-      // 👖 하의 카테고리
-      'bottom_c_pants': {
-        id: 'bottom_c_pants', name: '트레이닝 트랙바지', category: 'bottom', grade: 'C', basePrice: 5000,
-        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[32px] bg-zinc-500 rounded-b-sm border border-neutral-600"></div>`
-      },
-      'bottom_b_skirt': {
-        id: 'bottom_b_skirt', name: '파스텔 테니스 스커트', category: 'bottom', grade: 'B', basePrice: 12000,
-        render: () => `<div class="absolute top-[186px] left-[64px] w-[52px] h-[24px] bg-sky-200 rounded-b-xl border-b-4 border-sky-400"></div>`
-      },
-      'bottom_a_jeans': {
-        id: 'bottom_a_jeans', name: '크롭 데님 진', category: 'bottom', grade: 'A', basePrice: 26000,
-        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[38px] bg-indigo-400 rounded-b-md border border-indigo-600"></div>`
-      },
-      'bottom_ss_frill': {
-        id: 'bottom_ss_frill', name: '앤틱 하트 프릴스커트', category: 'bottom', grade: 'SS', basePrice: 58000,
-        render: () => `<div class="absolute top-[186px] left-[63px] w-[54px] h-[28px] bg-pink-400 rounded-b-[14px] border-b-4 border-white shadow-sm"></div>`
-      },
-
-      // 👗 원피스 카테고리
-      'dress_a_gothic': {
-        id: 'dress_a_gothic', name: '고딕 메이드 로리타', category: 'dress', grade: 'A', basePrice: 42000,
-        render: () => `
-          <div class="absolute top-[143px] left-[62px] w-[56px] h-[68px] bg-neutral-800 rounded-b-[20px] border-b-[6px] border-white border-x border-neutral-900 shadow-lg"></div>
-          <div class="absolute top-[143px] left-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-l-md"></div>
-          <div class="absolute top-[143px] right-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-r-md"></div>
-        `
-      },
-      'dress_ss_princess': {
-        id: 'dress_ss_princess', name: '로즈가든 쉬폰 드레스', category: 'dress', grade: 'SS', basePrice: 85000,
-        render: () => `
-          <div class="absolute top-[142px] left-[60px] w-[60px] h-[72px] bg-pink-200 rounded-b-[26px] border-b-[8px] border-pink-400 border-x border-pink-300 shadow-md"></div>
-          <div class="absolute top-[142px] left-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
-          <div class="absolute top-[142px] right-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
-        `
-      },
-      'dress_sss_galaxy': {
-        id: 'dress_sss_galaxy', name: '밀키웨이 밤하늘 가운', category: 'dress', grade: 'SSS', basePrice: 195000,
-        render: () => `
-          <div class="absolute top-[141px] left-[58px] w-[64px] h-[76px] bg-indigo-950 rounded-b-[30px] border-b-[8px] border-amber-300 shadow-indigo-500 shadow-lg"></div>
-          <div class="absolute top-[141px] left-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-l-lg"></div>
-          <div class="absolute top-[141px] right-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-r-lg"></div>
-        `
-      },
-
-      // 👟 신발 카테고리
-      'shoes_c_sneakers': {
-        id: 'shoes_c_sneakers', name: '클래식 스니커즈', category: 'shoes', grade: 'C', basePrice: 4000,
-        render: () => `
-          <div class="absolute top-[238px] left-[69px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
-          <div class="absolute top-[238px] left-[91px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
-        `
-      },
-      'shoes_a_boots': {
-        id: 'shoes_a_boots', name: '블랙 가죽 레이스업', category: 'shoes', grade: 'A', basePrice: 22000,
-        render: () => `
-          <div class="absolute top-[234px] left-[69px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
-          <div class="absolute top-[234px] left-[91px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
-        `
-      },
-      'shoes_ss_bunny': {
-        id: 'shoes_ss_bunny', name: '폭신폭신 토끼 슬리퍼', category: 'shoes', grade: 'SS', basePrice: 48000,
-        render: () => `
-          <div class="absolute top-[236px] left-[67px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
-          <div class="absolute top-[236px] left-[89px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
-        `
-      },
-
-      // 🎀 액세서리 및 잡화 카테고리
-      'accessory_b_ribbon': {
-        id: 'accessory_b_ribbon', name: '레드 벨벳 헤어리본', category: 'accessory', grade: 'B', basePrice: 9000,
-        render: () => `<div class="absolute top-[28px] left-[48px] w-[84px] h-[14px] bg-red-500 rounded-full shadow-md"></div>`
-      },
-      'accessory_a_catears': {
-        id: 'accessory_a_catears', name: '네코 네온 헤드셋', category: 'accessory', grade: 'A', basePrice: 25000,
-        render: () => `<div class="absolute top-[26px] left-[46px] w-[88px] h-[16px] bg-zinc-800 rounded-full border-t-4 border-cyan-300"></div>`
-      },
-      'accessory_sss_angel': {
-        id: 'accessory_sss_angel', name: '수호천사 홀리 윙', category: 'accessory', grade: 'SSS', basePrice: 150000,
-        render: () => `<div class="absolute top-[110px] left-[-10px] w-[200px] h-[24px] bg-gradient-to-r from-amber-100 to-white rounded-full shadow-yellow-200/50 shadow-md opacity-90"></div>`
-      },
-      'bag_ss_heart': {
-        id: 'bag_ss_heart', name: '하트 글리터 백', category: 'bag', grade: 'SS', basePrice: 52000,
-        render: () => `<div class="absolute top-[170px] left-[44px] w-[28px] h-[28px] bg-rose-400 rounded-full border border-pink-300 shadow-md flex items-center justify-center text-[10px] text-white">❤️</div>`
-      }
-    };
-
-    const GRADE_COLORS = {
-      'C': { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' },
-      'B': { bg: 'bg-teal-400', border: 'border-teal-400', text: 'text-teal-600' },
-      'A': { bg: 'bg-blue-400', border: 'border-blue-400', text: 'text-blue-600' },
-      'S': { bg: 'bg-purple-400', border: 'border-purple-400', text: 'text-purple-600' },
-      'SS': { bg: 'bg-pink-400', border: 'border-pink-400', text: 'text-pink-600' },
-      'SSS': { bg: 'bg-gradient-to-r from-amber-400 to-yellow-500', border: 'border-yellow-500', text: 'text-yellow-600' }
-    };
-
-    function formatMoney(num) {
-      return Number(num).toLocaleString('ko-KR');
-    }
-
-    function initMarketPrices() {
-      for (let key in ITEM_DATABASE) {
-        AppState.marketPrices[key] = {
-          current: ITEM_DATABASE[key].basePrice,
-          change: 0,
-          trend: 'flat'
-        };
-      }
-    }
-
-    // --- [수정] 회원가입 / 로그인 탭 교체 기능 ---
-    function switchAuthTab(mode) {
-      const tabLogin = document.getElementById('tab-login');
-      const tabSignup = document.getElementById('tab-signup');
-      const formLogin = document.getElementById('form-login');
-      const formSignup = document.getElementById('form-signup');
-
-      if (mode === 'login') {
-        tabLogin.className = "flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink";
-        tabSignup.className = "flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100";
-        formLogin.classList.remove('hidden');
-        formSignup.classList.add('hidden');
-      } else {
-        tabSignup.className = "flex-1 py-2.5 text-sm font-bold text-brandPink bg-white border-b-2 border-brandPink";
-        tabLogin.className = "flex-1 py-2.5 text-sm font-bold text-gray-400 bg-pink-50/50 border-b border-pink-100";
-        formSignup.classList.remove('hidden');
-        formLogin.classList.add('hidden');
-      }
-    }
-
-    // --- [신규 기능] 회원가입 핸들러 ---
-    function handleSignup() {
-      const id = document.getElementById('signup-id').value.trim();
-      const pw = document.getElementById('signup-pw').value.trim();
-
-      if (!id || !pw) return alert("아이디와 비밀번호를 모두 입력해주세요.");
-
-      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
-
-      if (users[id]) {
-        return alert("이미 가입된 아이디입니다.");
-      }
-
-      // 유저 정보 가입 처리
-      users[id] = {
-        password: pw,
-        name: "",
-        gender: "female",
-        balance: 100000,
-        inventory: [],
-        equipped: {
-          hair: null, top: null, bottom: null, dress: null,
-          shoes: null, accessory: null, bag: null
-        }
-      };
-
-      localStorage.setItem('pastel_users_db', JSON.stringify(users));
-      alert("회원가입이 완료되었습니다! 로그인하여 플레이해 보세요.");
-      
-      // 가입 정보 폼 자동 세팅 및 로그인 탭 전환
-      document.getElementById('login-id').value = id;
-      document.getElementById('login-pw').value = pw;
-      document.getElementById('signup-id').value = "";
-      document.getElementById('signup-pw').value = "";
-      switchAuthTab('login');
-    }
-
-    // --- [수정] 로그인 핸들러 (회원가입 로컬 DB 연계) ---
-    function handleLogin() {
-      const id = document.getElementById('login-id').value.trim();
-      const pw = document.getElementById('login-pw').value.trim();
-
-      if (!id || !pw) return alert("아이디와 비밀번호를 입력해주세요.");
-
-      // 기본 디폴트 계정(chibi_love / 1234) 호환 처리
-      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
-      if (!users['chibi_love']) {
-        users['chibi_love'] = {
-          password: '1234',
-          name: '러블리치비',
-          gender: 'female',
-          balance: 100000,
-          inventory: [],
-          equipped: {
-            hair: null, top: null, bottom: null, dress: null,
-            shoes: null, accessory: null, bag: null
-          }
-        };
-        localStorage.setItem('pastel_users_db', JSON.stringify(users));
-      }
-
-      const matchedUser = users[id];
-      if (matchedUser && matchedUser.password === pw) {
-        AppState.user.id = id;
-        
-        // 가입 완료된 계정 정보 로드
-        if (matchedUser.name) {
-          // 기존 유저 정보가 이미 등록된 경우 바로 메인화면으로 이동
-          AppState.user.name = matchedUser.name;
-          AppState.user.gender = matchedUser.gender;
-          AppState.user.balance = matchedUser.balance;
-          AppState.user.inventory = matchedUser.inventory;
-          AppState.user.equipped = matchedUser.equipped;
-
-          document.getElementById('screen-login').classList.add('hidden');
-          document.getElementById('screen-main').classList.remove('hidden');
-          
-          document.getElementById('display-name').innerText = AppState.user.name;
-          document.getElementById('display-gender').innerText = AppState.user.gender === 'female' ? '여' : '남';
-          updateUIBalance();
-          initMarketPrices();
-          renderAvatar();
-          
-          // 주식 및 상점 흐름 시작
-          setInterval(runMarketTicker, 1000);
-        } else {
-          // 닉네임 설정이 없는 신규 회원은 설정 프로세스 적용
-          document.getElementById('screen-login').classList.add('hidden');
-          document.getElementById('screen-name').classList.remove('hidden');
-        }
-      } else {
-        alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-      }
-    }
-
-    function handleSaveName() {
-      const name = document.getElementById('user-nickname').value.trim();
-      if (!name) return alert("닉네임을 지정해주세요.");
-      AppState.user.name = name;
-      document.getElementById('screen-name').classList.add('hidden');
-      document.getElementById('screen-gender').classList.remove('hidden');
-    }
-
-    function handleSelectGender(gender) {
-      AppState.user.gender = gender;
-      document.getElementById('display-name').innerText = AppState.user.name;
-      document.getElementById('display-gender').innerText = gender === 'female' ? '여' : '남';
-      updateUIBalance();
-
-      const defaultHair = spawnItem('hair_c_black');
-      const defaultTop = spawnItem('top_c_white');
-      const defaultBottom = spawnItem('bottom_c_pants');
-      
-      equipItem(defaultHair);
-      equipItem(defaultTop);
-      equipItem(defaultBottom);
-
-      // 회원 데이터 저장소 동기화
-      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
-      if (users[AppState.user.id]) {
-        users[AppState.user.id].name = AppState.user.name;
-        users[AppState.user.id].gender = AppState.user.gender;
-        users[AppState.user.id].balance = AppState.user.balance;
-        users[AppState.user.id].inventory = AppState.user.inventory;
-        users[AppState.user.id].equipped = AppState.user.equipped;
-        localStorage.setItem('pastel_users_db', JSON.stringify(users));
-      }
-
-      document.getElementById('screen-gender').classList.add('hidden');
-      initMarketPrices();
-      setInterval(runMarketTicker, 1000);
-    }
-
-    function syncUserDatabase() {
-      if (!AppState.user.id) return;
-      const users = JSON.parse(localStorage.getItem('pastel_users_db') || '{}');
-      if (users[AppState.user.id]) {
-        users[AppState.user.id].balance = AppState.user.balance;
-        users[AppState.user.id].inventory = AppState.user.inventory;
-        users[AppState.user.id].equipped = AppState.user.equipped;
-        localStorage.setItem('pastel_users_db', JSON.stringify(users));
-      }
-    }
-
-    function spawnItem(itemId) {
-      const baseItem = ITEM_DATABASE[itemId];
-      const instanceId = 'inst_' + Math.random().toString(36).substr(2, 9);
-      const newInstance = {
-        instanceId: instanceId,
-        id: itemId,
-        purchasePrice: baseItem.basePrice
-      };
-      AppState.user.inventory.push(newInstance);
-      syncUserDatabase();
-      return newInstance;
-    }
-
-    function updateUIBalance() {
-      document.getElementById('display-balance').innerText = formatMoney(AppState.user.balance);
-    }
-
-    // --- 5. Pure CSS 캐릭터 옷장 장착 엔진 ---
-    function equipItem(itemInstance) {
-      const itemData = ITEM_DATABASE[itemInstance.id];
-      const category = itemData.category;
-
-      if (category === 'dress') {
-        AppState.user.equipped.top = null;
-        AppState.user.equipped.bottom = null;
-        AppState.user.equipped.dress = itemInstance;
-      } else if (category === 'top' || category === 'bottom') {
-        AppState.user.equipped.dress = null;
-        AppState.user.equipped[category] = itemInstance;
-      } else {
-        AppState.user.equipped[category] = itemInstance;
-      }
-      syncUserDatabase();
-      renderAvatar();
-    }
-
-    function unequipItem(category) {
-      AppState.user.equipped[category] = null;
-      syncUserDatabase();
-      renderAvatar();
-    }
-
-    function renderAvatar() {
-      const eq = AppState.user.equipped;
-
-      const layerHairBack = document.getElementById('layer-hair-back');
-      const layerHairFront = document.getElementById('layer-hair-front');
-      if (eq.hair) {
-        const hData = ITEM_DATABASE[eq.hair.id];
-        layerHairBack.innerHTML = hData.renderBack();
-        layerHairFront.innerHTML = hData.renderFront();
-      } else {
-        layerHairBack.innerHTML = '';
-        layerHairFront.innerHTML = '';
-      }
-
-      const layerTop = document.getElementById('layer-top');
-      if (eq.top) {
-        layerTop.innerHTML = ITEM_DATABASE[eq.top.id].render();
-      } else {
-        layerTop.innerHTML = '';
-      }
-
-      const layerBottom = document.getElementById('layer-bottom');
-      if (eq.bottom) {
-        layerBottom.innerHTML = ITEM_DATABASE[eq.bottom.id].render();
-      } else {
-        layerBottom.innerHTML = '';
-      }
-
-      const layerDress = document.getElementById('layer-dress');
-      if (eq.dress) {
-        layerDress.innerHTML = ITEM_DATABASE[eq.dress.id].render();
-      } else {
-        layerDress.innerHTML = '';
-      }
-
-      const layerShoes = document.getElementById('layer-shoes');
-      if (eq.shoes) {
-        layerShoes.innerHTML = ITEM_DATABASE[eq.shoes.id].render();
-      } else {
-        layerShoes.innerHTML = '';
-      }
-
-      const layerAccessory = document.getElementById('layer-accessory');
-      if (eq.accessory) {
-        layerAccessory.innerHTML = ITEM_DATABASE[eq.accessory.id].render();
-      } else {
-        layerAccessory.innerHTML = '';
-      }
-
-      const layerBag = document.getElementById('layer-bag');
-      if (eq.bag) {
-        layerBag.innerHTML = ITEM_DATABASE[eq.bag.id].render();
-      } else {
-        layerBag.innerHTML = '';
-      }
-    }
-
-    // --- 옷장 오픈 / 해제 및 UI 구현 ---
-    function openWardrobe() {
-      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
-      filterWardrobe(AppState.currentWardrobeTab);
-    }
-
-    function closeWardrobe() {
-      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
-    }
-
-    function filterWardrobe(tab) {
-      AppState.currentWardrobeTab = tab;
-      const tabs = document.getElementById('wardrobe-tabs').children;
-      const categories = ['all', 'hair', 'top', 'bottom', 'dress', 'shoes', 'accessory'];
-      
-      for (let i = 0; i < tabs.length; i++) {
-        if (categories[i] === tab) {
-          tabs[i].className = "px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap";
-        } else {
-          tabs[i].className = "px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap";
-        }
-      }
-
-      renderWardrobeList();
-    }
-
-    function renderWardrobeList() {
-      const listContainer = document.getElementById('wardrobe-list');
-      listContainer.innerHTML = '';
-
-      let items = AppState.user.inventory;
-      if (AppState.currentWardrobeTab !== 'all') {
-        items = items.filter(inst => ITEM_DATABASE[inst.id].category === AppState.currentWardrobeTab);
-      }
-
-      if (items.length === 0) {
-        listContainer.innerHTML = `<div class="col-span-3 text-center text-gray-400 py-12 text-xs">아이템이 없습니다.</div>`;
-        return;
-      }
-
-      items.forEach(inst => {
-        const itemData = ITEM_DATABASE[inst.id];
-        const isEquipped = Object.values(AppState.user.equipped).some(eq => eq && eq.instanceId === inst.instanceId);
-        const card = document.createElement('div');
-        card.className = `p-2 bg-pink-50/50 rounded-2xl border-2 ${isEquipped ? 'border-brandPink bg-pink-50' : 'border-transparent'} flex flex-col items-center justify-between cursor-pointer active:scale-95 transition-all`;
-        card.onclick = () => {
-          if (isEquipped) {
-            unequipItem(itemData.category);
-          } else {
-            equipItem(inst);
-          }
-          renderWardrobeList();
-        };
-
-        const gradeStyle = GRADE_COLORS[itemData.grade];
-        card.innerHTML = `
-          <span class="text-[10px] font-bold ${gradeStyle.text}">${itemData.grade}</span>
-          <span class="text-xs font-bold text-gray-700 text-center truncate w-full">${itemData.name}</span>
-          <span class="text-[9px] text-gray-400 mt-1">${isEquipped ? '장착 중' : '대기'}</span>
-        `;
-        listContainer.appendChild(card);
-      });
-    }
-
-    // --- 📱 스마트폰 및 앱 거래 시스템 ---
-    let activePhoneApp = null;
-
-    function openSmartPhone() {
-      document.getElementById('modal-phone').classList.remove('translate-y-full');
-    }
-
-    function closeSmartPhone() {
-      document.getElementById('modal-phone').classList.add('translate-y-full');
-      backToHome();
-    }
-
-    function openApp(appName) {
-      activePhoneApp = appName;
-      document.getElementById('phone-homescreen').classList.add('hidden');
-      const appContainer = document.getElementById('phone-app-container');
-      appContainer.classList.remove('hidden');
-
-      const appTitle = document.getElementById('app-title');
-      const appBody = document.getElementById('app-body');
-
-      if (appName === 'ably') {
-        appTitle.innerText = "🛍️ 에이블리 뽑기";
-        renderAblyApp(appBody);
-      } else if (appName === 'musinsa') {
-        appTitle.innerText = "🎩 무신사 신상 쇼핑";
-        renderMusinsaApp(appBody);
-      } else if (appName === 'kream') {
-        appTitle.innerText = "⚡ KREAM 리셀샵";
-        renderKreamApp(appBody);
-      } else if (appName === 'joonggo') {
-        appTitle.innerText = "🤝 중고나라 실시간 트레이딩";
-        renderJoonggoApp(appBody);
-      }
-    }
-
-    function backToHome() {
-      activePhoneApp = null;
-      document.getElementById('phone-app-container').classList.add('hidden');
-      document.getElementById('phone-homescreen').classList.remove('hidden');
-    }
-
-    // --- 🛍️ 에이블리 전용 가챠 뽑기 ---
-    function renderAblyApp(container) {
-      container.innerHTML = `
-        <div class="text-center text-white py-4">
-          <span class="text-xs bg-pink-600/30 text-pink-400 border border-pink-500/40 px-3 py-1 rounded-full font-bold">1회 랜덤 박스 GACHA</span>
-          <h4 class="title-font text-3xl font-black text-pink-400 mt-3">👗 트렌디 박스 👗</h4>
-          <p class="text-neutral-400 text-[10px] mt-1">최고 SSS급 희귀 아바타 의상을 저렴하게 저격!</p>
-          <div class="my-6 text-2xl font-black">💸 1회 : <span class="text-pink-400">15,000</span> G</div>
-          <button onclick="triggerGachaDraw()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-extrabold py-3.5 rounded-2xl shadow-lg active:scale-95 transition-all text-sm">랜덤 상자 뽑기</button>
-        </div>
-      `;
-    }
-
-    // --- [오류 수정] 완전 분산형 아이템 뽑기 로직 ---
-    function triggerGachaDraw() {
-      const gachaCost = 15000;
-      if (AppState.user.balance < gachaCost) {
-        return alert("골드가 부족합니다! 더 열심히 주식을 굴려보세요.");
-      }
-
-      AppState.user.balance -= gachaCost;
-      updateUIBalance();
-      syncUserDatabase();
-
-      // [오류 개선] Math.random() 기반의 무편향 균등 확률 인덱스 분산화
-      const itemKeys = Object.keys(ITEM_DATABASE);
-      const randomPointer = Math.floor(Math.random() * itemKeys.length);
-      const drawnKey = itemKeys[randomPointer];
-
-      const instance = spawnItem(drawnKey);
-      showGachaResult(instance);
-    }
-
-    function showGachaResult(itemInstance) {
-      const data = ITEM_DATABASE[itemInstance.id];
-      const modal = document.getElementById('gacha-result-modal');
-      const preview = document.getElementById('gacha-item-preview');
-      const grade = document.getElementById('gacha-item-grade');
-      const name = document.getElementById('gacha-item-name');
-      const price = document.getElementById('gacha-item-price');
-
-      preview.innerHTML = `
-        <div class="relative w-[180px] h-[280px] scale-[0.6] origin-center -translate-y-4">
-          ${data.category === 'hair' ? data.renderBack() + data.renderFront() : (data.render ? data.render() : '')}
-        </div>
-      `;
-
-      const colorData = GRADE_COLORS[data.grade];
-      grade.className = `px-3 py-1 rounded-full text-xs font-black text-white ${colorData.bg}`;
-      grade.innerText = data.grade;
-      name.innerText = data.name;
-      price.innerText = formatMoney(data.basePrice);
-
-      modal.classList.remove('hidden');
-    }
-
-    function closeGachaResult() {
-      document.getElementById('gacha-result-modal').classList.add('hidden');
-    }
-
-    // --- 🎩 무신사 일반 상점 ---
-    function renderMusinsaApp(container) {
-      container.innerHTML = `
-        <div class="space-y-3">
-          <p class="text-[10px] text-neutral-400">무신사 공식 정가 스토어 (무작위 중복 불가능, 100% 확정 소장)</p>
-          <div class="grid grid-cols-2 gap-2" id="musinsa-items-list"></div>
-        </div>
-      `;
-
-      const list = document.getElementById('musinsa-items-list');
-      for (let key in ITEM_DATABASE) {
-        const item = ITEM_DATABASE[key];
-        const hasOwned = AppState.user.inventory.some(inst => inst.id === key);
-        const card = document.createElement('div');
-        card.className = "bg-neutral-800 p-3 rounded-2xl border border-neutral-700 flex flex-col justify-between";
-        card.innerHTML = `
-          <span class="text-[9px] font-bold ${GRADE_COLORS[item.grade].text}">${item.grade} | ${item.category}</span>
-          <h5 class="text-white text-xs font-bold mt-1 mb-2 truncate">${item.name}</h5>
-          <button onclick="buyFromMusinsa('${key}')" ${hasOwned ? 'disabled' : ''} class="w-full py-1.5 ${hasOwned ? 'bg-neutral-600 text-neutral-400' : 'bg-white hover:bg-neutral-200 text-black'} text-[10px] rounded-lg font-bold">
-            ${hasOwned ? '소장 중' : formatMoney(item.basePrice) + ' G'}
-          </button>
-        `;
-        list.appendChild(card);
-      }
-    }
-
-    function buyFromMusinsa(itemId) {
-      const item = ITEM_DATABASE[itemId];
-      if (AppState.user.balance < item.basePrice) {
-        return alert("골드가 부족합니다.");
-      }
-      AppState.user.balance -= item.basePrice;
-      spawnItem(itemId);
-      updateUIBalance();
-      syncUserDatabase();
-      alert(`[${item.name}]이(가) 내 옷장에 배송되었습니다.`);
-      if (activePhoneApp === 'musinsa') openApp('musinsa');
-    }
-
-    // --- ⚡ KREAM 리셀 거래소 ---
-    function renderKreamApp(container) {
-      container.innerHTML = `
-        <div class="space-y-3">
-          <p class="text-[10px] text-neutral-400">현재 보관 중인 내 전리품들을 시세 변동가에 즉시 리셀!</p>
-          <div class="space-y-2" id="kream-inventory-list"></div>
-        </div>
-      `;
-
-      const list = document.getElementById('kream-inventory-list');
-      if (AppState.user.inventory.length === 0) {
-        list.innerHTML = `<div class="text-center py-12 text-xs text-neutral-500">리셀할 보유 패션 상품이 없습니다.</div>`;
-        return;
-      }
-
-      AppState.user.inventory.forEach(inst => {
-        const data = ITEM_DATABASE[inst.id];
-        const livePrice = AppState.marketPrices[inst.id].current;
-        const profit = livePrice - inst.purchasePrice;
-        const row = document.createElement('div');
-        row.className = "bg-neutral-800 p-3 rounded-xl flex justify-between items-center";
-        row.innerHTML = `
-          <div>
-            <h5 class="text-white text-xs font-bold">${data.name}</h5>
-            <span class="text-[9px] text-neutral-400">취득가: ${formatMoney(inst.purchasePrice)} G</span>
-          </div>
-          <div class="text-right">
-            <div class="text-emerald-400 font-bold text-xs">시세 ${formatMoney(livePrice)} G</div>
-            <button onclick="sellToKream('${inst.instanceId}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] px-3 py-1 rounded-md mt-1.5">리셀 거래체결</button>
-          </div>
-        `;
-        list.appendChild(row);
-      });
-    }
-
-    function sellToKream(instanceId) {
-      const idx = AppState.user.inventory.findIndex(inst => inst.instanceId === instanceId);
-      if (idx === -1) return;
-
-      const inst = AppState.user.inventory[idx];
-      const livePrice = AppState.marketPrices[inst.id].current;
-
-      AppState.user.balance += livePrice;
-      
-      // 장착 해제 대응
-      for (let slot in AppState.user.equipped) {
-        if (AppState.user.equipped[slot] && AppState.user.equipped[slot].instanceId === instanceId) {
-          AppState.user.equipped[slot] = null;
-        }
-      }
-
-      AppState.user.inventory.splice(idx, 1);
-      updateUIBalance();
-      syncUserDatabase();
-      renderAvatar();
-
-      alert("리셀 체결 완료! 수익금이 정산되었습니다.");
-      if (activePhoneApp === 'kream') openApp('kream');
-    }
-
-    // --- 🤝 중고나라 (실시간 중개 장표) ---
-    function renderJoonggoApp(container) {
-      container.innerHTML = `
-        <div class="space-y-2">
-          <p class="text-[10px] text-neutral-400">실시간 패션 아이템 상위 거래 시장 가격 동향</p>
-          <div class="space-y-1.5" id="joonggo-market-list"></div>
-        </div>
-      `;
-
-      const list = document.getElementById('joonggo-market-list');
-      for (let key in ITEM_DATABASE) {
-        const item = ITEM_DATABASE[key];
-        const priceObj = AppState.marketPrices[key];
-        const changeRate = (priceObj.change * 100).toFixed(1);
-        const color = priceObj.trend === 'up' ? 'text-red-500' : (priceObj.trend === 'down' ? 'text-blue-500' : 'text-neutral-400');
-        const sign = priceObj.trend === 'up' ? '▲' : (priceObj.trend === 'down' ? '▼' : '–');
-
-        const row = document.createElement('div');
-        row.className = "bg-neutral-800 p-2.5 rounded-xl flex justify-between items-center border-b border-neutral-700/50";
-        row.innerHTML = `
-          <div>
-            <span class="text-[9px] ${GRADE_COLORS[item.grade].text} font-black">${item.grade}</span>
-            <h5 class="text-white text-xs font-bold leading-tight">${item.name}</h5>
-          </div>
-          <div class="text-right">
-            <span class="text-white font-mono font-bold text-xs">${formatMoney(priceObj.current)} G</span>
-            <span class="text-[10px] font-bold ${color} block">${sign} ${changeRate}%</span>
-          </div>
-        `;
-        list.appendChild(row);
-      }
-    }
-
-    // --- [수정] 주식 가격 변동 엔진 (기존 대비 대폭 향상된 시세 등락 적용) ---
-    function runMarketTicker() {
-      const keys = Object.keys(ITEM_DATABASE);
-      const chosenKey = keys[Math.floor(Math.random() * keys.length)];
-      const item = ITEM_DATABASE[chosenKey];
-      const priceObj = AppState.marketPrices[chosenKey];
-
-      // [변동 폭 대폭 확장 및 다이내믹 이벤트 적용]
-      // 기존의 좁은 바운더리 대신 최소 -15% ~ 최대 +18% 범위에서 역동적으로 변동하도록 처리합니다.
-      let changePercent = (Math.random() * 33 - 15) / 100;
-
-      // 5%의 초급락/초급등 대박 특이 케이스 이벤트 설정
-      if (Math.random() < 0.05) {
-        changePercent = Math.random() > 0.4 ? 0.50 : -0.40; // +50% 폭등 또는 -40% 폭락
-      }
-
-      const delta = Math.round(priceObj.current * changePercent);
-      priceObj.current = Math.max(1000, priceObj.current + delta); // 최소 1,000G 방어막
-      priceObj.change = changePercent;
-      priceObj.trend = changePercent > 0 ? 'up' : (changePercent < 0 ? 'down' : 'flat');
-
-      // 중고나라 앱 실시간 드로잉 갱신
-      if (activePhoneApp === 'joonggo') {
-        openApp('joonggo');
-      }
-
-      // 상단 배너 전광판 표시
-      showTickerBanner(item, priceObj);
-    }
-
-    function showTickerBanner(
+  <div class="relative w-full max-w-[420px] h-[92vh] bg-white rounded-[40px] shadow-2xl border-[12px] border-pink-200 overflow-hidden flex flex-col">
+    
+    <div id="screen-login" class="absolute inset-0 z-50 bg-brandPink-100 flex flex-col items-center justify-center p-6">
+      <div class="text-center mb-8">
+        <h1 class="title-font text-5xl text-brandPink-400 font-bold mb-2">🎀 Pastel Closet 🎀</h1>
+        <p class="text-gray-500 text-sm">실시간 주식형 중고 옷입히기 게임</p>
+      </div>
+      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">아이디</label>
+          <input id="login-id" type="text" value="chibi_love" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">비밀번호</label>
+          <input id="login-pw" type="password" value="1234" class="w-full border-2 border-pink-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brandPink" />
+        </div>
+        <button onclick="handleLogin()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">시작하기</button>
+      </div>
+    </div>
+
+    <div id="screen-name" class="absolute inset-0 z-40 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
+      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-6">당신의 이름은?</h2>
+      <div class="w-full bg-white rounded-3xl p-6 shadow-md border-2 border-pink-100 text-center">
+        <input id="user-nickname" type="text" placeholder="닉네임을 입력하세요" class="w-full border-2 border-pink-200 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-brandPink mb-4" />
+        <button onclick="handleSaveName()" class="w-full bg-brandPink-300 hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-transform active:scale-95">다음 단계</button>
+      </div>
+    </div>
+
+    <div id="screen-gender" class="absolute inset-0 z-30 bg-brandPink-100 hidden flex flex-col items-center justify-center p-6">
+      <h2 class="title-font text-4xl text-brandPink-400 font-bold mb-8">성별을 선택해주세요</h2>
+      <div class="grid grid-cols-2 gap-4 w-full">
+        <button onclick="handleSelectGender('female')" class="bg-white hover:bg-pink-50 border-4 border-pink-200 hover:border-brandPink rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
+          <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👩🏻‍🦰</div>
+          <span class="font-bold text-gray-700">여성 캐릭터</span>
+        </button>
+        <button onclick="handleSelectGender('male')" class="bg-white hover:bg-blue-50 border-4 border-blue-200 hover:border-blue-400 rounded-3xl p-6 flex flex-col items-center shadow-lg transition-all active:scale-95 group">
+          <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">👦🏻</div>
+          <span class="font-bold text-gray-700">남성 캐릭터</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="screen-main" class="flex-1 flex flex-col h-full bg-brandSky relative">
+      
+      <div class="bg-white/80 backdrop-blur-md px-4 py-3 border-b border-pink-100 flex justify-between items-center z-20">
+        <div>
+          <span id="display-name" class="text-sm font-bold text-gray-700">러블리치비</span>
+          <span class="text-xs text-brandPink px-2 py-0.5 bg-pink-100 rounded-full ml-1" id="display-gender">여</span>
+        </div>
+        <div class="bg-pink-50 border border-pink-200 rounded-full px-3 py-1 flex items-center shadow-inner">
+          <span class="text-xs text-pink-500 font-extrabold mr-1">₩</span>
+          <span id="display-balance" class="text-sm font-black text-gray-800">100,000</span>
+        </div>
+      </div>
+
+      <div class="flex-1 relative flex items-center justify-center p-4">
+        <div class="absolute inset-x-0 bottom-12 h-24 bg-pink-200/40 rounded-t-[50%] blur-sm pointer-events-none"></div>
+        <div class="absolute top-8 left-8 text-white/50 text-3xl select-none">☁️</div>
+        <div class="absolute top-12 right-12 text-white/50 text-4xl select-none">☁️</div>
+        <div class="absolute top-20 left-16 text-yellow-200/80 text-xl select-none">⭐</div>
+
+        <div id="ticker-banner" class="absolute top-4 inset-x-4 bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex justify-between items-center z-10 transition-all opacity-0 pointer-events-none">
+          <span id="ticker-item-name" class="font-bold"></span>
+          <span id="ticker-item-price" class="font-mono"></span>
+        </div>
+
+        <div class="chibi-character relative w-[180px] h-[280px]">
+          
+          <div id="layer-hair-back" class="absolute inset-0 z-[5]"></div>
+
+          <div id="layer-body-base" class="absolute inset-0 z-[10] pointer-events-none">
+            <div class="absolute top-[40px] left-[40px] w-[100px] h-[100px] bg-[#FFE5D9] rounded-full border border-[#FAD2C0]">
+              <div class="absolute bottom-[20px] left-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-[20px] right-[10px] w-4 h-2 bg-pink-300/60 rounded-full filter blur-[1px]"></div>
+              <div class="absolute bottom-[28px] left-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
+                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+              </div>
+              <div class="absolute bottom-[28px] right-[20px] w-5 h-7 bg-zinc-800 rounded-full flex items-center justify-center overflow-hidden">
+                <div class="absolute top-1 left-1 w-2 h-2 bg-white rounded-full"></div>
+                <div class="absolute bottom-1 right-1 w-1 h-1 bg-white rounded-full"></div>
+              </div>
+              <div class="absolute bottom-[16px] left-[46px] w-2 h-1.5 bg-rose-400 rounded-b-full"></div>
+            </div>
+            <div class="absolute top-[134px] left-[84px] w-3 h-5 bg-[#FFE5D9] border-x border-[#FAD2C0]"></div>
+            <div class="absolute top-[144px] left-[68px] w-[44px] h-[52px] bg-[#FFE5D9] rounded-b-xl border-x border-b border-[#FAD2C0]"></div>
+            <div class="absolute top-[144px] left-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-l border-b border-[#FAD2C0] origin-top rotate-[20deg]"></div>
+            <div class="absolute top-[144px] right-[52px] w-[14px] h-[40px] bg-[#FFE5D9] rounded-full border-r border-b border-[#FAD2C0] origin-top -rotate-[20deg]"></div>
+            <div class="absolute top-[194px] left-[72px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
+            <div class="absolute top-[194px] left-[94px] w-[14px] h-[50px] bg-[#FFE5D9] rounded-b-full border-x border-b border-[#FAD2C0]"></div>
+          </div>
+
+          <div id="layer-shoes" class="absolute inset-0 z-[20] pointer-events-none"></div>
+
+          <div id="layer-bottom" class="absolute inset-0 z-[30] pointer-events-none"></div>
+
+          <div id="layer-top" class="absolute inset-0 z-[35] pointer-events-none"></div>
+
+          <div id="layer-dress" class="absolute inset-0 z-[40] pointer-events-none"></div>
+
+          <div id="layer-hair-front" class="absolute inset-0 z-[50] pointer-events-none"></div>
+
+          <div id="layer-accessory" class="absolute inset-0 z-[55] pointer-events-none"></div>
+
+          <div id="layer-bag" class="absolute inset-0 z-[60] pointer-events-none"></div>
+
+        </div>
+
+      </div>
+
+      <div class="bg-white px-6 py-4 border-t border-pink-100 flex justify-around items-center z-10 shadow-2xl">
+        <button onclick="openWardrobe()" class="flex flex-col items-center space-y-1 group">
+          <div class="w-12 h-12 bg-pink-50 group-hover:bg-brandPink-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">👗</div>
+          <span class="text-xs font-bold text-gray-600">옷장 열기</span>
+        </button>
+        <button onclick="openSmartPhone()" class="flex flex-col items-center space-y-1 group">
+          <div class="w-12 h-12 bg-sky-50 group-hover:bg-sky-200 rounded-2xl flex items-center justify-center text-2xl shadow-md transition-colors">📱</div>
+          <span class="text-xs font-bold text-gray-600">스마트폰</span>
+        </button>
+      </div>
+
+    </div>
+
+    <div id="modal-wardrobe" class="absolute inset-x-0 bottom-0 h-[75%] bg-white rounded-t-[32px] border-t-4 border-pink-200 z-50 transform translate-y-full transition-transform duration-300 ease-out flex flex-col p-4 shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="title-font text-2xl text-brandPink font-bold">내 옷장</h3>
+        <button onclick="closeWardrobe()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">✕</button>
+      </div>
+      <div class="flex space-x-1 overflow-x-auto pb-2 mb-2 border-b border-gray-100" id="wardrobe-tabs">
+        <button onclick="filterWardrobe('all')" class="px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap">전체</button>
+        <button onclick="filterWardrobe('hair')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">헤어</button>
+        <button onclick="filterWardrobe('top')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">상의</button>
+        <button onclick="filterWardrobe('bottom')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">하의</button>
+        <button onclick="filterWardrobe('dress')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">원피스</button>
+        <button onclick="filterWardrobe('shoes')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">신발</button>
+        <button onclick="filterWardrobe('accessory')" class="px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap">액세서리</button>
+      </div>
+      <div class="flex-1 overflow-y-auto grid grid-cols-3 gap-2 p-1" id="wardrobe-list"></div>
+    </div>
+
+    <div id="modal-phone" class="absolute inset-0 bg-neutral-900/90 z-50 transform translate-y-full transition-transform duration-300 ease-out flex items-center justify-center p-4">
+      <div class="w-full h-full bg-gradient-to-b from-[#121212] to-[#242424] rounded-[36px] border-4 border-neutral-700 overflow-hidden flex flex-col relative shadow-2xl">
+        <div class="px-6 py-4 flex justify-between items-center border-b border-neutral-800">
+          <span class="text-white font-black text-xs font-mono">10:01 PM</span>
+          <div class="w-20 h-4 bg-black rounded-full absolute left-1/2 -translate-x-1/2 top-2"></div>
+          <button onclick="closeSmartPhone()" class="text-red-400 font-bold text-sm bg-red-900/30 px-3 py-1 rounded-full">닫기</button>
+        </div>
+        
+        <div id="phone-homescreen" class="flex-1 p-6 grid grid-cols-3 gap-y-6 gap-x-4 content-start">
+          <button onclick="openApp('ably')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-pink-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-pink-400">🛍️</div>
+            <span class="text-[11px] font-bold text-gray-300">에이블리</span>
+          </button>
+          <button onclick="openApp('musinsa')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-neutral-800">🎩</div>
+            <span class="text-[11px] font-bold text-gray-300">무신사</span>
+          </button>
+          <button onclick="openApp('kream')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-emerald-700 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-emerald-600">⚡</div>
+            <span class="text-[11px] font-bold text-gray-300">크림 KREAM</span>
+          </button>
+          <button onclick="openApp('joonggo')" class="flex flex-col items-center space-y-1.5">
+            <div class="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-orange-400">🤝</div>
+            <span class="text-[11px] font-bold text-orange-200">중고나라(주식)</span>
+          </button>
+        </div>
+
+        <div id="phone-app-container" class="absolute inset-0 bg-neutral-900 z-10 hidden flex flex-col pt-12">
+          <div class="px-4 py-3 bg-neutral-800 text-white flex justify-between items-center border-b border-neutral-700">
+            <span id="app-title" class="font-bold text-sm">앱 이름</span>
+            <button onclick="backToHome()" class="text-xs text-neutral-400 bg-neutral-700 px-3 py-1 rounded-full font-bold">Home</button>
+          </div>
+          <div id="app-body" class="flex-1 overflow-y-auto p-4 bg-neutral-900"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="gacha-result-modal" class="absolute inset-0 z-[100] bg-black/80 flex items-center justify-center p-6 hidden animate-fade-in">
+      <div class="bg-white rounded-[32px] p-6 text-center w-full max-w-[320px] shadow-2xl border-4 border-pink-200 scale-90 transition-transform duration-300" id="gacha-card">
+        <h4 class="title-font text-2xl font-black text-pink-500 mb-2">🎉 아이템 획득! 🎉</h4>
+        
+        <div class="w-full h-40 bg-pink-50 rounded-2xl border-2 border-pink-200 flex items-center justify-center my-4 overflow-hidden relative shadow-inner" id="gacha-item-preview"></div>
+        
+        <div class="mb-4">
+          <span id="gacha-item-grade" class="px-3 py-1 rounded-full text-xs font-black text-white mr-1">SSS</span>
+          <span id="gacha-item-name" class="font-bold text-lg text-gray-800 block mt-2">아이템명</span>
+        </div>
+        <div class="text-xs text-gray-500 mb-6">기본가: <span id="gacha-item-price" class="font-bold"></span>원</div>
+        <button onclick="closeGachaResult()" class="w-full bg-brandPink hover:bg-brandPink-400 text-white font-bold py-3 rounded-xl transition-all shadow-md">확인</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const AppState = {
+      user: {
+        id: "",
+        name: "러블리치비",
+        gender: "female",
+        balance: 100000,
+        inventory: [],
+        equipped: {
+          hair: null, top: null, bottom: null, dress: null,
+          shoes: null, accessory: null, bag: null
+        }
+      },
+      currentWardrobeTab: 'all',
+      marketPrices: {}
+    };
+
+    // --- 2. 아이템 기본 데이터베이스 (Item DB) ---
+    // CSS 렌더 구조를 아바타 절대 좌표계에 완벽히 매핑했습니다.
+    const ITEM_DATABASE = {
+      // 💇 헤어 카테고리
+      'hair_c_black': {
+        id: 'hair_c_black', name: '기본 긴 생머리', category: 'hair', grade: 'C', basePrice: 8000,
+        renderBack: () => `<div class="absolute top-[34px] left-[30px] w-[120px] h-[150px] bg-neutral-800 rounded-b-[40px]"></div>`,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-neutral-800 rounded-b-xl border-b-2 border-neutral-900"></div>`
+      },
+      'hair_b_brown': {
+        id: 'hair_b_brown', name: '밀크브라운 똥머리', category: 'hair', grade: 'B', basePrice: 15000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[34px] w-[112px] h-[112px] bg-amber-800 rounded-full"></div>
+          <div class="absolute top-[14px] left-[70px] w-[40px] h-[40px] bg-amber-800 rounded-full shadow-inner"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[32px] bg-amber-800 rounded-b-2xl border-b border-amber-950"></div>`
+      },
+      'hair_a_twintail': {
+        id: 'hair_a_twintail', name: '라벤더 양갈래 헤어', category: 'hair', grade: 'A', basePrice: 28000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[32px] w-[116px] h-[120px] bg-indigo-300 rounded-b-[40px]"></div>
+          <div class="absolute top-[100px] left-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
+          <div class="absolute top-[100px] right-[16px] w-[24px] h-[80px] bg-indigo-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[30px] bg-indigo-300 rounded-b-2xl border-b-2 border-indigo-400"></div>`
+      },
+      'hair_ss_pink': {
+        id: 'hair_ss_pink', name: '딸기우유 더블번', category: 'hair', grade: 'SS', basePrice: 55000,
+        renderBack: () => `
+          <div class="absolute top-[34px] left-[30px] w-[120px] h-[110px] bg-rose-300 rounded-b-[45px]"></div>
+          <div class="absolute top-[18px] left-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
+          <div class="absolute top-[18px] right-[26px] w-[36px] h-[36px] bg-rose-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[38px] bg-rose-300 rounded-b-[20px] border-b border-rose-400"></div>`
+      },
+      'hair_sss_cyber': {
+        id: 'hair_sss_cyber', name: '네온 홀로그램 트윈', category: 'hair', grade: 'SSS', basePrice: 120000,
+        renderBack: () => `
+          <div class="absolute top-[32px] left-[30px] w-[120px] h-[130px] bg-cyan-300 rounded-b-[50px] shadow-cyan-300/50 shadow-lg"></div>
+          <div class="absolute top-[110px] left-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
+          <div class="absolute top-[110px] right-[10px] w-[20px] h-[110px] bg-cyan-300 rounded-full"></div>
+        `,
+        renderFront: () => `<div class="absolute top-[40px] left-[36px] w-[108px] h-[36px] bg-cyan-300 rounded-b-3xl border-b-2 border-cyan-400 shadow-cyan-300/30 shadow-md"></div>`
+      },
+
+      // 👕 상의 카테고리
+      'top_c_white': {
+        id: 'top_c_white', name: '흰색 데일리 반팔', category: 'top', grade: 'C', basePrice: 5000,
+        render: () => `
+          <div class="absolute top-[144px] left-[66px] w-[48px] h-[32px] bg-white rounded-b-md border border-neutral-300"></div>
+          <div class="absolute top-[144px] left-[52px] w-[14px] h-[16px] bg-white rounded-l-md border-l border-t border-b border-neutral-300"></div>
+          <div class="absolute top-[144px] right-[52px] w-[14px] h-[16px] bg-white rounded-r-md border-r border-t border-b border-neutral-300"></div>
+        `
+      },
+      'top_b_sailor': {
+        id: 'top_b_sailor', name: '스쿨 세일러 카라', category: 'top', grade: 'B', basePrice: 18000,
+        render: () => `
+          <div class="absolute top-[143px] left-[65px] w-[50px] h-[34px] bg-blue-100 rounded-b-lg border-2 border-blue-400"></div>
+          <div class="absolute top-[143px] left-[52px] w-[14px] h-[18px] bg-blue-400 rounded-l-md"></div>
+          <div class="absolute top-[143px] right-[52px] w-[14px] h-[18px] bg-blue-400 rounded-r-md"></div>
+          <div class="absolute top-[152px] left-[84px] w-[12px] h-[10px] bg-red-400 rounded-full"></div>
+        `
+      },
+      'top_a_hood': {
+        id: 'top_a_hood', name: '라임 스트릿 후드', category: 'top', grade: 'A', basePrice: 32000,
+        render: () => `
+          <div class="absolute top-[142px] left-[64px] w-[52px] h-[40px] bg-lime-400 rounded-b-xl border border-lime-500"></div>
+          <div class="absolute top-[142px] left-[50px] w-[16px] h-[28px] bg-lime-400 rounded-l-xl"></div>
+          <div class="absolute top-[142px] right-[50px] w-[16px] h-[28px] bg-lime-400 rounded-r-xl"></div>
+        `
+      },
+      'top_ss_blouse': {
+        id: 'top_ss_blouse', name: '러플 실크 블라우스', category: 'top', grade: 'SS', basePrice: 65000,
+        render: () => `
+          <div class="absolute top-[143px] left-[65px] w-[50px] h-[36px] bg-pink-100 rounded-b-xl border-t-4 border-pink-300 border-x border-b border-pink-200 shadow-sm"></div>
+          <div class="absolute top-[143px] left-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
+          <div class="absolute top-[143px] right-[51px] w-[15px] h-[22px] bg-pink-100 rounded-b-lg border border-pink-200"></div>
+        `
+      },
+
+      // 👖 하의 카테고리
+      'bottom_c_pants': {
+        id: 'bottom_c_pants', name: '트레이닝 트랙바지', category: 'bottom', grade: 'C', basePrice: 5000,
+        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[32px] bg-zinc-500 rounded-b-sm border border-neutral-600"></div>`
+      },
+      'bottom_b_skirt': {
+        id: 'bottom_b_skirt', name: '파스텔 테니스 스커트', category: 'bottom', grade: 'B', basePrice: 12000,
+        render: () => `<div class="absolute top-[186px] left-[64px] w-[52px] h-[24px] bg-sky-200 rounded-b-xl border-b-4 border-sky-400"></div>`
+      },
+      'bottom_a_jeans': {
+        id: 'bottom_a_jeans', name: '크롭 데님 진', category: 'bottom', grade: 'A', basePrice: 26000,
+        render: () => `<div class="absolute top-[186px] left-[68px] w-[44px] h-[38px] bg-indigo-400 rounded-b-md border border-indigo-600"></div>`
+      },
+      'bottom_ss_frill': {
+        id: 'bottom_ss_frill', name: '앤틱 하트 프릴스커트', category: 'bottom', grade: 'SS', basePrice: 58000,
+        render: () => `<div class="absolute top-[186px] left-[63px] w-[54px] h-[28px] bg-pink-400 rounded-b-[14px] border-b-4 border-white shadow-sm"></div>`
+      },
+
+      // 👗 원피스 카테고리
+      'dress_a_gothic': {
+        id: 'dress_a_gothic', name: '고딕 메이드 로리타', category: 'dress', grade: 'A', basePrice: 42000,
+        render: () => `
+          <div class="absolute top-[143px] left-[62px] w-[56px] h-[68px] bg-neutral-800 rounded-b-[20px] border-b-[6px] border-white border-x border-neutral-900 shadow-lg"></div>
+          <div class="absolute top-[143px] left-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-l-md"></div>
+          <div class="absolute top-[143px] right-[52px] w-[14px] h-[20px] bg-neutral-800 rounded-r-md"></div>
+        `
+      },
+      'dress_ss_princess': {
+        id: 'dress_ss_princess', name: '로즈가든 쉬폰 드레스', category: 'dress', grade: 'SS', basePrice: 85000,
+        render: () => `
+          <div class="absolute top-[142px] left-[60px] w-[60px] h-[72px] bg-pink-200 rounded-b-[26px] border-b-[8px] border-pink-400 border-x border-pink-300 shadow-md"></div>
+          <div class="absolute top-[142px] left-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
+          <div class="absolute top-[142px] right-[50px] w-[16px] h-[18px] bg-pink-200 rounded-full"></div>
+        `
+      },
+      'dress_sss_galaxy': {
+        id: 'dress_sss_galaxy', name: '밀키웨이 밤하늘 가운', category: 'dress', grade: 'SSS', basePrice: 195000,
+        render: () => `
+          <div class="absolute top-[141px] left-[58px] w-[64px] h-[76px] bg-indigo-950 rounded-b-[30px] border-b-[8px] border-amber-300 shadow-indigo-500 shadow-lg"></div>
+          <div class="absolute top-[141px] left-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-l-lg"></div>
+          <div class="absolute top-[141px] right-[48px] w-[18px] h-[24px] bg-indigo-950 rounded-r-lg"></div>
+        `
+      },
+
+      // 👟 신발 카테고리
+      'shoes_c_sneakers': {
+        id: 'shoes_c_sneakers', name: '클래식 스니커즈', category: 'shoes', grade: 'C', basePrice: 4000,
+        render: () => `
+          <div class="absolute top-[238px] left-[69px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
+          <div class="absolute top-[238px] left-[91px] w-[20px] h-[14px] bg-white rounded-b-md border border-neutral-300"></div>
+        `
+      },
+      'shoes_a_boots': {
+        id: 'shoes_a_boots', name: '블랙 가죽 레이스업', category: 'shoes', grade: 'A', basePrice: 22000,
+        render: () => `
+          <div class="absolute top-[234px] left-[69px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
+          <div class="absolute top-[234px] left-[91px] w-[20px] h-[18px] bg-neutral-900 rounded-b-md border-b-2 border-red-500"></div>
+        `
+      },
+      'shoes_ss_bunny': {
+        id: 'shoes_ss_bunny', name: '폭신폭신 토끼 슬리퍼', category: 'shoes', grade: 'SS', basePrice: 48000,
+        render: () => `
+          <div class="absolute top-[236px] left-[67px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
+          <div class="absolute top-[236px] left-[89px] w-[24px] h-[16px] bg-pink-100 rounded-b-xl border border-pink-300 shadow-sm"></div>
+        `
+      },
+
+      // 🎀 액세서리 및 잡화 카테고리
+      'accessory_b_ribbon': {
+        id: 'accessory_b_ribbon', name: '레드 벨벳 헤어리본', category: 'accessory', grade: 'B', basePrice: 9000,
+        render: () => `<div class="absolute top-[28px] left-[48px] w-[84px] h-[14px] bg-red-500 rounded-full shadow-md"></div>`
+      },
+      'accessory_a_catears': {
+        id: 'accessory_a_catears', name: '네코 네온 헤드셋', category: 'accessory', grade: 'A', basePrice: 25000,
+        render: () => `<div class="absolute top-[26px] left-[46px] w-[88px] h-[16px] bg-zinc-800 rounded-full border-t-4 border-cyan-300"></div>`
+      },
+      'accessory_sss_angel': {
+        id: 'accessory_sss_angel', name: '수호천사 홀리 윙', category: 'accessory', grade: 'SSS', basePrice: 150000,
+        render: () => `<div class="absolute top-[110px] left-[-10px] w-[200px] h-[24px] bg-gradient-to-r from-amber-100 to-white rounded-full shadow-yellow-200/50 shadow-md opacity-90"></div>`
+      },
+      'bag_ss_heart': {
+        id: 'bag_ss_heart', name: '하트 글리터 백', category: 'bag', grade: 'SS', basePrice: 52000,
+        render: () => `<div class="absolute top-[170px] left-[44px] w-[28px] h-[28px] bg-rose-400 rounded-full border border-pink-300 shadow-md flex items-center justify-center text-[10px] text-white">❤️</div>`
+      }
+    };
+
+    const GRADE_COLORS = {
+      'C': { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' },
+      'B': { bg: 'bg-teal-400', border: 'border-teal-400', text: 'text-teal-600' },
+      'A': { bg: 'bg-blue-400', border: 'border-blue-400', text: 'text-blue-600' },
+      'S': { bg: 'bg-purple-400', border: 'border-purple-400', text: 'text-purple-600' },
+      'SS': { bg: 'bg-pink-400', border: 'border-pink-400', text: 'text-pink-600' },
+      'SSS': { bg: 'bg-gradient-to-r from-amber-400 to-yellow-500', border: 'border-yellow-500', text: 'text-yellow-600' }
+    };
+
+    function formatMoney(num) {
+      return Number(num).toLocaleString('ko-KR');
+    }
+
+    function initMarketPrices() {
+      for (let key in ITEM_DATABASE) {
+        AppState.marketPrices[key] = {
+          current: ITEM_DATABASE[key].basePrice,
+          change: 0,
+          trend: 'flat'
+        };
+      }
+    }
+
+    function handleLogin() {
+      const id = document.getElementById('login-id').value;
+      if (!id) return alert("아이디를 입력해주세요.");
+      AppState.user.id = id;
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('screen-name').classList.remove('hidden');
+    }
+
+    function handleSaveName() {
+      const name = document.getElementById('user-nickname').value.trim();
+      if (!name) return alert("닉네임을 지정해주세요.");
+      AppState.user.name = name;
+      document.getElementById('screen-name').classList.add('hidden');
+      document.getElementById('screen-gender').classList.remove('hidden');
+    }
+
+    function handleSelectGender(gender) {
+      AppState.user.gender = gender;
+      document.getElementById('display-name').innerText = AppState.user.name;
+      document.getElementById('display-gender').innerText = gender === 'female' ? '여' : '남';
+      updateUIBalance();
+
+      const defaultHair = spawnItem('hair_c_black');
+      const defaultTop = spawnItem('top_c_white');
+      const defaultBottom = spawnItem('bottom_c_pants');
+      
+      equipItem(defaultHair);
+      equipItem(defaultTop);
+      equipItem(defaultBottom);
+
+      document.getElementById('screen-gender').classList.add('hidden');
+      initMarketPrices();
+      setInterval(runMarketTicker, 1000);
+    }
+
+    function spawnItem(itemId) {
+      const baseItem = ITEM_DATABASE[itemId];
+      const instanceId = 'inst_' + Math.random().toString(36).substr(2, 9);
+      const newInstance = {
+        instanceId: instanceId,
+        id: itemId,
+        purchasePrice: baseItem.basePrice
+      };
+      AppState.user.inventory.push(newInstance);
+      return newInstance;
+    }
+
+    function updateUIBalance() {
+      document.getElementById('display-balance').innerText = formatMoney(AppState.user.balance);
+    }
+
+    // --- 5. Pure CSS 캐릭터 옷장 장착 엔진 ---
+    function equipItem(itemInstance) {
+      const itemData = ITEM_DATABASE[itemInstance.id];
+      const category = itemData.category;
+
+      if (category === 'dress') {
+        AppState.user.equipped.top = null;
+        AppState.user.equipped.bottom = null;
+        AppState.user.equipped.dress = itemInstance;
+      } else if (category === 'top' || category === 'bottom') {
+        AppState.user.equipped.dress = null;
+        AppState.user.equipped[category] = itemInstance;
+      } else {
+        AppState.user.equipped[category] = itemInstance;
+      }
+      renderAvatar();
+    }
+
+    function unequipItem(category) {
+      AppState.user.equipped[category] = null;
+      renderAvatar();
+    }
+
+    function renderAvatar() {
+      const eq = AppState.user.equipped;
+
+      const layerHairBack = document.getElementById('layer-hair-back');
+      const layerHairFront = document.getElementById('layer-hair-front');
+      if (eq.hair) {
+        const hData = ITEM_DATABASE[eq.hair.id];
+        layerHairBack.innerHTML = hData.renderBack();
+        layerHairFront.innerHTML = hData.renderFront();
+      } else {
+        layerHairBack.innerHTML = '';
+        layerHairFront.innerHTML = '';
+      }
+
+      const layerTop = document.getElementById('layer-top');
+      if (eq.top) {
+        layerTop.innerHTML = ITEM_DATABASE[eq.top.id].render();
+      } else {
+        layerTop.innerHTML = '';
+      }
+
+      const layerBottom = document.getElementById('layer-bottom');
+      if (eq.bottom) {
+        layerBottom.innerHTML = ITEM_DATABASE[eq.bottom.id].render();
+      } else {
+        layerBottom.innerHTML = '';
+      }
+
+      const layerDress = document.getElementById('layer-dress');
+      if (eq.dress) {
+        layerDress.innerHTML = ITEM_DATABASE[eq.dress.id].render();
+      } else {
+        layerDress.innerHTML = '';
+      }
+
+      const layerShoes 
