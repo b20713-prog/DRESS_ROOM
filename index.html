@@ -268,7 +268,6 @@
     };
 
     // --- 2. 아이템 기본 데이터베이스 (Item DB) ---
-    // CSS 렌더 구조를 아바타 절대 좌표계에 완벽히 매핑했습니다.
     const ITEM_DATABASE = {
       // 💇 헤어 카테고리
       'hair_c_black': {
@@ -488,7 +487,7 @@
 
       document.getElementById('screen-gender').classList.add('hidden');
       initMarketPrices();
-      setInterval(runMarketTicker, 1000);
+      setInterval(runMarketTicker, 3000); // 3초마다 시세 변동
     }
 
     function spawnItem(itemId) {
@@ -497,7 +496,7 @@
       const newInstance = {
         instanceId: instanceId,
         id: itemId,
-        purchasePrice: baseItem.basePrice
+        purchasePrice: AppState.marketPrices[itemId] ? AppState.marketPrices[itemId].current : baseItem.basePrice
       };
       AppState.user.inventory.push(newInstance);
       return newInstance;
@@ -587,84 +586,50 @@
       }
     }
 
-    // --- 6. 옷장 모달 렌더링 시스템 ---
-    function openWardrobe() {
-      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
-      filterWardrobe(AppState.currentWardrobeTab);
-    }
+    // --- 주식 시세 변동 엔진 (가격 변동 폭 수정 완료) ---
+    function runMarketTicker() {
+      const keys = Object.keys(AppState.marketPrices);
+      if (keys.length === 0) return;
 
-    function closeWardrobe() {
-      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
-    }
+      // 무작위로 하나의 가격 변동 타겟 아이템 선택
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      const currentPrice = AppState.marketPrices[randomKey].current;
 
-    function filterWardrobe(category) {
-      AppState.currentWardrobeTab = category;
-      const tabs = document.querySelectorAll('#wardrobe-tabs button');
-      tabs.forEach(btn => {
-        btn.classList.replace('bg-brandPink', 'bg-pink-50');
-        btn.classList.replace('text-white', 'text-gray-500');
-      });
-      event.target.classList.replace('bg-pink-50', 'bg-brandPink');
-      event.target.classList.replace('text-gray-500', 'text-white');
-      renderWardrobeList();
-    }
+      // 변동 폭 설정: 최소 -20%에서 최대 +25%까지 크게 요동치도록 수정
+      const changePercent = (Math.random() * 45 - 20) / 100; 
+      const changeAmount = Math.round(currentPrice * changePercent);
+      let nextPrice = currentPrice + changeAmount;
 
-    function renderWardrobeList() {
-      const listContainer = document.getElementById('wardrobe-list');
-      listContainer.innerHTML = '';
+      // 최소 가격 제한 설정 (최소 500원 이하로 떨어지지 않도록 방어)
+      if (nextPrice < 500) nextPrice = 500;
 
-      const filtered = AppState.user.inventory.filter(inst => {
-        const item = ITEM_DATABASE[inst.id];
-        if (AppState.currentWardrobeTab === 'all') return true;
-        if (AppState.currentWardrobeTab === 'accessory') {
-          return item.category === 'accessory' || item.category === 'bag';
-        }
-        return item.category === AppState.currentWardrobeTab;
-      });
+      AppState.marketPrices[randomKey].current = nextPrice;
+      AppState.marketPrices[randomKey].change = changePercent * 100;
+      AppState.marketPrices[randomKey].trend = changeAmount > 0 ? 'up' : 'down';
 
-      if (filtered.length === 0) {
-        listContainer.innerHTML = `<div class="col-span-3 text-center py-12 text-xs text-gray-400">아이템이 없어요. 쇼핑몰에서 구매해보세요!</div>`;
-        return;
-      }
+      // 상단 티커 알림 애니메이션 표시
+      const banner = document.getElementById('ticker-banner');
+      const itemDb = ITEM_DATABASE[randomKey];
+      
+      document.getElementById('ticker-item-name').innerText = `📢 ${itemDb.name}`;
+      const trendSymbol = changeAmount > 0 ? '🔺' : '🔻';
+      document.getElementById('ticker-item-price').innerText = `${formatMoney(nextPrice)}원 (${trendSymbol} ${Math.abs(changePercent * 100).toFixed(1)}%)`;
 
-      filtered.forEach(inst => {
-        const item = ITEM_DATABASE[inst.id];
-        const isEquipped = checkEquipped(inst.instanceId);
-        const gradeStyle = GRADE_COLORS[item.grade];
+      banner.style.opacity = '1';
+      setTimeout(() => {
+        banner.style.opacity = '0';
+      }, 2500);
 
-        const card = document.createElement('div');
-        card.className = `p-2 bg-pink-50 rounded-2xl flex flex-col items-center border ${isEquipped ? 'border-brandPink bg-pink-100/50' : 'border-pink-200'} relative cursor-pointer hover:scale-[1.03] transition-transform`;
-        card.onclick = () => {
-          if (isEquipped) {
-            unequipItem(item.category);
-          } else {
-            equipItem(inst);
-          }
-          renderWardrobeList();
-        };
-
-        card.innerHTML = `
-          <div class="w-14 h-14 bg-white rounded-xl border border-pink-100 flex items-center justify-center relative overflow-hidden mb-1">
-            <span class="absolute top-1 right-1 text-[8px] font-black ${gradeStyle.text}">${item.grade}</span>
-            <span class="text-2xl">${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : item.category === 'shoes' ? '👟' : '🎁'}</span>
-          </div>
-          <span class="text-[9px] font-bold text-gray-700 truncate w-full text-center">${item.name}</span>
-          ${isEquipped ? '<span class="absolute top-1 left-1 bg-brandPink text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">착용중</span>' : ''}
-        `;
-        listContainer.appendChild(card);
-      });
-    }
-
-    function checkEquipped(instanceId) {
-      for (let cat in AppState.user.equipped) {
-        if (AppState.user.equipped[cat] && AppState.user.equipped[cat].instanceId === instanceId) {
-          return true;
+      // 스마트폰이 켜져있고 중고나라 앱이 실행 중이면 화면 실시간 갱신
+      if (!document.getElementById('modal-phone').classList.contains('translate-y-full')) {
+        const appTitle = document.getElementById('app-title').innerText;
+        if (appTitle === '중고나라(주식)') {
+          renderJoonggoApp();
         }
       }
-      return false;
     }
 
-    // --- 7. 스마트폰 핸들러 및 3대 뽑기 쇼핑몰 엔진 ---
+    // --- 스마트폰 앱 렌더링 & 모달 제어 ---
     function openSmartPhone() {
       document.getElementById('modal-phone').classList.remove('translate-y-full');
     }
@@ -675,23 +640,23 @@
     }
 
     function openApp(appName) {
-      const container = document.getElementById('phone-app-container');
-      const title = document.getElementById('app-title');
-      const body = document.getElementById('app-body');
-      
-      container.classList.remove('hidden');
+      const appContainer = document.getElementById('phone-app-container');
+      const appTitle = document.getElementById('app-title');
+      const appBody = document.getElementById('app-body');
+
+      appContainer.classList.remove('hidden');
 
       if (appName === 'ably') {
-        title.innerText = '🛍️ 에이블리 뽑기';
-        body.innerHTML = renderShoppingAppHtml('에이블리', 30000, { 'SSS': 0.5, 'SS': 2.5, 'S': 7.0, 'A': 15.0, 'B': 35.0, 'C': 40.0 }, 'bg-pink-500');
+        appTitle.innerText = '에이블리';
+        renderAblyApp();
       } else if (appName === 'musinsa') {
-        title.innerText = '🎩 무신사 셀렉트';
-        body.innerHTML = renderShoppingAppHtml('무신사', 50000, { 'SSS': 1.5, 'SS': 4.5, 'S': 10.0, 'A': 24.0, 'B': 40.0, 'C': 20.0 }, 'bg-black');
+        appTitle.innerText = '무신사';
+        renderMusinsaApp();
       } else if (appName === 'kream') {
-        title.innerText = '⚡ 크림 KREAM 한정판';
-        body.innerHTML = renderShoppingAppHtml('크림(KREAM)', 80000, { 'SSS': 5.0, 'SS': 15.0, 'S': 30.0, 'A': 30.0, 'B': 15.0, 'C': 5.0 }, 'bg-emerald-800');
+        appTitle.innerText = '크림 KREAM';
+        renderKreamApp();
       } else if (appName === 'joonggo') {
-        title.innerText = '🤝 중고나라 실시간 매각';
+        appTitle.innerText = '중고나라(주식)';
         renderJoonggoApp();
       }
     }
@@ -700,263 +665,248 @@
       document.getElementById('phone-app-container').classList.add('hidden');
     }
 
-    function renderShoppingAppHtml(name, price, odds, themeClass) {
-      return `
-        <div class="text-white text-center flex flex-col items-center py-6 h-full justify-between">
-          <div>
-            <h4 class="text-xl font-extrabold text-pink-200 mb-1">${name}</h4>
-            <p class="text-xs text-neutral-400">매우 희귀한 템들을 획득해보세요!</p>
+    // --- 가챠(뽑기) 오류 수정 완료 ---
+    function renderAblyApp() {
+      const appBody = document.getElementById('app-body');
+      appBody.innerHTML = `
+        <div class="text-center py-8 text-white">
+          <div class="text-5xl mb-4">🎁</div>
+          <h4 class="font-bold text-lg mb-2 text-pink-300">에이블리 랜덤 박스</h4>
+          <p class="text-xs text-neutral-400 mb-6">랜덤하게 이쁜 의상을 1개 획득합니다!</p>
+          <div class="bg-neutral-800 p-4 rounded-2xl mb-6">
+            <div class="text-xs text-neutral-400">1회 가격</div>
+            <div class="text-xl font-bold text-white">₩ 15,000</div>
           </div>
-          
-          <div class="my-6 bg-neutral-800/80 p-4 rounded-2xl w-full border border-neutral-700 max-w-[280px]">
-            <span class="text-xs font-bold block text-neutral-400 mb-2">획득 등급 확률 정보</span>
-            <div class="grid grid-cols-3 gap-2 text-[10px]">
-              ${Object.entries(odds).map(([g, o]) => `
-                <div class="bg-neutral-900 rounded-lg p-1.5 border border-neutral-700">
-                  <span class="font-bold">${g}등급</span> : <span class="text-pink-400 font-mono">${o}%</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="w-full max-w-[280px]">
-            <div class="text-xs text-yellow-300 mb-2">내 계좌 잔고: ${formatMoney(AppState.user.balance)}원</div>
-            <button onclick="handleGacha('${name}', ${price}, ${JSON.stringify(odds).replace(/"/g, '&quot;')})" class="w-full ${themeClass} hover:brightness-110 active:scale-95 transition-all text-white font-black py-4 rounded-2xl shadow-lg text-sm">
-              ${formatMoney(price)}원 결제하고 뽑기
-            </button>
-          </div>
+          <button onclick="playGacha()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">뽑기 시작하기</button>
         </div>
       `;
     }
 
-    function handleGacha(appName, cost, odds) {
-      if (AppState.user.balance < cost) {
-        return alert("돈이 부족합니다! 중고나라에 소지품을 판매해보세요.");
-      }
-      
-      AppState.user.balance -= cost;
-      updateUIBalance();
-
-      const rand = Math.random() * 100;
-      let sum = 0;
-      let selectedGrade = 'C';
-
-      for (let [g, rate] of Object.entries(odds)) {
-        sum += rate;
-        if (rand <= sum) {
-          selectedGrade = g;
-          break;
-        }
-      }
-
-      const candidateItems = Object.values(ITEM_DATABASE).filter(i => i.grade === selectedGrade);
-      const randomItem = candidateItems.length > 0 
-        ? candidateItems[Math.floor(Math.random() * candidateItems.length)]
-        : ITEM_DATABASE['hair_c_black'];
-
-      const newInst = spawnItem(randomItem.id);
-      triggerGachaResultModal(randomItem, newInst);
-      openApp(appName === '에이블리' ? 'ably' : appName === '무신사' ? 'musinsa' : 'kream');
-    }
-
-    // --- 📌 [신규 추가] 가챠 결과 가상 아바타 실루엣 렌더링 엔진 ---
-    function renderPreviewAvatar(itemId) {
-      const itemData = ITEM_DATABASE[itemId];
-      if (!itemData) return '';
-
-      let hairBackHtml = '';
-      let hairFrontHtml = '';
-      let topHtml = '';
-      let bottomHtml = '';
-      let dressHtml = '';
-      let shoesHtml = '';
-      let accessoryHtml = '';
-      let bagHtml = '';
-
-      if (itemData.category === 'hair') {
-        hairBackHtml = itemData.renderBack();
-        hairFrontHtml = itemData.renderFront();
-      } else if (itemData.category === 'top') {
-        topHtml = itemData.render();
-      } else if (itemData.category === 'bottom') {
-        bottomHtml = itemData.render();
-      } else if (itemData.category === 'dress') {
-        dressHtml = itemData.render();
-      } else if (itemData.category === 'shoes') {
-        shoesHtml = itemData.render();
-      } else if (itemData.category === 'accessory') {
-        accessoryHtml = itemData.render();
-      } else if (itemData.category === 'bag') {
-        bagHtml = itemData.render();
-      }
-
-      return `
-        <div class="relative w-[180px] h-[280px] scale-[0.55] origin-center -my-14 pointer-events-none">
-          ${hairBackHtml}
-          <div class="absolute inset-0 opacity-20">
-            <div class="absolute top-[40px] left-[40px] w-[100px] h-[100px] bg-neutral-400 rounded-full"></div>
-            <div class="absolute top-[134px] left-[84px] w-3 h-5 bg-neutral-400"></div>
-            <div class="absolute top-[144px] left-[68px] w-[44px] h-[52px] bg-neutral-400 rounded-b-xl"></div>
-            <div class="absolute top-[144px] left-[52px] w-[14px] h-[40px] bg-neutral-400 rounded-full"></div>
-            <div class="absolute top-[144px] right-[52px] w-[14px] h-[40px] bg-neutral-400 rounded-full"></div>
-            <div class="absolute top-[194px] left-[72px] w-[14px] h-[50px] bg-neutral-400 rounded-b-full"></div>
-            <div class="absolute top-[194px] left-[94px] w-[14px] h-[50px] bg-neutral-400 rounded-b-full"></div>
-          </div>
-          ${shoesHtml}
-          ${bottomHtml}
-          ${topHtml}
-          ${dressHtml}
-          ${hairFrontHtml}
-          ${accessoryHtml}
-          ${bagHtml}
-        </div>
-      `;
-    }
-
-    function triggerGachaResultModal(itemData, inst) {
-      const modal = document.getElementById('gacha-result-modal');
-      const card = document.getElementById('gacha-card');
-      const preview = document.getElementById('gacha-item-preview');
-      const nameTxt = document.getElementById('gacha-item-name');
-      const gradeTxt = document.getElementById('gacha-item-grade');
-      const priceTxt = document.getElementById('gacha-item-price');
-
-      const gradeColor = GRADE_COLORS[itemData.grade];
-      gradeTxt.className = `px-3 py-1 rounded-full text-xs font-black text-white mr-1 ${gradeColor.bg}`;
-      gradeTxt.innerText = itemData.grade + " GRADE";
-
-      nameTxt.innerText = itemData.name;
-      priceTxt.innerText = formatMoney(itemData.basePrice);
-
-      // 실루엣 뷰어 출력
-      preview.innerHTML = renderPreviewAvatar(itemData.id);
-
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        card.classList.replace('scale-90', 'scale-100');
-      }, 50);
-    }
-
-    function closeGachaResult() {
-      const modal = document.getElementById('gacha-result-modal');
-      const card = document.getElementById('gacha-card');
-      card.classList.replace('scale-100', 'scale-90');
-      modal.classList.add('hidden');
-    }
-
-    // --- 8. 중고나라 경제 시스템 및 1초 변동 알고리즘 (Random Walk) ---
-    function runMarketTicker() {
-      const banner = document.getElementById('ticker-banner');
-      const itemKeys = Object.keys(ITEM_DATABASE);
-      const pickedKey = itemKeys[Math.floor(Math.random() * itemKeys.length)];
-      
-      for (let key in AppState.marketPrices) {
-        const itemData = ITEM_DATABASE[key];
-        const oldPrice = AppState.marketPrices[key].current;
-        
-        const r = (Math.random() * 0.3) - 0.15;
-        let newPrice = oldPrice * (1 + r);
-
-        const minPrice = itemData.basePrice * 0.4;
-        const maxPrice = itemData.basePrice * 2.5;
-
-        if (newPrice < minPrice) newPrice = minPrice;
-        if (newPrice > maxPrice) newPrice = maxPrice;
-
-        AppState.marketPrices[key].current = Math.round(newPrice);
-        AppState.marketPrices[key].change = Math.round(newPrice - oldPrice);
-        AppState.marketPrices[key].trend = newPrice >= oldPrice ? 'up' : 'down';
-      }
-
-      const tickerData = AppState.marketPrices[pickedKey];
-      const tickerItem = ITEM_DATABASE[pickedKey];
-      document.getElementById('ticker-item-name').innerText = `📈 [시세변동] ${tickerItem.name}`;
-      document.getElementById('ticker-item-price').innerHTML = `
-        ${formatMoney(tickerData.current)}원 
-        <span class="${tickerData.trend === 'up' ? 'text-red-400' : 'text-blue-400'}">
-          ${tickerData.trend === 'up' ? '▲' : '▼'}${formatMoney(Math.abs(tickerData.change))}
-        </span>
-      `;
-      banner.classList.replace('opacity-0', 'opacity-100');
-      
-      const appContainer = document.getElementById('phone-app-container');
-      const appTitle = document.getElementById('app-title');
-      if (!appContainer.classList.contains('hidden') && appTitle.innerText.includes('중고나라')) {
-        renderJoonggoApp();
-      }
-    }
-
-    function renderJoonggoApp() {
-      const body = document.getElementById('app-body');
-      body.innerHTML = '';
-
-      const items = AppState.user.inventory;
-      if (items.length === 0) {
-        body.innerHTML = `<div class="text-center py-20 text-xs text-neutral-500">인벤토리에 옷이 없네요...</div>`;
+    // 뽑기 시 한 가지 아이템만 나오던 오류 해결: ITEM_DATABASE에서 완전 무작위 추출 처리
+    function playGacha() {
+      const gachaCost = 15000;
+      if (AppState.user.balance < gachaCost) {
+        alert("잔액이 부족합니다.");
         return;
       }
 
-      const wrapper = document.createElement('div');
-      wrapper.className = "space-y-3";
+      AppState.user.balance -= gachaCost;
+      updateUIBalance();
+
+      // 전체 아이템 목록 추출
+      const allItemKeys = Object.keys(ITEM_DATABASE);
+      
+      // 균등하고 확실하게 무작위의 아이템 키를 선택
+      const randomKey = allItemKeys[Math.floor(Math.random() * allItemKeys.length)];
+      const newItemInstance = spawnItem(randomKey);
+
+      // 모달 애니메이션 및 결과 정보 세팅
+      const itemData = ITEM_DATABASE[randomKey];
+      const gradeColor = GRADE_COLORS[itemData.grade] || { bg: 'bg-zinc-400', border: 'border-zinc-400', text: 'text-zinc-500' };
+
+      document.getElementById('gacha-item-grade').className = `px-3 py-1 rounded-full text-xs font-black text-white mr-1 ${gradeColor.bg}`;
+      document.getElementById('gacha-item-grade').innerText = itemData.grade;
+      document.getElementById('gacha-item-name').innerText = itemData.name;
+      document.getElementById('gacha-item-price').innerText = formatMoney(itemData.basePrice);
+
+      const preview = document.getElementById('gacha-item-preview');
+      preview.innerHTML = `<div class="scale-125 relative w-[180px] h-[280px] origin-center -translate-y-24">
+        ${itemData.renderBack ? itemData.renderBack() : ''}
+        ${itemData.render ? itemData.render() : ''}
+        ${itemData.renderFront ? itemData.renderFront() : ''}
+      </div>`;
+
+      const modal = document.getElementById('gacha-result-modal');
+      modal.classList.remove('hidden');
+    }
+
+    function closeGachaResult() {
+      document.getElementById('gacha-result-modal').classList.add('hidden');
+    }
+
+    // --- 무신사 상점 (기본 상점 구매) ---
+    function renderMusinsaApp() {
+      const appBody = document.getElementById('app-body');
+      let html = `<div class="grid grid-cols-2 gap-3 pb-8">`;
+      
+      for (let key in ITEM_DATABASE) {
+        const item = ITEM_DATABASE[key];
+        const gradeColor = GRADE_COLORS[item.grade];
+        html += `
+          <div class="bg-neutral-800 rounded-2xl p-3 border border-neutral-700 flex flex-col justify-between">
+            <div>
+              <span class="text-[9px] px-1.5 py-0.5 rounded-full font-bold text-white ${gradeColor.bg}">${item.grade}</span>
+              <div class="text-white text-xs font-bold mt-1.5 truncate h-8">${item.name}</div>
+            </div>
+            <div class="mt-2">
+              <div class="text-[10px] text-neutral-400">정가</div>
+              <div class="text-xs font-black text-white mb-2">₩ ${formatMoney(item.basePrice)}</div>
+              <button onclick="buyItemDirect('${key}')" class="w-full bg-neutral-700 hover:bg-neutral-600 text-white text-[11px] py-1.5 rounded-lg font-bold">즉시 구매</button>
+            </div>
+          </div>
+        `;
+      }
+      html += `</div>`;
+      appBody.innerHTML = html;
+    }
+
+    function buyItemDirect(itemId) {
+      const price = ITEM_DATABASE[itemId].basePrice;
+      if (AppState.user.balance < price) {
+        alert("잔액이 부족합니다.");
+        return;
+      }
+      AppState.user.balance -= price;
+      updateUIBalance();
+      spawnItem(itemId);
+      alert(`${ITEM_DATABASE[itemId].name}을(를) 정가 구매했습니다!`);
+    }
+
+    // --- 크림 KREAM (개인 인벤토리 판매) ---
+    function renderKreamApp() {
+      const appBody = document.getElementById('app-body');
+      let html = `<h4 class="text-white font-bold text-sm mb-4">내 아이템 즉시 판매</h4>`;
+      if (AppState.user.inventory.length === 0) {
+        html += `<p class="text-neutral-500 text-xs text-center py-8">소유 중인 아이템이 없습니다.</p>`;
+      } else {
+        html += `<div class="space-y-2">`;
+        AppState.user.inventory.forEach((inst, index) => {
+          const item = ITEM_DATABASE[inst.id];
+          const curPrice = AppState.marketPrices[inst.id] ? AppState.marketPrices[inst.id].current : item.basePrice;
+          html += `
+            <div class="bg-neutral-800 rounded-xl p-3 flex justify-between items-center border border-neutral-700">
+              <div>
+                <span class="text-[9px] text-neutral-400">${item.category.toUpperCase()}</span>
+                <div class="text-white text-xs font-bold">${item.name}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold text-emerald-400">₩ ${formatMoney(curPrice)}</div>
+                <button onclick="sellItemKream(${index})" class="text-[10px] bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-300 font-black px-3 py-1 rounded-full mt-1 border border-emerald-700">판매</button>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      appBody.innerHTML = html;
+    }
+
+    function sellItemKream(index) {
+      const inst = AppState.user.inventory[index];
+      const item = ITEM_DATABASE[inst.id];
+      const salePrice = AppState.marketPrices[inst.id] ? AppState.marketPrices[inst.id].current : item.basePrice;
+
+      // 착용 해제 선행
+      for (let cat in AppState.user.equipped) {
+        if (AppState.user.equipped[cat] && AppState.user.equipped[cat].instanceId === inst.instanceId) {
+          AppState.user.equipped[cat] = null;
+        }
+      }
+
+      AppState.user.balance += salePrice;
+      AppState.user.inventory.splice(index, 1);
+      updateUIBalance();
+      renderAvatar();
+      renderKreamApp();
+      alert(`${item.name}을(를) ₩ ${formatMoney(salePrice)}에 판매 완료했습니다.`);
+    }
+
+    // --- 중고나라 앱 (시세 현황 관람) ---
+    function renderJoonggoApp() {
+      const appBody = document.getElementById('app-body');
+      let html = `
+        <div class="mb-4 text-xs text-neutral-400 flex justify-between items-center">
+          <span>실시간 암시장 시세판</span>
+          <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-bold animate-pulse">● LIVE</span>
+        </div>
+        <div class="space-y-2 pb-6">
+      `;
+      for (let key in AppState.marketPrices) {
+        const item = ITEM_DATABASE[key];
+        const market = AppState.marketPrices[key];
+        const trendSymbol = market.trend === 'up' ? '▲' : market.trend === 'down' ? '▼' : '─';
+        const trendColor = market.trend === 'up' ? 'text-red-400' : market.trend === 'down' ? 'text-blue-400' : 'text-neutral-400';
+        
+        html += `
+          <div class="bg-neutral-800/80 rounded-xl p-3 flex justify-between items-center border border-neutral-800">
+            <div>
+              <div class="text-white text-xs font-bold">${item.name}</div>
+              <span class="text-[9px] text-neutral-500">기본가: ₩${formatMoney(item.basePrice)}</span>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold text-white">₩ ${formatMoney(market.current)}</div>
+              <span class="text-[10px] font-mono ${trendColor}">${trendSymbol} ${market.change.toFixed(1)}%</span>
+            </div>
+          </div>
+        `;
+      }
+      html += `</div>`;
+      appBody.innerHTML = html;
+    }
+
+    // --- 9. 옷장 모달 & 장착 필터링 제어 ---
+    function openWardrobe() {
+      document.getElementById('modal-wardrobe').classList.remove('translate-y-full');
+      filterWardrobe('all');
+    }
+
+    function closeWardrobe() {
+      document.getElementById('modal-wardrobe').classList.add('translate-y-full');
+    }
+
+    function filterWardrobe(category) {
+      AppState.currentWardrobeTab = category;
+      
+      const tabButtons = document.querySelectorAll('#wardrobe-tabs button');
+      tabButtons.forEach(btn => {
+        btn.className = "px-3 py-1 bg-pink-50 text-gray-500 text-xs font-bold rounded-full whitespace-nowrap";
+      });
+
+      event.currentTarget.className = "px-3 py-1 bg-brandPink text-white text-xs font-bold rounded-full whitespace-nowrap";
+
+      const listContainer = document.getElementById('wardrobe-list');
+      listContainer.innerHTML = '';
+
+      let items = AppState.user.inventory;
+      if (category !== 'all') {
+        items = items.filter(inst => ITEM_DATABASE[inst.id].category === category);
+      }
+
+      if (items.length === 0) {
+        listContainer.innerHTML = `<p class="col-span-3 text-center py-12 text-xs text-gray-400">옷장이 텅 비어 있습니다.</p>`;
+        return;
+      }
 
       items.forEach(inst => {
         const item = ITEM_DATABASE[inst.id];
-        const mData = AppState.marketPrices[inst.id];
-        const isEquipped = checkEquipped(inst.instanceId);
-        const gradeStyle = GRADE_COLORS[item.grade];
+        const gradeColor = GRADE_COLORS[item.grade] || { bg: 'bg-zinc-400' };
+        const isEquipped = Object.values(AppState.user.equipped).some(eq => eq && eq.instanceId === inst.instanceId);
 
-        const row = document.createElement('div');
-        row.className = "bg-neutral-800 p-3 rounded-xl border border-neutral-700 flex justify-between items-center";
-        
-        row.innerHTML = `
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center text-xl relative">
-              <span class="absolute top-0.5 right-0.5 text-[6px] ${gradeStyle.text}">${item.grade}</span>
-              ${item.category === 'hair' ? '💇' : item.category === 'top' ? '👕' : item.category === 'bottom' ? '👖' : item.category === 'dress' ? '👗' : item.category === 'shoes' ? '👟' : '🎁'}
-            </div>
-            <div>
-              <div class="text-xs font-bold text-white flex items-center">
-                ${item.name}
-                ${isEquipped ? '<span class="ml-1 bg-pink-600 text-[8px] px-1 rounded">착용중</span>' : ''}
-              </div>
-              <div class="text-[10px] text-neutral-400 font-mono">구매가: ${formatMoney(inst.purchasePrice)}원</div>
+        const card = document.createElement('div');
+        card.className = `relative bg-pink-50/50 rounded-2xl p-2 border-2 ${isEquipped ? 'border-pink-500 bg-pink-50' : 'border-transparent'} flex flex-col justify-between items-center text-center group cursor-pointer`;
+        card.onclick = () => {
+          if (isEquipped) {
+            unequipItem(item.category);
+          } else {
+            equipItem(inst);
+          }
+          filterWardrobe(AppState.currentWardrobeTab);
+        };
+
+        card.innerHTML = `
+          <span class="absolute top-1 left-1 text-[8px] text-white px-1 py-0.2 rounded-full font-bold ${gradeColor.bg}">${item.grade}</span>
+          <div class="w-16 h-16 relative overflow-hidden my-2 scale-75">
+            <div class="scale-125 relative w-[180px] h-[280px] origin-center -translate-x-[55px] -translate-y-24">
+              ${item.renderBack ? item.renderBack() : ''}
+              ${item.render ? item.render() : ''}
+              ${item.renderFront ? item.renderFront() : ''}
             </div>
           </div>
-          <div class="text-right flex items-center space-x-3">
-            <div>
-              <div class="text-xs font-black text-amber-300 font-mono">${formatMoney(mData.current)}원</div>
-              <div class="text-[9px] font-bold ${mData.trend === 'up' ? 'text-red-400' : 'text-blue-400'} font-mono">
-                ${mData.trend === 'up' ? '▲' : '▼'} ${formatMoney(Math.abs(mData.change))}
-              </div>
-            </div>
-            <button onclick="handleSellItem('${inst.instanceId}')" class="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-3 py-2 rounded-lg transition-transform active:scale-95">
-              판매
-            </button>
-          </div>
+          <div class="text-[10px] font-bold text-gray-700 truncate w-full px-1">${item.name}</div>
+          ${isEquipped ? `<span class="text-[9px] text-pink-500 font-extrabold mt-1">E</span>` : ''}
         `;
-        wrapper.appendChild(row);
+        listContainer.appendChild(card);
       });
-
-      body.appendChild(wrapper);
-    }
-
-    function handleSellItem(instanceId) {
-      const idx = AppState.user.inventory.findIndex(i => i.instanceId === instanceId);
-      if (idx === -1) return;
-
-      const inst = AppState.user.inventory[idx];
-      const mData = AppState.marketPrices[inst.id];
-      const itemData = ITEM_DATABASE[inst.id];
-
-      AppState.user.balance += mData.current;
-      
-      if (checkEquipped(instanceId)) {
-        unequipItem(itemData.category);
-      }
-
-      AppState.user.inventory.splice(idx, 1);
-      updateUIBalance();
-      renderJoonggoApp();
     }
   </script>
 </body>
