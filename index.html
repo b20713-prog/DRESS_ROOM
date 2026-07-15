@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프리미엄 드레스룸 & 마켓 게임</title>
+    <title>쁘띠 드레스룸 & 패션 플랫폼 게임</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
         
@@ -17,7 +17,7 @@
         }
 
         body {
-            background: #ffe3ec;
+            background: #FFE3EC;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,60 +25,64 @@
             padding: 20px;
         }
 
-        /* 사진의 스마트폰 UI 비율과 라운딩 디테일 반영 */
+        /* [디자인 퀄리티] 라운드 코너가 깊게 들어간 플랫 파스텔톤 스마트폰 프레임 외형 UI */
         .phone-container {
-            width: 420px;
-            height: 860px;
-            background: #ffffff;
-            border: 12px solid #ffb6c1;
-            border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.5);
+            width: 430px;
+            height: 880px;
+            background: #FFFFFF;
+            border: 12px solid #FFB6C1;
+            border-radius: 45px;
+            box-shadow: 0 25px 50px rgba(255, 182, 193, 0.6);
             position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* 상단 네비게이션 및 재화 정보 바 */
+        /* 최상단 고정 헤더 - 유리 효과 마감 및 소프트 라인 */
         .top-header {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px dashed #ffc0cb;
+            border-bottom: 2px solid #FFE4E1;
+            z-index: 10;
         }
 
         .game-title {
-            color: #ff69b4;
-            font-size: 1.3rem;
+            color: #FF69B4;
+            font-size: 1.25rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .currency-badge {
-            background: #fff0f5;
-            border: 2px solid #ff69b4;
-            padding: 5px 12px;
+            background: #FFF0F5;
+            border: 2px solid #FF69B4;
+            padding: 6px 14px;
             border-radius: 20px;
-            color: #ff1493;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            color: #FF1493;
+            font-size: 1.05rem;
+            font-weight: bold;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* 메인 가변 스크린 */
+        /* 메인 콘텐츠 바디 영역 */
         .content-body {
             flex: 1;
-            overflow-y: auto;
-            background: linear-gradient(to bottom, #ffffff, #fff0f5);
-            padding: 15px;
+            background: linear-gradient(to bottom, #FFFFFF, #FFF5F7);
             position: relative;
+            overflow: hidden;
         }
 
         .screen-view {
             display: none;
             width: 100%;
             height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 20px;
             flex-direction: column;
         }
 
@@ -86,354 +90,354 @@
             display: flex;
         }
 
-        /* --- 로그인 및 회원가입 화면 양식 --- */
+        /* ================= 1단계 & 2단계 & 3단계: 인증 및 설정 UI ================= */
         .auth-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
-            padding: 20px;
         }
-
-        .auth-logo {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-        }
-
+        .auth-logo { font-size: 4rem; margin-bottom: 20px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
         .auth-box {
             width: 100%;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            border: 2px solid #ffb6c1;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 24px;
+            border: 3px solid #FFB6C1;
+            box-shadow: 0 10px 20px rgba(255,182,193,0.2);
         }
-
-        .auth-title {
-            color: #ff69b4;
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-        }
-
+        .auth-title { color: #FF69B4; text-align: center; margin-bottom: 18px; font-size: 1.5rem; }
         .input-field {
             width: 100%;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border: 2px solid #ffe4e1;
-            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            border: 2px solid #FFE4E1;
+            border-radius: 16px;
             outline: none;
-            font-size: 0.95rem;
-        }
-
-        .input-field:focus {
-            border-color: #ff69b4;
-        }
-
-        .auth-btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
-
-        .btn-auth {
-            flex: 1;
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
             font-size: 1rem;
-            cursor: pointer;
+            transition: border-color 0.2s;
         }
-
-        .btn-auth.secondary {
-            background: #ffb6c1;
-        }
-
-        /* --- 1. 옷장 (드레스룸) 스크린 --- */
-        .avatar-canvas-area {
+        .input-field:focus { border-color: #FF69B4; }
+        .btn-block {
             width: 100%;
-            height: 360px;
-            background: #fff;
-            border: 3px solid #ffe4e1;
-            border-radius: 24px;
+            background: #FF69B4;
+            color: #FFFFFF;
+            border: none;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+            margin-bottom: 8px;
+        }
+        .btn-block.secondary { background: #FFB6C1; box-shadow: none; }
+        
+        .gender-select-group {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .gender-btn {
+            flex: 1;
+            padding: 20px;
+            border: 3px solid #FFE4E1;
+            background: white;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-align: center;
+        }
+        .gender-btn.selected { border-color: #FF69B4; background: #FFF0F5; color: #FF69B4; }
+
+        /* ================= 메인 메인 화면 뷰 (캐릭터 상시 대기) ================= */
+        .main-room-view {
+            width: 100%;
+            height: 100%;
             position: relative;
-            box-shadow: 0 8px 16px rgba(255, 182, 193, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 40px;
+        }
+
+        /* [신체 분리 버그 방지 고정 골격] 하향식 구조 완벽 결속 */
+        .avatar-container {
+            width: 260px;
+            height: 420px;
+            background: #FFFFFF;
+            border: 3px solid #FFE4E1;
+            border-radius: 32px;
+            position: relative;
+            margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.25);
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
-
-        /* 목분리 현상 해결: 절대적 묶음 골격 구조 설계 */
-        .avatar-model {
+        .avatar-skeleton {
             width: 200px;
-            height: 320px;
+            height: 380px;
             position: relative;
         }
-
-        /* 몸체 고정 */
-        .model-body {
-            width: 54px;
-            height: 120px;
-            background: #ffe4e1;
-            position: absolute;
-            left: 73px;
-            top: 135px;
-            border-radius: 20px;
-            border: 2px solid #ffc0cb;
-            z-index: 2;
-        }
-
-        /* 목 고정: 몸과 얼굴의 유기적 겹침을 고정하여 절대 분리 안됨 */
-        .model-neck {
-            width: 18px;
-            height: 30px;
-            background: #ffe4e1;
-            position: absolute;
-            left: 91px;
-            top: 115px;
-            border-left: 2px solid #ffc0cb;
-            border-right: 2px solid #ffc0cb;
-            z-index: 3;
-        }
-
-        /* 얼굴 고정 */
-        .model-head {
+        .skel-head {
             width: 100px;
             height: 96px;
-            background: #ffe4e1;
+            background: #FFE4E1;
+            border: 2px solid #FFC0CB;
+            border-radius: 50%;
             position: absolute;
             left: 50px;
-            top: 30px;
-            border-radius: 50%;
-            border: 2px solid #ffc0cb;
+            top: 40px;
+            z-index: 5;
+        }
+        .skel-eye { width: 12px; height: 16px; background: #4A3728; position: absolute; border-radius: 50%; top: 40px; }
+        .skel-eye.left { left: 25px; }
+        .skel-eye.right { right: 25px; }
+        .skel-mouth { width: 14px; height: 8px; background: #FF69B4; position: absolute; left: 43px; top: 68px; border-radius: 0 0 14px 14px; }
+        .skel-neck {
+            width: 20px;
+            height: 35px;
+            background: #FFE4E1;
+            border-left: 2px solid #FFC0CB;
+            border-right: 2px solid #FFC0CB;
+            position: absolute;
+            left: 90px;
+            top: 125px;
             z-index: 4;
         }
-
-        .model-eyes {
-            width: 14px;
-            height: 18px;
-            background: #5c3a21;
+        .skel-body {
+            width: 60px;
+            height: 140px;
+            background: #FFE4E1;
+            border: 2px solid #FFC0CB;
+            border-radius: 24px;
             position: absolute;
-            border-radius: 50%;
-            top: 45px;
+            left: 70px;
+            top: 150px;
+            z-index: 3;
         }
-        .model-eyes.left { left: 25px; }
-        .model-eyes.right { right: 59px; }
-        .model-mouth {
-            width: 12px;
-            height: 8px;
-            background: #ff69b4;
+        /* 남성 체형일 경우 스크립트 대응용 클래스 */
+        .avatar-skeleton.male .skel-body { width: 70px; left: 65px; border-radius: 14px; }
+
+        /* 의상 레이어 결속 (z-index를 통한 정밀 스태킹) */
+        .layer-slot { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; display: flex; justify-content: center; align-items: center; }
+        .layer-hair { z-index: 10; }
+        .layer-earring { z-index: 9; }
+        .layer-necklace { z-index: 8; }
+        .layer-dress { z-index: 7; }
+        .layer-top { z-index: 6; }
+        .layer-bottom { z-index: 5; }
+        .layer-shoes { z-index: 4; }
+        .layer-socks { z-index: 3; }
+        .layer-bag { z-index: 2; }
+
+        /* 메인 화면 하단 핵심 인터페이스 버튼 (2개) */
+        .main-action-group {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            padding: 0 10px;
+        }
+        .btn-main-action {
+            flex: 1;
+            background: #FFFFFF;
+            border: 3px solid #FFB6C1;
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            color: #FF69B4;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255,182,193,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.1s;
+        }
+        .btn-main-action:active { transform: scale(0.96); }
+        .btn-main-action .icon { font-size: 2rem; }
+
+        /* ================= OVERLAY: 옷장 서랍 창 ================= */
+        .closet-drawer {
             position: absolute;
-            left: 44px;
-            top: 70px;
-            border-radius: 0 0 10px 10px;
+            bottom: -600px;
+            left: 0;
+            width: 100%;
+            height: 540px;
+            background: #FFFFFF;
+            border-top: 4px solid #FFB6C1;
+            border-radius: 32px 32px 0 0;
+            z-index: 50;
+            transition: bottom 0.3s cubic-bezier(0.1, 0.8, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
         }
+        .closet-drawer.open { bottom: 0; }
+        .closet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .closet-title { color: #FF69B4; font-size: 1.3rem; }
+        .btn-close-drawer { background: #FFB6C1; border: none; color: white; padding: 6px 14px; border-radius: 12px; cursor: pointer; }
 
-        /* 옷장 파츠 오버레이 레이어 */
-        .layer-hair { position: absolute; width: 160px; height: 160px; left: 20px; top: 0px; z-index: 5; pointer-events: none; }
-        .layer-dress { position: absolute; width: 140px; height: 160px; left: 30px; top: 115px; z-index: 6; pointer-events: none; }
-        .layer-acc { position: absolute; width: 120px; height: 120px; left: 40px; top: 5px; z-index: 7; pointer-events: none; }
-
-        /* 카테고리 탭 (사진의 UI 감성 반영) */
-        .category-tabs {
+        /* 9개 세부 카테고리 탭 스크롤 영역 */
+        .closet-tabs {
             display: flex;
             gap: 6px;
-            margin: 15px 0 10px 0;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
         }
-
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            background: #ffe4e1;
-            border: none;
-            border-radius: 12px;
-            color: #db7093;
+        .closet-tabs::-webkit-scrollbar { height: 4px; }
+        .closet-tabs::-webkit-scrollbar-thumb { background: #FFB6C1; border-radius: 10px; }
+        .tab-item {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            background: #FFF0F5;
+            border: 2px solid #FFE4E1;
+            border-radius: 14px;
+            color: #DB7093;
             cursor: pointer;
+            font-size: 0.9rem;
         }
+        .tab-item.active { background: #FF69B4; color: white; border-color: #FF69B4; }
 
-        .tab-btn.active {
-            background: #ff69b4;
-            color: white;
-        }
-
-        .item-grid-scroll {
+        .closet-grid {
             flex: 1;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 12px;
             overflow-y: auto;
+            padding-right: 4px;
         }
-
-        .item-card {
-            background: #ffffff;
-            border: 2px solid #ffe4e1;
-            border-radius: 16px;
-            padding: 10px;
+        .closet-card {
+            background: #FFFFFF;
+            border: 2px solid #FFE4E1;
+            border-radius: 18px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            position: relative;
         }
-
-        .item-card.active {
-            border-color: #ff69b4;
-            background: #fff0f5;
-        }
-
-        .item-thumb { font-size: 2.2rem; height: 48px; display: flex; align-items: center; }
-        .item-name { font-size: 0.8rem; color: #555; margin-top: 4px; text-align: center; }
-
-        /* --- 2. 뽑기 스크린 --- */
-        .gacha-container {
-            text-align: center;
-            padding: 20px 10px;
-        }
-
-        .gacha-machine {
-            font-size: 6rem;
-            margin: 20px 0;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .btn-gacha-trigger {
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
+        .closet-card.equipped { border-color: #FF69B4; background: #FFF5F7; }
+        .closet-card.equipped::after {
+            content: "장착됨";
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #FF69B4;
             color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 8px;
         }
+        .card-thumb { font-size: 2.2rem; margin-bottom: 4px; }
+        .card-name { font-size: 0.8rem; text-align: center; color: #444; }
+        .card-grade { font-size: 0.7rem; font-weight: bold; padding: 1px 5px; border-radius: 6px; margin-top: 4px; }
 
-        /* --- 3. 중고 마켓 및 실시간 변동 가격 스크린 --- */
-        .market-header-alert {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .market-list {
+        /* ================= OVERLAY: 스마트폰 UI 팝업 ================= */
+        .phone-popup {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #FFF5F7;
+            z-index: 60;
+            transition: top 0.3s cubic-bezier(0.1, 0.8, 0.3, 1);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            overflow-y: auto;
         }
-
-        .market-card {
+        .phone-popup.open { top: 0; }
+        .phone-popup-header {
             background: white;
-            border: 2px solid #ffe4e1;
-            border-radius: 16px;
-            padding: 12px 15px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #FFE4E1;
         }
+        .phone-popup-body { flex: 1; position: relative; overflow: hidden; }
 
-        .market-item-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .price-trend {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
-        .trend-up { background: #fde8e8; color: #e53e3e; }
-        .trend-down { background: #ebf8ff; color: #3182ce; }
-
-        .btn-market-action {
-            background: #ff69b4;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        .btn-market-action.sell {
-            background: #4caf50;
-        }
-
-        /* --- 4. 도감 스크린 --- */
-        .collection-summary {
-            background: #e3f2fd;
-            border: 2px solid #90caf9;
-            padding: 12px;
-            border-radius: 16px;
-            color: #1565c0;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .collection-grid {
+        /* 스마트폰 바탕화면 홈 스크린 (4대 어플 배치) */
+        .phone-home {
+            width: 100%;
+            height: 100%;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            padding: 30px;
         }
-
-        .collection-slot {
-            background: #ffffff;
-            border: 2px dashed #ccc;
-            border-radius: 12px;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.8rem;
-            position: relative;
-            opacity: 0.3;
-        }
-
-        .collection-slot.unlocked {
-            border: 2px solid #ff69b4;
-            background: #fff0f5;
-            opacity: 1;
-        }
-
-        /* 하단 고정 탭바 내비게이션 */
-        .bottom-nav-bar {
-            height: 70px;
-            background: #ffffff;
-            border-top: 2px solid #ffe4e1;
-            display: flex;
-        }
-
-        .nav-item-btn {
-            flex: 1;
+        /* 어플리케이션 스퀘어 라운딩 및 그림자 효과 입체감 표현 */
+        .app-icon-btn {
+            background: #FFFFFF;
+            border: 3px solid #FFE4E1;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: none;
-            border: none;
             cursor: pointer;
-            color: #888;
-            gap: 2px;
+            gap: 10px;
+            transition: transform 0.2s;
         }
+        .app-icon-btn:active { transform: scale(0.95); }
+        .app-icon-btn .app-img { font-size: 3.5rem; }
+        .app-icon-btn .app-label { font-size: 1.1rem; color: #333; font-weight: bold; }
 
-        .nav-item-btn.active {
-            color: #ff69b4;
-            background: #fff5f7;
+        /* 가상 어플리케이션 개별 구동 판넬 */
+        .app-panel {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            left: 0;
+            flex-direction: column;
+            padding: 15px;
+            overflow-y: auto;
         }
+        .app-panel.active { display: flex; }
+        .app-back-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px dashed #FFE4E1; }
+        .btn-app-back { background: #FFE4E1; border: none; padding: 6px 12px; border-radius: 10px; cursor: pointer; }
 
-        .nav-item-btn .icon { font-size: 1.3rem; }
-        .nav-item-btn .label { font-size: 0.8rem; }
+        /* --- 에이블리 & 무신사 전용 스타일 --- */
+        .gacha-banner { background: #FFF0F5; border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; border: 2px dashed #FFB6C1; }
+        .btn-gacha-trigger { width: 100%; background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; padding: 16px; border-radius: 18px; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(255,20,147,0.3); }
+
+        /* --- 크림 전용 변동 가격 스타일 --- */
+        .kream-live-card { background: #F8F9FA; border: 2px solid #E9ECEF; border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px; }
+        .kream-price-display { font-size: 2rem; color: #222; margin: 12px 0; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        /* [디자인 디테일] 실시간 지표 색상 처리 명세 */
+        .trend-badge { font-size: 1rem; padding: 3px 8px; border-radius: 8px; font-weight: bold; }
+        .trend-up { background: #FDE8E8; color: #E53E3E; }     /* 상승 빨강 계열 */
+        .trend-down { background: #EBF8FF; color: #3182CE; }   /* 하락 파랑 계열 */
+
+        /* --- 중고나라 전용 스타일 --- */
+        .market-list { display: flex; flex-direction: column; gap: 12px; }
+        .market-item-card { background: #FFFFFF; border: 2px solid #FFE4E1; border-radius: 20px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .market-info-box { display: flex; align-items: center; gap: 15px; }
+        .btn-sell-action { background: #4CAF50; color: white; border: none; padding: 10px 16px; border-radius: 12px; cursor: pointer; font-size: 0.95rem; }
+        .btn-sell-action:disabled { background: #CCC; cursor: not-allowed; }
+
+        /* 등급별 뱃지 컬러 마감 */
+        .g-SSS { background: #f6e05e; color: #744210; }
+        .g-SS { background: #e9d8fd; color: #553c9a; }
+        .g-S { background: #fed7d7; color: #9b2c2c; }
+        .g-A { background: #feebc8; color: #c05621; }
+        .g-B { background: #e6fffa; color: #234e52; }
+        .g-C { background: #edf2f7; color: #4a5568; }
     </style>
 </head>
 <body>
@@ -441,449 +445,645 @@
 <div class="phone-container">
     
     <div class="top-header">
-        <div class="game-title">💖 쁘띠 드레스룸</div>
-        <div class="currency-badge">💰 <span id="global-gold">1,500</span></div>
+        <div class="game-title" id="global-room-title">✨ 쁘띠 드레스룸</div>
+        <div class="currency-badge">💰 <span id="global-gold-txt">100,000</span>원</div>
     </div>
 
     <div class="content-body">
         
         <div id="view-auth" class="screen-view active">
             <div class="auth-container">
-                <div class="auth-logo">✨👗✨</div>
-                <div class="auth-box" id="auth-box-login">
-                    <div class="auth-title">로그인</div>
-                    <input type="text" id="login-id" class="input-field" placeholder="아이디 입력">
-                    <input type="password" id="login-pw" class="input-field" placeholder="비밀번호 입력">
-                    <div class="auth-btn-group">
-                        <button class="btn-auth" onclick="tryLogin()">로그인</button>
-                        <button class="btn-auth secondary" onclick="toggleAuthMode('join')">회원가입 이동</button>
-                    </div>
-                </div>
+                <div class="auth-logo">👗✨</div>
                 
-                <div class="auth-box" id="auth-box-join" style="display: none;">
+                <div class="auth-box" id="box-login">
+                    <div class="auth-title">로그인</div>
+                    <input type="text" id="input-login-id" class="input-field" placeholder="아이디 입력">
+                    <input type="password" id="input-login-pw" class="input-field" placeholder="비밀번호 입력">
+                    <button class="btn-block" onclick="handleLogin()">로그인</button>
+                    <button class="btn-block secondary" onclick="switchAuthBox('join')">회원가입 하러가기</button>
+                </div>
+
+                <div class="auth-box" id="box-join" style="display: none;">
                     <div class="auth-title">회원가입</div>
-                    <input type="text" id="join-id" class="input-field" placeholder="새 아이디 입력">
-                    <input type="password" id="join-pw" class="input-field" placeholder="새 비밀번호 입력">
-                    <div class="auth-btn-group">
-                        <button class="btn-auth" onclick="tryRegister()">가입완료</button>
-                        <button class="btn-auth secondary" onclick="toggleAuthMode('login')">로그인 이동</button>
-                    </div>
+                    <input type="text" id="input-join-id" class="input-field" placeholder="새 아이디 입력">
+                    <input type="password" id="input-join-pw" class="input-field" placeholder="새 비밀번호 입력">
+                    <button class="btn-block" onclick="handleRegister()">가입 완료</button>
+                    <button class="btn-block secondary" onclick="switchAuthBox('login')">로그인 화면으로</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-closet" class="screen-view">
-            <div class="avatar-canvas-area">
-                <div class="avatar-model">
-                    <div class="model-body"></div>
-                    <div class="model-neck"></div>
-                    <div class="model-head">
-                        <div class="model-eyes left"></div>
-                        <div class="model-eyes right"></div>
-                        <div class="model-mouth"></div>
+        <div id="view-setup" class="screen-view">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <div class="auth-title">캐릭터 프로필 설정</div>
+                    <label style="font-size:0.9rem; color:#666;">드레스룸 주인의 이름</label>
+                    <input type="text" id="input-setup-name" class="input-field" placeholder="이름을 입력하세요">
+                    
+                    <label style="font-size:0.9rem; color:#666; margin-top:10px; display:block;">성별 선택</label>
+                    <div class="gender-select-group">
+                        <button class="gender-btn" id="gbtn-female" onclick="selectGender('Female')">🙋‍♀️ 여성</button>
+                        <button class="gender-btn" id="gbtn-male" onclick="selectGender('Male')">🙋‍♂️ 남성</button>
                     </div>
                     
-                    <div class="layer-hair" id="layer-hair"></div>
-                    <div class="layer-dress" id="layer-dress"></div>
-                    <div class="layer-acc" id="layer-acc"></div>
+                    <button class="btn-block" style="margin-top:20px;" onclick="completeSetup()">드레스룸 입장하기</button>
                 </div>
-            </div>
-
-            <div class="category-tabs">
-                <button class="tab-btn active" onclick="switchCategory('hair', this)">헤어</button>
-                <button class="tab-btn" onclick="switchCategory('dress', this)">의상</button>
-                <button class="tab-btn" onclick="switchCategory('acc', this)">소품</button>
-            </div>
-
-            <div class="item-grid-scroll" id="closet-grid-box">
-                </div>
-        </div>
-
-        <div id="view-gacha" class="screen-view">
-            <div class="gacha-container">
-                <h2 style="color:#ff69b4;">🎁 랜덤 캡슐 의상 뽑기</h2>
-                <p style="font-size:0.85rem; color:#666; margin-top:5px;">1회 뽑기당 💰 600 골드가 소모됩니다.</p>
-                <div class="gacha-machine">🕹️</div>
-                <button class="btn-gacha-trigger" onclick="executeGachaCapsule()">캡슐 뽑기</button>
             </div>
         </div>
 
-        <div id="view-market" class="screen-view">
-            <div class="market-header-alert">
-                📊 안내: 시장 의상 가격이 3초마다 실시간으로 변동합니다!
-            </div>
-            <h3 style="color:#ff69b4; margin-bottom:10px;">🛍️ 실시간 중고 마켓 거래소</h3>
-            <div class="market-list" id="market-list-box">
-                </div>
-        </div>
+        <div id="view-main-room" class="screen-view">
+            <div class="main-room-view">
+                
+                <div class="avatar-container">
+                    <div class="avatar-skeleton" id="avatar-skeleton-node">
+                        <div class="skel-head">
+                            <div class="skel-eye left"></div>
+                            <div class="skel-eye right"></div>
+                            <div class="skel-mouth"></div>
+                        </div>
+                        <div class="skel-neck"></div>
+                        <div class="skel-body"></div>
 
-        <div id="view-collection" class="screen-view">
-            <div class="collection-summary">
-                📜 의상 도감 수집률: <span id="collect-ratio-text">0 / 12</span>
-            </div>
-            <div class="collection-grid" id="collection-grid-box">
+                        <div class="layer-slot layer-hair" id="l-hair"></div>
+                        <div class="layer-earring" id="l-earring"></div>
+                        <div class="layer-necklace" id="l-necklace"></div>
+                        <div class="layer-dress" id="l-dress"></div>
+                        <div class="layer-top" id="l-top"></div>
+                        <div class="layer-bottom" id="l-bottom"></div>
+                        <div class="layer-shoes" id="l-shoes"></div>
+                        <div class="layer-socks" id="l-socks"></div>
+                        <div class="layer-bag" id="l-bag"></div>
+                    </div>
                 </div>
+
+                <div class="main-action-group">
+                    <button class="btn-main-action" onclick="openClosetDrawer()">
+                        <span class="icon">🗄️</span>
+                        <span>옷장 열기</span>
+                    </button>
+                    <button class="btn-main-action" onclick="openPhonePopup()">
+                        <span class="icon">📱</span>
+                        <span>핸드폰</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="closet-drawer" id="closet-drawer-panel">
+                <div class="closet-header">
+                    <div class="closet-title">나의 드레스 서랍</div>
+                    <button class="btn-close-drawer" onclick="closeClosetDrawer()">닫기</button>
+                </div>
+                <div class="closet-tabs" id="closet-tabs-row"></div>
+                <div class="closet-grid" id="closet-items-grid"></div>
+            </div>
+
+            <div class="phone-popup" id="phone-popup-panel">
+                <div class="phone-popup-header">
+                    <div style="font-size:1.1rem; color:#333;">스마트폰 홈</div>
+                    <button class="btn-close-drawer" onclick="closePhonePopup()">화면 끄기</button>
+                </div>
+                <div class="phone-popup-body">
+                    
+                    <div class="phone-home" id="phone-home-view">
+                        <div class="app-icon-btn" onclick="openAppPanel('abley')">
+                            <span class="app-img">🛍️</span>
+                            <span class="app-label">에이블리</span>
+                        </div>
+                        <div class="app-icon-btn" onclick="openAppPanel('musinsa')">
+                            <span class="app-img">👟</span>
+                            <span class="app-label">무신사</span>
+                        </div>
+                        <div class="app-icon-btn" onclick="openAppPanel('kream')">
+                            <span class="app-img">📉</span>
+                            <span class="app-label">크림</span>
+                        </div>
+                        <div class="app-icon-btn" onclick="openAppPanel('joonggo')">
+                            <span class="app-img">🤝</span>
+                            <span class="app-label">중고나라</span>
+                        </div>
+                    </div>
+
+                    <div class="app-panel" id="app-abley">
+                        <div class="app-back-bar">
+                            <button class="btn-app-back" onclick="backToPhoneHome()">◀ 홈으로</button>
+                            <span style="font-weight:bold; color:#FF69B4;">에이블리 캡슐 가챠</span>
+                        </div>
+                        <div class="gacha-banner">
+                            <h3>🌸 에이블리 트렌디 소품 & 헤어 뽑기</h3>
+                            <p style="margin-top:8px; font-size:0.85rem; color:#777;">아기자기하고 화려한 액세서리가 가득!</p>
+                            <h2 style="color:#FF1493; margin-top:12px;">1회당 30,000원</h2>
+                        </div>
+                        <button class="btn-gacha-trigger" onclick="triggerGacha('abley')">랜덤 캡슐 뽑기</button>
+                    </div>
+
+                    <div class="app-panel" id="app-musinsa">
+                        <div class="app-back-bar">
+                            <button class="btn-app-back" onclick="backToPhoneHome()">◀ 홈으로</button>
+                            <span style="font-weight:bold; color:#333;">무신사 스트리트 가챠</span>
+                        </div>
+                        <div class="gacha-banner" style="background:#F1F3F5; border-color:#CED4DA;">
+                            <h3>👟 무신사 데일리 룩 & 슈즈 뽑기</h3>
+                            <p style="margin-top:8px; font-size:0.85rem; color:#777;">깔끔하고 감각적인 캐주얼 웨어 라인업</p>
+                            <h2 style="color:#212529; margin-top:12px;">1회당 50,000원</h2>
+                        </div>
+                        <button class="btn-gacha-trigger" style="background:linear-gradient(135deg, #343A40, #212529);" onclick="triggerGacha('musinsa')">랜덤 캐주얼 뽑기</button>
+                    </div>
+
+                    <div class="app-panel" id="app-kream">
+                        <div class="app-back-bar">
+                            <button class="btn-app-back" onclick="backToPhoneHome()">◀ 홈으로</button>
+                            <span style="font-weight:bold; color:#000;">크림 한정판 거래소</span>
+                        </div>
+                        <div class="kream-live-card">
+                            <h3>🔥 크림 프리미엄 가챠 시세</h3>
+                            <p style="font-size:0.8rem; color:#888; margin-top:4px;">1초마다 뽑기 결제 비용이 실시간으로 요동칩니다.</p>
+                            <div class="kream-price-display">
+                                💰 <span id="kream-gacha-price-txt">80,000</span>원
+                                <span class="trend-badge trend-up" id="kream-trend-indicator">▲ 상승</span>
+                            </div>
+                        </div>
+                        <button class="btn-gacha-trigger" style="background:#000;" onclick="triggerGacha('kream')">현재가로 한정판 뽑기</button>
+                    </div>
+
+                    <div class="app-panel" id="app-joonggo">
+                        <div class="app-back-bar">
+                            <button class="btn-app-back" onclick="backToPhoneHome()">◀ 홈으로</button>
+                            <span style="font-weight:bold; color:#4CAF50;">중고나라 매입 거래소</span>
+                        </div>
+                        <p style="font-size:0.8rem; color:#666; margin-bottom:12px; text-align:center;">
+                            📊 시세 안내: 의상 등급별 중고 시세가 1초마다 실시간 변동합니다.
+                        </p>
+                        <div class="market-list" id="joonggo-sell-list">
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
-
-    <div class="bottom-nav-bar" id="game-nav-bar" style="display: none;">
-        <button class="nav-item-btn active" id="nav-closet" onclick="switchScreen('closet')">
-            <span class="icon">👗</span><span class="label">옷장</span>
-        </button>
-        <button class="nav-item-btn" id="nav-gacha" onclick="switchScreen('gacha')">
-            <span class="icon">🎁</span><span class="label">뽑기</span>
-        </button>
-        <button class="nav-item-btn" id="nav-market" onclick="switchScreen('market')">
-            <span class="icon">🛍️</span><span class="label">중고마켓</span>
-        </button>
-        <button class="nav-item-btn" id="nav-collection" onclick="switchScreen('collection')">
-            <span class="icon">📜</span><span class="label">도감</span>
-        </button>
-    </div>
-
 </div>
 
 <script>
-    // --- 시스템 전체 의상 데이터 명세 베이스 모델 ---
-    const POOL_ITEMS = {
-        hair: [
-            { id: 'h1', name: '트윈 리본 헤어', thumb: '🎀', basePrice: 500, style: 'font-size:4.2rem; color:#ff69b4;' },
-            { id: 'h2', name: '금빛 포니테일', thumb: '👱‍♀️', basePrice: 1200, style: 'font-size:4.2rem; color:#ffd700;' },
-            { id: 'h3', name: '단발 웨이브 헤어', thumb: '💇‍♀️', basePrice: 2000, style: 'font-size:4.2rem; color:#8b4513;' },
-            { id: 'h4', name: '사이버 네온 헤어', thumb: '🧬', basePrice: 4500, style: 'font-size:4.2rem; color:#00ffcc;' }
-        ],
-        dress: [
-            { id: 'd1', name: '데일리 스커트', thumb: '👗', basePrice: 700, style: 'font-size:6rem; color:#ffb6c1;' },
-            { id: 'd2', name: '블루밍 롱 드레스', thumb: '💙', basePrice: 1600, style: 'font-size:6rem; color:#2196f3;' },
-            { id: 'd3', name: '정열의 이브닝 퀸', thumb: '💃', basePrice: 3200, style: 'font-size:6rem; color:#e53e3e;' },
-            { id: 'd4', name: '프레시 멜론 슈트', thumb: '🟢', basePrice: 6000, style: 'font-size:6rem; color:#4caf50;' }
-        ],
-        acc: [
-            { id: 'a1', name: '체리 귀걸이 파츠', thumb: '🍒', basePrice: 300, style: 'font-size:2rem;' },
-            { id: 'a2', name: '엔젤 버터 플라이', thumb: '👼', basePrice: 900, style: 'font-size:3.5rem;' },
-            { id: 'a3', name: '루미너스 매직봉', thumb: '🪄', basePrice: 2400, style: 'font-size:3.5rem;' },
-            { id: 'a4', name: '로열 골드 크라운', thumb: '👑', basePrice: 5500, style: 'font-size:3.5rem;' }
-        ]
+    // --- 카테고리 명세 데이터 리스트 (총 9종) ---
+    const CATEGORIES = [
+        { id: 'hair', name: '헤어' },
+        { id: 'top', name: '상의' },
+        { id: 'bottom', name: '하의' },
+        { id: 'shoes', name: '신발' },
+        { id: 'bag', name: '가방' },
+        { id: 'dress', name: '원피스' },
+        { id: 'socks', name: '양말' },
+        { id: 'necklace', name: '목걸이' },
+        { id: 'earring', name: '귀걸이' }
+    ];
+
+    // --- 전체 게임 의상 데이터 아카이브 및 기준값 명세 ---
+    const CLOTHES_DATABASE = {
+        // 기본템 3종 고정 등록
+        'basic-hair': { id: 'basic-hair', category: 'hair', name: '검정색 긴 생머리', grade: 'C', basePrice: 5000, view: '👩‍🦱' },
+        'basic-top': { id: 'basic-top', category: 'top', name: '흰색 반팔', grade: 'C', basePrice: 5000, view: '👕' },
+        'basic-bottom': { id: 'basic-bottom', category: 'bottom', name: '회색 츄리닝 바지', grade: 'C', basePrice: 5000, view: '🩳' },
+        
+        // 에이블리 풀
+        'ab-h1': { id: 'ab-h1', category: 'hair', name: '트윈 핑크 테일 헤어', grade: 'B', basePrice: 22000, view: '👱‍♀️' },
+        'ab-n1': { id: 'ab-n1', category: 'necklace', name: '초커 하트 목걸이', grade: 'B', basePrice: 18000, view: '📿' },
+        'ab-e1': { id: 'ab-e1', category: 'earring', name: '반짝 리본 귀걸이', grade: 'A', basePrice: 42000, view: '💎' },
+        'ab-d1': { id: 'ab-d1', category: 'dress', name: '프릴 가득 베어 미니 드레스', grade: 'S', basePrice: 75000, view: '👗' },
+
+        // 무신사 풀
+        'ms-t1': { id: 'ms-t1', category: 'top', name: '오버핏 레터링 맨투맨', grade: 'B', basePrice: 48000, view: '👚' },
+        'ms-b1': { id: 'ms-b1', category: 'bottom', name: '와이드 카고 데님 데일리 크루', grade: 'A', basePrice: 68000, view: '👖' },
+        'ms-s1': { id: 'ms-s1', category: 'shoes', name: '클래식 화이트 스니커즈', grade: 'B', basePrice: 55000, view: '👟' },
+        'ms-bag1': { id: 'ms-bag1', category: 'bag', name: '유틸리티 메신저 백', grade: 'A', basePrice: 72000, view: '🎒' },
+        'ms-socks1': { id: 'ms-socks1', category: 'socks', name: '스트라이프 스트리트 크루삭스', grade: 'C', basePrice: 9000, view: '🧦' },
+
+        // 크림 풀
+        'kr-s1': { id: 'kr-s1', category: 'shoes', name: '리미티드 레트로 하이 스니커즈', grade: 'SS', basePrice: 180000, view: '🥾' },
+        'kr-bag1': { id: 'kr-bag1', category: 'bag', name: '럭셔리 모노그램 체인백', grade: 'SSS', basePrice: 380000, view: '👜' },
+        'kr-d1': { id: 'kr-d1', category: 'dress', name: '실크 오프숄더 로열 퀸 드레스', grade: 'SSS', basePrice: 450000, view: '💃' }
     };
 
-    // --- 가변 시세 시장 가격 저장소 객체 ---
-    let MARKET_PRICES = {};
-    let MARKET_TRENDS = {}; // 'up' or 'down'
-
-    // --- 유저 데이터 인메모리 관리 스토어 ---
+    // --- 인메모리 유저 글로벌 라이브 상태 관리 객체 ---
     let appState = {
-        registeredUsers: {}, // 로컬 회원가입용 { id: pw } 계정 스토리지
+        registeredUsers: {}, 
         currentUser: null,
-        gold: 1500,
-        ownedItems: ['h1', 'd1', 'a1'], // 가입 시 기본 획득 아이템 목록
-        equipped: { hair: 'h1', dress: 'd1', acc: 'a1' }
+        userName: '',
+        gender: 'Female',
+        gold: 100000, // 초기 자산 10만원 설정
+        ownedItems: ['basic-hair', 'basic-top', 'basic-bottom'], // 오직 이 3개만 시작 아이템으로 존재
+        equipped: {
+            hair: 'basic-hair', top: 'basic-top', bottom: 'basic-bottom',
+            shoes: null, bag: null, dress: null, socks: null, necklace: null, earring: null
+        }
     };
 
-    let activeCategory = 'hair';
+    // --- 1초 주기 실시간 등락을 위한 변동 가격 상태 관리 객체 ---
+    let LIVE_MARKET_PRICES = {};
+    let KREAM_CURRENT_GACHA_PRICE = 80000;
+    let KREAM_GACHA_TREND = 'up';
+
+    let currentClosetCategory = 'hair';
 
     window.onload = function() {
-        initMarketPrices();
-        loadSystemData();
-        updateGoldInterface();
+        initLivePrices();
+        loadLocalStorageData();
         
-        // 가격 변동 3초 주기 트리거 구동
-        setInterval(fluctuatePrices, 3000);
+        // [★요청사항 반영] 1초 주기 실시간 금융형 시세 갱신 인터벌 엔진 가동
+        setInterval(processOneSecondMarketFluctuation, 1000);
     };
 
-    function saveSystemData() {
-        localStorage.setItem('DRESSROOM_ACCOUNT_STORAGE_2026', JSON.stringify(appState));
-    }
-
-    function loadSystemData() {
-        const stored = localStorage.getItem('DRESSROOM_ACCOUNT_STORAGE_2026');
-        if(stored) {
+    function loadLocalStorageData() {
+        const data = localStorage.getItem('PETIT_DRESSROOM_2026_STORE');
+        if (data) {
             try {
-                const parsed = JSON.parse(stored);
+                const parsed = JSON.parse(data);
                 appState.registeredUsers = parsed.registeredUsers || {};
-                // 로그인 유지 처리는 하지 않고 항상 처음엔 로그인 화면이 뜨도록 명시
-            } catch(e) {
-                console.error(e);
-            }
+            } catch(e) { console.error(e); }
         }
     }
 
-    // --- 회원가입 및 로그인 비즈니스 폼 제어 로직 ---
-    function toggleAuthMode(mode) {
+    function saveLocalStorageData() {
+        localStorage.setItem('PETIT_DRESSROOM_2026_STORE', JSON.stringify(appState));
+    }
+
+    // --- 회원 가입 / 로그인 기능 구현 로직 ---
+    function switchAuthBox(mode) {
         if(mode === 'join') {
-            document.getElementById('auth-box-login').style.display = 'none';
-            document.getElementById('auth-box-join').style.display = 'block';
+            document.getElementById('box-login').style.display = 'none';
+            document.getElementById('box-join').style.display = 'block';
         } else {
-            document.getElementById('auth-box-login').style.display = 'block';
-            document.getElementById('auth-box-join').style.display = 'none';
+            document.getElementById('box-login').style.display = 'block';
+            document.getElementById('box-join').style.display = 'none';
         }
     }
 
-    function tryRegister() {
-        const id = document.getElementById('join-id').value.trim();
-        const pw = document.getElementById('join-pw').value.trim();
-
-        if(!id || !pw) {
-            alert('가입할 아이디와 비밀번호를 빠짐없이 입력하세요.');
-            return;
-        }
-        if(appState.registeredUsers[id]) {
-            alert('이미 존재하는 아이디입니다.');
-            return;
-        }
-
+    function handleRegister() {
+        const id = document.getElementById('input-join-id').value.trim();
+        const pw = document.getElementById('input-join-pw').value.trim();
+        if(!id || !pw) return alert('아이디와 비밀번호를 입력해주세요.');
+        if(appState.registeredUsers[id]) return alert('이미 가입된 아이디입니다.');
+        
         appState.registeredUsers[id] = pw;
-        saveSystemData();
-        alert('회원가입이 완료되었습니다! 로그인해 주세요.');
-        toggleAuthMode('login');
-        
-        document.getElementById('join-id').value = '';
-        document.getElementById('join-pw').value = '';
+        saveLocalStorageData();
+        alert('회원가입 성공! 로그인 해주세요.');
+        switchAuthBox('login');
     }
 
-    function tryLogin() {
-        const id = document.getElementById('login-id').value.trim();
-        const pw = document.getElementById('login-pw').value.trim();
-
+    function handleLogin() {
+        const id = document.getElementById('input-login-id').value.trim();
+        const pw = document.getElementById('input-login-pw').value.trim();
         if(!appState.registeredUsers[id] || appState.registeredUsers[id] !== pw) {
-            alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-            return;
+            return alert('아이디 혹은 비밀번호가 틀렸습니다.');
         }
 
-        // 로그인 인증 인가 승인 성공
         appState.currentUser = id;
+        // 2단계: 캐릭터 설정 씬 전환
         document.getElementById('view-auth').classList.remove('active');
-        document.getElementById('game-nav-bar').style.display = 'flex';
+        document.getElementById('view-setup').classList.add('active');
+    }
+
+    // --- 2~3단계 프로필 셋업 핸들러 ---
+    function selectGender(gender) {
+        appState.gender = gender;
+        document.getElementById('gbtn-female').classList.remove('selected');
+        document.getElementById('gbtn-male').classList.remove('selected');
         
-        switchScreen('closet');
+        if(gender === 'Female') document.getElementById('gbtn-female').classList.add('selected');
+        else document.getElementById('gbtn-male').classList.add('selected');
     }
 
-    function updateGoldInterface() {
-        document.getElementById('global-gold').innerText = appState.gold.toLocaleString();
+    function completeSetup() {
+        const nameInput = document.getElementById('input-setup-name').value.trim();
+        if(!nameInput) return alert('드레스룸 이름을 입력해 주세요.');
+        
+        appState.userName = nameInput;
+        
+        // 상단 타이틀 바 커스텀 텍스트 렌더링 고정
+        document.getElementById('global-room-title').innerText = `✨ ${appState.userName}의 드레스룸`;
+        
+        // 성별 체형 클래스 반영
+        const skelNode = document.getElementById('avatar-skeleton-node');
+        if(appState.gender === 'Male') skelNode.classList.add('male');
+        else skelNode.classList.remove('male');
+
+        updateGoldUI();
+        refreshAvatarVisualLayers();
+
+        document.getElementById('view-setup').classList.remove('active');
+        document.getElementById('view-main-room').classList.add('active');
     }
 
-    // --- 스크린 라우터 내비게이션 ---
-    function switchScreen(viewId) {
-        if(!appState.currentUser) return;
-
-        document.querySelectorAll('.screen-view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-item-btn').forEach(b => b.classList.remove('active'));
-
-        document.getElementById(`view-${viewId}`).classList.add('active');
-        document.getElementById(`nav-${viewId}`).classList.add('active');
-
-        if(viewId === 'closet') renderClosetGrid();
-        if(viewId === 'market') renderMarketList();
-        if(viewId === 'collection') renderCollectionGrid();
+    function updateGoldUI() {
+        document.getElementById('global-gold-txt').innerText = appState.gold.toLocaleString();
     }
 
-    function switchCategory(cat, element) {
-        document.querySelectorAll('.category-tabs .tab-btn').forEach(b => b.classList.remove('active'));
-        element.classList.add('active');
-        activeCategory = cat;
+    // --- 옷장 서랍 레이어 바인딩 제어문 ---
+    function openClosetDrawer() {
+        document.getElementById('closet-drawer-panel').classList.add('open');
+        renderClosetTabs();
         renderClosetGrid();
     }
 
-    // --- 옷장 코디 시스템 그리드 빌더 ---
+    function closeClosetDrawer() {
+        document.getElementById('closet-drawer-panel').classList.remove('open');
+    }
+
+    function renderClosetTabs() {
+        const row = document.getElementById('closet-tabs-row');
+        row.innerHTML = '';
+        CATEGORIES.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = `tab-item ${currentClosetCategory === cat.id ? 'active' : ''}`;
+            btn.innerText = cat.name;
+            btn.onclick = () => {
+                currentClosetCategory = cat.id;
+                renderClosetTabs();
+                renderClosetGrid();
+            };
+            row.appendChild(btn);
+        });
+    }
+
     function renderClosetGrid() {
-        const box = document.getElementById('closet-grid-box');
-        box.innerHTML = '';
+        const grid = document.getElementById('closet-items-grid');
+        grid.innerHTML = '';
 
-        POOL_ITEMS[activeCategory].forEach(item => {
-            const isOwned = appState.ownedItems.includes(item.id);
-            if(!isOwned) return; // 옷장에는 소유한 아이템만 출력
+        // 내가 보유한 의상(ownedItems) 중 현재 탭 카테고리에 맞는 의상만 필터링
+        const filtered = appState.ownedItems
+            .map(id => CLOTHES_DATABASE[id])
+            .filter(item => item && item.category === currentClosetCategory);
 
-            const isEquipped = appState.equipped[activeCategory] === item.id;
+        filtered.forEach(item => {
+            const isEquipped = appState.equipped[item.category] === item.id;
             const card = document.createElement('div');
-            card.className = `item-card ${isEquipped ? 'active' : ''}`;
+            card.className = `closet-card ${isEquipped ? 'equipped' : ''}`;
             card.innerHTML = `
-                <div class="item-thumb">${item.thumb}</div>
-                <div class="item-name">${item.name}</div>
+                <div class="card-thumb">${item.view}</div>
+                <div class="card-name">${item.name}</div>
+                <div class="card-grade g-${item.grade}">${item.grade}등급</div>
             `;
             
             card.onclick = () => {
-                appState.equipped[activeCategory] = item.id;
-                saveSystemData();
-                renderClosetGrid();
-                applyAvatarVisualLayers();
+                toggleEquipItem(item);
             };
 
-            box.appendChild(card);
+            grid.appendChild(card);
         });
-        applyAvatarVisualLayers();
     }
 
-    function applyAvatarVisualLayers() {
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            const eqId = appState.equipped[cat];
-            const item = POOL_ITEMS[cat].find(i => i.id === eqId);
-            const layer = document.getElementById(`layer-${cat}`);
+    // [★상·하의 vs 원피스 배타적 착용 규칙 준수]
+    function toggleEquipItem(item) {
+        const cat = item.category;
+        
+        if (appState.equipped[cat] === item.id) {
+            // 현재 장착된 아이템을 클릭하면 탈의 처리
+            appState.equipped[cat] = null;
+        } else {
+            // 새로 장착
+            appState.equipped[cat] = item.id;
+
+            // 상의 혹은 하의를 입을 때 원피스는 강제 해제
+            if (cat === 'top' || cat === 'bottom') {
+                appState.equipped['dress'] = null;
+            }
+            // 원피스를 입을 때 상의와 하의는 강제 해제
+            if (cat === 'dress') {
+                appState.equipped['top'] = null;
+                appState.equipped['bottom'] = null;
+            }
+        }
+
+        renderClosetGrid();
+        refreshAvatarVisualLayers();
+    }
+
+    function refreshAvatarVisualLayers() {
+        CATEGORIES.forEach(cat => {
+            const slotId = appState.equipped[cat.id];
+            const layerNode = document.getElementById(`l-${cat.id}`);
             
-            if(item) {
-                layer.innerHTML = `<div style="${item.style}; display:flex; justify-content:center; align-items:center; width:100%; height:100%;">${item.thumb}</div>`;
+            if (slotId && CLOTHES_DATABASE[slotId]) {
+                const targetObj = CLOTHES_DATABASE[slotId];
+                // 폰트 크기 및 해상도 깨짐 없는 디테일 마감
+                let inlineStyle = "font-size: 5rem;";
+                if (cat.id === 'hair') inlineStyle = "font-size: 7.5rem; margin-top:-38px;";
+                if (cat.id === 'dress') inlineStyle = "font-size: 9.5rem; margin-top:110px;";
+                if (cat.id === 'top') inlineStyle = "font-size: 7rem; margin-top:60px;";
+                if (cat.id === 'bottom') inlineStyle = "font-size: 7rem; margin-top:140px;";
+                if (cat.id === 'shoes') inlineStyle = "font-size: 4.5rem; margin-top:250px;";
+                if (cat.id === 'bag') inlineStyle = "font-size: 5rem; margin-top:120px; margin-left:70px;";
+                if (cat.id === 'socks') inlineStyle = "font-size: 4.5rem; margin-top:210px;";
+                if (cat.id === 'necklace') inlineStyle = "font-size: 3rem; margin-top:40px;";
+                if (cat.id === 'earring') inlineStyle = "font-size: 2.2rem; margin-top:-10px; margin-left:5px;";
+
+                layerNode.innerHTML = `<span style="${inlineStyle}">${targetObj.view}</span>`;
             } else {
-                layer.innerHTML = '';
+                layerNode.innerHTML = '';
             }
         });
     }
 
-    // --- 가챠 뽑기 시스템 엔진 ---
-    function executeGachaCapsule() {
-        const GACHA_COST = 600;
-        if(appState.gold < GACHA_COST) {
-            alert('골드가 부족합니다! 마켓 거래를 통해 시세 차익으로 돈을 벌어보세요.');
+    // --- 스마트폰 팝업 제어구조 ---
+    function openPhonePopup() {
+        document.getElementById('phone-popup-panel').classList.add('open');
+        backToPhoneHome();
+    }
+
+    function closePhonePopup() {
+        document.getElementById('phone-popup-panel').classList.remove('open');
+    }
+
+    function openAppPanel(appId) {
+        document.getElementById('phone-home-view').style.display = 'none';
+        document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+        
+        document.getElementById(`app-${appId}`).classList.add('active');
+        
+        if (appId === 'joonggo') {
+            renderJoonggoList();
+        }
+    }
+
+    function backToPhoneHome() {
+        document.getElementById('phone-home-view').style.display = 'grid';
+        document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+    }
+
+    // ================= 📊 확률과 통계형 데이터 기반 뽑기 메커니즘 =================
+    function triggerGacha(platform) {
+        let cost = 0;
+        if (platform === 'abley') cost = 30000;
+        if (platform === 'musinsa') cost = 50000;
+        if (platform === 'kream') cost = KREAM_CURRENT_GACHA_PRICE; // 실시간 가격 적용
+
+        if (appState.gold < cost) {
+            return alert('잔액이 부족합니다. 중고나라에서 사용하지 않는 의상을 처분해 자금을 마련하세요.');
+        }
+
+        // 재화 감소 및 UI 동기화
+        appState.gold -= cost;
+        updateGoldUI();
+
+        // 룰렛용 난수 생성 (0.00 ~ 100.00)
+        const rand = Math.random() * 100;
+        let selectedGrade = 'C';
+
+        // 각 플랫폼 확률 스케일 기반 등급 판정 연산
+        if (platform === 'abley') {
+            if (rand < 0.5) selectedGrade = 'SSS';
+            else if (rand < 3.0) selectedGrade = 'SS';
+            else if (rand < 10.0) selectedGrade = 'S';
+            else if (rand < 25.0) selectedGrade = 'A';
+            else if (rand < 55.0) selectedGrade = 'B';
+            else selectedGrade = 'C';
+        } else if (platform === 'musinsa') {
+            if (rand < 1.5) selectedGrade = 'SSS';
+            else if (rand < 6.0) selectedGrade = 'SS';
+            else if (rand < 18.0) selectedGrade = 'S';
+            else if (rand < 40.0) selectedGrade = 'A';
+            else if (rand < 75.0) selectedGrade = 'B';
+            else selectedGrade = 'C';
+        } else if (platform === 'kream') {
+            if (rand < 4.0) selectedGrade = 'SSS';
+            else if (rand < 14.0) selectedGrade = 'SS';
+            else if (rand < 35.0) selectedGrade = 'S';
+            else if (rand < 65.0) selectedGrade = 'A';
+            else if (rand < 90.0) selectedGrade = 'B';
+            else selectedGrade = 'C';
+        }
+
+        // 해당 등급의 데이터베이스 아이템 매칭 추출
+        const matchingPool = Object.values(CLOTHES_DATABASE).filter(item => item.grade === selectedGrade && item.id.substring(0,5) !== 'basic');
+        
+        // 예외 방어용 코드: 매칭 풀이 비어있다면 전체 풀에서 무작위 매칭
+        let finalItem = matchingPool.length > 0 
+            ? matchingPool[Math.floor(Math.random() * matchingPool.length)]
+            : CLOTHES_DATABASE['ab-h1'];
+
+        // 중복 보유 허용하되 목록에 고유하게 확보 처리
+        appState.ownedItems.push(finalItem.id);
+        
+        alert(`🎉 캡슐 개봉 성공!\n\n[${finalItem.grade}등급] ${finalItem.name}을(를) 획득했습니다!`);
+        
+        if(document.getElementById('app-joonggo').classList.contains('active')) {
+            renderJoonggoList();
+        }
+    }
+
+    // ================= 📊 [핵심] 1초 주기 실시간 등락폭 금융 시세 모델링 =================
+    function initLivePrices() {
+        Object.keys(CLOTHES_DATABASE).forEach(key => {
+            LIVE_MARKET_PRICES[key] = CLOTHES_DATABASE[key].basePrice;
+        });
+    }
+
+    function processOneSecondMarketFluctuation() {
+        // 1. 크림 가챠 비용 실시간 널뛰기 연산 (기준가 80,000원선 보호)
+        const kreamDelta = (Math.random() * 20 - 9.5) / 100; // -9.5% ~ +10.5% 변동성
+        let nextKreamPrice = Math.round(KREAM_CURRENT_GACHA_PRICE * (1 + kreamDelta));
+        if(nextKreamPrice < 35000) nextKreamPrice = 35000;
+        if(nextKreamPrice > 190000) nextKreamPrice = 190000;
+
+        KREAM_GACHA_TREND = nextKreamPrice >= KREAM_CURRENT_GACHA_PRICE ? 'up' : 'down';
+        KREAM_CURRENT_GACHA_PRICE = nextKreamPrice;
+
+        // 크림 UI 렌더 노드 리프레시
+        const krPriceTxt = document.getElementById('kream-gacha-price-txt');
+        const krTrendIndicator = document.getElementById('kream-trend-indicator');
+        if(krPriceTxt && krTrendIndicator) {
+            krPriceTxt.innerText = KREAM_CURRENT_GACHA_PRICE.toLocaleString();
+            if(KREAM_GACHA_TREND === 'up') {
+                krTrendIndicator.innerText = "▲ 상승";
+                krTrendIndicator.className = "trend-badge trend-up";
+            } else {
+                krTrendIndicator.innerText = "▼ 하락";
+                krTrendIndicator.className = "trend-badge trend-down";
+            }
+        }
+
+        // 2. 중고나라 의상 매입 시세 등급별 변동성 차등 부여 1초 갱신
+        Object.keys(CLOTHES_DATABASE).forEach(key => {
+            const item = CLOTHES_DATABASE[key];
+            let vol = 0.05; // C, B등급 변동폭
+            if (item.grade === 'A' || item.grade === 'S') vol = 0.12;
+            if (item.grade === 'SS' || item.grade === 'SSS') vol = 0.25;
+
+            const changePercent = (Math.random() * (vol * 2) - vol);
+            let updatedPrice = Math.round(LIVE_MARKET_PRICES[key] * (1 + changePercent));
+
+            // 한계 임계점 통계 안전선 마감
+            if (updatedPrice < item.basePrice * 0.4) updatedPrice = Math.round(item.basePrice * 0.4);
+            if (updatedPrice > item.basePrice * 2.5) updatedPrice = Math.round(item.basePrice * 2.5);
+
+            LIVE_MARKET_PRICES[key] = updatedPrice;
+        });
+
+        // 중고나라 탭 오픈 중이면 실시간 DOM 동기화
+        if (document.getElementById('app-joonggo').classList.contains('active')) {
+            renderJoonggoList();
+        }
+    }
+
+    // ================= 중고나라 판매 스페이스 (★구매 절대 없음) =================
+    function renderJoonggoList() {
+        const box = document.getElementById('joonggo-sell-list');
+        box.innerHTML = '';
+
+        if(appState.ownedItems.length === 0) {
+            box.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">보유 중인 의상이 없습니다.</p>';
             return;
         }
 
-        appState.gold -= GACHA_COST;
-        updateGoldInterface();
+        // 유저가 보유한 옷들을 리스트 피딩
+        appState.ownedItems.forEach((ownedItemId, index) => {
+            const item = CLOTHES_DATABASE[ownedItemId];
+            if(!item) return;
 
-        // 전체 아이템 풀 일원화 병합
-        let allItems = [];
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            POOL_ITEMS[cat].forEach(i => allItems.push(i));
-        });
+            const currentPrice = LIVE_MARKET_PRICES[ownedItemId] || item.basePrice;
+            const isBasicItem = ownedItemId.startsWith('basic-'); // 기본 템 3종 여부 판정
 
-        // 완전 균등 무작위 추첨 추출
-        const rolledItem = allItems[Math.floor(Math.random() * allItems.length)];
-
-        if(!appState.ownedItems.includes(rolledItem.id)) {
-            appState.ownedItems.push(rolledItem.id);
-        }
-        
-        saveSystemData();
-        alert(`🎉 캡슐 오픈 결과!\n[ ${rolledItem.name} ] 의상을 획득했습니다! 도감 및 옷장을 확인하세요.`);
-    }
-
-    // --- [중요] 실시간 변동 가격 주식형 중고 마켓 엔진 ---
-    function initMarketPrices() {
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            POOL_ITEMS[cat].forEach(item => {
-                MARKET_PRICES[item.id] = item.basePrice;
-                MARKET_TRENDS[item.id] = 'up';
-            });
-        });
-    }
-
-    function fluctuatePrices() {
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            POOL_ITEMS[cat].forEach(item => {
-                // 등락폭 결정 알고리즘 (-20% ~ +25% 내외 무작위 가중치 반영)
-                const changePercent = (Math.random() * 45 - 20) / 100;
-                let newPrice = Math.round(MARKET_PRICES[item.id] * (1 + changePercent));
-                
-                // 최저 안전선 방어 및 최고가 제한 방어
-                if(newPrice < 150) newPrice = 150;
-                if(newPrice > 15000) newPrice = 15000;
-
-                MARKET_TRENDS[item.id] = newPrice >= MARKET_PRICES[item.id] ? 'up' : 'down';
-                MARKET_PRICES[item.id] = newPrice;
-            });
-        });
-
-        // 마켓 스크린 활성화 상태일 경우 DOM 리프레시 동기화
-        if(document.getElementById('view-market').classList.contains('active')) {
-            renderMarketList();
-        }
-    }
-
-    function renderMarketList() {
-        const list = document.getElementById('market-list-box');
-        list.innerHTML = '';
-
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            POOL_ITEMS[cat].forEach(item => {
-                const isOwned = appState.ownedItems.includes(item.id);
-                const currentPrice = MARKET_PRICES[item.id];
-                const trend = MARKET_TRENDS[item.id];
-
-                const card = document.createElement('div');
-                card.className = 'market-card';
-
-                card.innerHTML = `
-                    <div class="market-item-info">
-                        <span style="font-size:2rem;">${item.thumb}</span>
-                        <div>
-                            <div style="font-size:0.9rem; font-weight:bold;">${item.name}</div>
-                            <div style="font-size:0.85rem; color:#ff1493; margin-top:2px;">
-                                💰 ${currentPrice.toLocaleString()} 
-                                <span class="price-trend ${trend === 'up' ? 'trend-up' : 'trend-down'}">
-                                    ${trend === 'up' ? '▲ 상승' : '▼ 하락'}
-                                </span>
-                            </div>
+            const card = document.createElement('div');
+            card.className = 'market-item-card';
+            card.innerHTML = `
+                <div class="market-info-box">
+                    <span style="font-size:2.2rem;">${item.view}</span>
+                    <div>
+                        <div style="font-size:0.95rem; font-weight:bold;">${item.name}</div>
+                        <div style="font-size:0.85rem; color:#666; margin-top:3px;">
+                            현재 중고 시세: <span style="color:#FF1493; font-weight:bold;">💰 ${currentPrice.toLocaleString()}원</span>
                         </div>
                     </div>
-                    <div>
-                        ${isOwned ? 
-                            `<button class="btn-market-action sell" onclick="sellMarketItem('${item.id}', ${currentPrice}, '${cat}')">중고판매</button>` : 
-                            `<button class="btn-market-action" onclick="buyMarketItem('${item.id}', ${currentPrice})">중고구매</button>`
-                        }
-                    </div>
-                `;
-                list.appendChild(card);
-            });
+                </div>
+                <div>
+                    <button class="btn-sell-action" 
+                        ${isBasicItem ? 'disabled' : ''} 
+                        onclick="executeSell('${ownedItemId}', ${currentPrice}, ${index}, '${item.category}')">
+                        ${isBasicItem ? '판매불가' : '판매하기'}
+                    </button>
+                </div>
+            `;
+            box.appendChild(card);
         });
     }
 
-    function buyMarketItem(itemId, price) {
-        if(appState.gold < price) {
-            alert('보유 골드가 매입하려는 가격보다 부족합니다.');
-            return;
-        }
-        appState.gold -= price;
-        appState.ownedItems.push(itemId);
-        
-        saveSystemData();
-        updateGoldInterface();
-        renderMarketList();
-        alert('중고 거래 구매 성공! 옷장에 입고되었습니다.');
-    }
-
-    function sellMarketItem(itemId, price, cat) {
-        // 기본 시작 템 단 한 개만 갖고 있을 때는 판매 금지 안전장치 예외 조치
-        if(appState.ownedItems.length <= 1) {
-            alert('최소 1개 이상의 의상을 보유해야 판매할 수 있습니다.');
-            return;
+    function executeSell(itemId, price, index, category) {
+        // 현재 착용 중인 아이템일 경우 즉시 착용 해제 안전 조치
+        if (appState.equipped[category] === itemId) {
+            appState.equipped[category] = null;
         }
 
-        // 현재 착용 중인 옷이면 탈의 처리 후 판매 진행
-        if(appState.equipped[cat] === itemId) {
-            appState.equipped[cat] = null;
-        }
-
+        // 자산 충전 및 배열 원소 삭제
         appState.gold += price;
-        appState.ownedItems = appState.ownedItems.filter(id => id !== itemId);
+        appState.ownedItems.splice(index, 1);
 
-        saveSystemData();
-        updateGoldInterface();
-        renderMarketList();
-        alert(`의상을 성공적으로 중고 마켓에 정리하고 💰 ${price.toLocaleString()} 골드를 정산받았습니다.`);
-    }
-
-    // --- 도감(Collection) 아카이브 그리드 시스템 ---
-    function renderCollectionGrid() {
-        const grid = document.getElementById('collection-grid-box');
-        const ratioText = document.getElementById('collect-ratio-text');
-        grid.innerHTML = '';
-
-        let total = 0;
-        let owned = 0;
-
-        ['hair', 'dress', 'acc'].forEach(cat => {
-            POOL_ITEMS[cat].forEach(item => {
-                total++;
-                const hasIt = appState.ownedItems.includes(item.id);
-                if(hasIt) owned++;
-
-                const slot = document.createElement('div');
-                slot.className = `collection-slot ${hasIt ? 'unlocked' : ''}`;
-                slot.innerHTML = hasIt ? `<div>${item.thumb}</div>` : `<div>❓</div>`;
-                
-                grid.appendChild(slot);
-            });
-        });
-
-        ratioText.innerText = `${owned} / ${total} (${Math.round((owned/total)*100)}%)`;
+        updateGoldUI();
+        refreshAvatarVisualLayers();
+        renderJoonggoList();
+        
+        alert(`🤝 중고 판매 거래 완료!\n정산 금액 💰 ${price.toLocaleString()}원이 지급되었습니다.`);
     }
 </script>
 
